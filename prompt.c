@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/06 17:35:10 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/20 14:38:16 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char	*get_cmd(char **env)
 	char *line;
 
 	print_prompt(env);
-	get_next_line(0, &line);
+	if (get_next_line(0, &line) != 1)
+		return (NULL);
 	while (wrong_quote(line))
 		line = ask_newline(line);
 	return (line);

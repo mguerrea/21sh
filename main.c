@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/06 17:29:10 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/20 14:25:04 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 	while (run)
 	{
 		i = 0;
-		line = get_cmd(*env);
+		if (!(line = get_cmd(*env)))
+			break ;
 		cmd = split_quotes(line, ';');
 		while (cmd[i])
 		{
