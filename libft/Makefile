@@ -10,12 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-INC = -I.
-SRCDIR = srcs
 NAME = libft.a
-SOURCES = ft_memset.c \
+
+SRC_NAME = ft_memset.c \
 		ft_bzero.c \
 		ft_memcpy.c \
 		ft_memccpy.c \
@@ -85,22 +82,67 @@ SOURCES = ft_memset.c \
 		ft_putstr_free.c \
 		ft_putendl_free.c \
 		ft_nbrlen.c \
-		ft_lstlast.c
-OBJECTS = $(SOURCES:.c=.o)
+		ft_lstlast.c \
+		get_next_line.c
 
+INC_NAME = libft.h get_next_line.h
+
+INC_PATH = ./includes
+
+INC_FLAGS = -I./includes
+
+LIB_FLAGS =
+
+LIBS =
+
+CC = clang
+
+CFLAGS = -Wall -Wextra -Werror
+
+SRC_PATH = src
+
+SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+
+OBJ_PATH = obj
+
+OBJ_NAME = $(SRC:.c=.o)
+
+OBJ = $(subst $(SRC_PATH),$(OBJ_PATH),$(OBJ_NAME))
+
+INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
+
+RED = \x1B[31m
+GRN = \x1B[32m
+YEL = \x1B[33m
+BLU = \x1B[34m
+MAG = \x1B[35m
+CYN = \x1B[36m
+WHT = \x1B[37m
+RESET = \x1B[0m
+ERASE = \033[2K
 
 all: $(NAME)
 
-re: fclean all
+$(NAME): $(OBJ)
+	@ar rc $@ $(OBJ)
+	@ranlib $@
+	@echo "\n$(BLU)[$(NAME)]$(GRN) Compilation success$(RESET)"
 
-$(NAME): $(OBJECTS)
-	ar rc $(NAME) $(OBJECTS)
-
-.c.o: $(SOURCES)
-	$(CC) -c $(INC) $(CFLAGS) -o $@ $<
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INC)
+	@mkdir -p $(OBJ_PATH)
+	@$(CC) $(CFLAGS) $(INC_FLAGS) -o $@ -c $<
+	@echo "\r$(ERASE)$(BLU)[$(NAME)]$(RESET) $@ created\c"
 
 clean:
-	rm -f $(OBJECTS)
+	@/bin/rm -f $(OBJ)
+	@/bin/rm -rf $(OBJ_PATH)
+	@echo "$(BLU)[$(NAME)]$(RED) .o files deleted$()$(RESET)"
 
 fclean: clean
-	rm -f $(NAME)
+	@/bin/rm -f $(NAME)
+	@/bin/rm -f $(LINKNAME)
+	@echo  "$(BLU)[$(NAME)]$(RED) executable file deleted$(RESET)"
+
+re: fclean $(NAME)
+
+.PHONY: all, clean, fclean, re

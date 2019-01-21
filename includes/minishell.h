@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/21 13:29:10 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/01/21 16:58:20 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include <unistd.h>
 # include <sys/param.h>
-# include "libft/libft.h"
-# include "get_next_line.h"
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <pwd.h>
 # include <uuid/uuid.h>
+# include "libft.h"
+# include "get_next_line.h"
 
-# define NB_BUILTIN
+# define NB_BUILTIN 6
 
 typedef enum		e_pipemask
 {

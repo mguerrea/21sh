@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 19:40:25 by mguerrea          #+#    #+#             */
-/*   Updated: 2018/11/26 19:07:16 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/21 16:51:53 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "libft/libft.h"
+# include "libft.h"
 
 # define BUFF_SIZE 32
 

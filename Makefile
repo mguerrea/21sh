@@ -3,58 +3,78 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
+#    By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/01/08 12:10:45 by mguerrea          #+#    #+#              #
-#    Updated: 2019/01/08 12:13:48 by mguerrea         ###   ########.fr        #
+#    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
+#    Updated: 2019/01/21 17:05:48 by gmichaud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-MAKE	:= make
-CC		:= gcc
-LD		:= gcc
-RM		:= rm -rf
+NAME = minishell
 
-SRCDIR	:=	./
-INCLDIR	:=	-I libft/includes
-LIBDIR 	:=	libft/
+SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
+	init.c main.c prompt.c split.c
 
-CFLAGS	:=	-Wall -Wextra -Werror $(INCLDIR)
-LDFLAGS	:=	-L$(LIBDIR) -lft
+INC_NAME = minishell.h
 
-SRCS    :=	basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c get_next_line.c  \
-			init.c main.c prompt.c split.c
-SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
-OBJS	:=	$(patsubst %.c,%.o,$(SRCS))
-DEPS	:=	Makefile minishell.h
-LIB		:=	$(LIBDIR)/libft.a
-NAME	:=	minishell
+INC_PATH = ./includes
+
+INC_FLAGS = -I./includes -I./libft/includes
+
+LIB_FLAGS = -L./libft
+
+LIBS = -lft
+
+CC = clang
+
+CFLAGS = -Wall -Wextra -Werror
+
+SRC_PATH = src
+
+SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+
+OBJ_PATH = obj
+
+OBJ_NAME = $(SRC:.c=.o)
+
+OBJ = $(subst $(SRC_PATH),$(OBJ_PATH),$(OBJ_NAME))
+
+INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
+
+RED = \x1B[31m
+GRN = \x1B[32m
+YEL = \x1B[33m
+BLU = \x1B[34m
+MAG = \x1B[35m
+CYN = \x1B[36m
+WHT = \x1B[37m
+RESET = \x1B[0m
+ERASE = \033[2K
 
 all: $(NAME)
 
-$(LIB):
-	@$(MAKE) -C libft/
+$(NAME): $(OBJ)
+	@make -C ./libft --no-print-directory
+	@$(CC) -o $@ $(OBJ) $(LIB_FLAGS) $(LIBS)
+	@echo "\n$(BLU)[$(NAME)]$(GRN) Compilation success$(RESET)"
 
-$(NAME): $(LIB) $(OBJS)
-	@echo "\033[32m  Creating: \033[0m$(NAME)"
-	@$(LD) $(LDFLAGS) -o $(NAME) $(OBJS)
-
-%.o: %.c $(DEPS)
-	@printf "\033[32m Compiling: \033[0m$< -> $@\n"
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INC)
+	@mkdir -p $(OBJ_PATH)
+	@$(CC) $(CFLAGS) $(INC_FLAGS) -o $@ -c $<
+	@echo "\r$(ERASE)$(BLU)[$(NAME)]$(RESET) $@ created\c"
 
 clean:
-	@printf "\033[32m  Cleaning: \033[0m$(OBJS)\033[0m\n"
-	@$(RM) $(OBJS)
-	@$(MAKE) -C libft clean
+	@/bin/rm -f $(OBJ)
+	@/bin/rm -rf $(OBJ_PATH)
+	@make -C ./libft clean --no-print-directory
+	@echo "$(BLU)[$(NAME)]$(RED) .o files deleted$()$(RESET)"
 
 fclean: clean
-	@printf "\033[32m  Removing: \033[0m"
-	@find . -name "minishell" -exec sh -c 'basename {}' \; | tr "\n" " "
-	@echo ""
-	@$(RM) $(NAME)
-	@$(MAKE) -C libft fclean
+	@/bin/rm -f $(NAME)
+	@/bin/rm -f $(LINKNAME)
+	@make -C ./libft fclean --no-print-directory
+	@echo  "$(BLU)[$(NAME)]$(RED) executable file deleted$(RESET)"
 
-re: fclean all
+re: fclean $(NAME)
 
-.PHONY: all clean fclean re
+.PHONY: all, clean, fclean, re

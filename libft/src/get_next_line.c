@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 16:28:34 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/04 12:28:13 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/21 16:53:35 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		get_next_line(int fd, char **line)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	if (!list && !perm[fd][0])
+	if (!list && (!perm[fd] || !perm[fd][0]))
 		return (END);
 	*line = ft_cpy_line(*line, ft_list_to_str(list), &perm[fd]);
 	ft_lstdel(&list, ft_elemdel);
