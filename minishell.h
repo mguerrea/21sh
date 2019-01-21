@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 13:09:56 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/21 13:29:10 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,37 @@
 # include <pwd.h>
 # include <uuid/uuid.h>
 
-# define NB_BUILTIN 6
+# define NB_BUILTIN
+
+typedef enum		e_pipemask
+{
+	PIPE_R = 1 << 0,
+	PIPE_L = 1 << 1
+}				t_pipemask;
+
+typedef enum		e_redirtype
+{
+	STDIN_SPL,
+	STDIN_DBL,
+	STDOUT_SPL,
+	STDOUT_DBL
+}					t_redirtype;
+
+typedef struct		s_redir
+{
+	char			*file;
+	t_redirtype		type;
+}					t_redir;
+
+typedef struct		s_cmdlst
+{
+	char			**args;
+	int				fd[2];
+	t_pipemask		pipes;
+	t_redir			redir[2];
+	struct s_cmdlst	*prev;
+	struct s_cmdlst	*next;
+}					t_cmdlst;
 
 typedef int	(*t_built_in)(char **, char ***);
 
