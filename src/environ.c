@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 13:34:02 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 12:57:28 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,29 @@ void	ft_setvar(char ***environ, char *var, char *value)
 	ft_strdel(&str);
 }
 
-int		ft_setenv(char **args, char ***environ)
+int		ft_setenv(t_cmdlst *cmd, char ***environ)
 {
-	if (args[1] && args[2])
+	if (cmd->args[1] && cmd->args[2])
 	{
-		if (ft_strchr(args[1], '='))
+		if (ft_strchr(cmd->args[1], '='))
 			ft_putendl("invalid name, cannot contain '='");
 		else
-			ft_setvar(environ, args[1], args[2]);
+			ft_setvar(environ, cmd->args[1], cmd->args[2]);
 	}
 	else
 		ft_putendl("too few arguments");
 	return (1);
 }
 
-int		ft_unsetenv(char **args, char ***environ)
+int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 {
 	int i;
 
 	i = 0;
-	if (args[1])
+	if (cmd->args[1])
 	{
-		while ((*environ)[i] && ft_strncmp((*environ)[i], args[1],
-			ft_strlen(args[1])))
+		while ((*environ)[i] && ft_strncmp((*environ)[i], cmd->args[1],
+			ft_strlen(cmd->args[1])))
 			i++;
 		if ((*environ)[i])
 			ft_delentry(environ, i);

@@ -3,73 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 15:54:28 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/21 17:04:09 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/01/23 16:46:04 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_exit(char **args, char ***environ)
+int	ft_exit(t_cmdlst *cmd, char ***environ)
 {
-	(void)args;
+	pid_t pid;
+
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
 	(void)environ;
+	if (pid == 0)
+		exit (1);
 	return (0);
 }
 
-int	ft_echo(char **args, char ***environ)
+int	ft_echo(t_cmdlst *cmd, char ***environ)
 {
 	int i;
 	int n;
+	pid_t pid;
 
-	(void)args;
 	(void)environ;
-	if (args[1] == NULL)
-	{
-		ft_putchar('\n');
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
 		return (1);
-	}
-	n = ft_strcmp(args[1], "-n");
-	i = 1;
-	if (n == 0)
-		i++;
-	while (args[i])
+	n = (cmd->args[1]) ? ft_strcmp(cmd->args[1], "-n") : 1;
+	i = (n == 0) ? 2 : 1;
+	while (cmd->args[i])
 	{
 		if (i > 2 || (i > 1 && n != 0))
-			ft_putchar(' ');
-		ft_putstr(args[i]);
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
 		i++;
 	}
 	if (n != 0)
-		ft_putchar('\n');
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	if (pid == 0)
+		exit(1);
 	return (1);
 }
 
-int	ft_env(char **args, char ***environ)
+int	ft_env(t_cmdlst *cmd, char ***environ)
 {
 	int		i;
 	char	**tmp;
+	pid_t	pid;
 
 	i = 0;
-	if (args[1] == NULL)
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
+	if (cmd->args[1] == NULL)
 	{
 		while ((*environ)[i])
 			ft_putendl((*environ)[i++]);
 	}
 	else
 	{
-		if (ft_strcmp(args[1], "-i") == 0)
+		ft_delentry(&(cmd->args), 0);
+		if (ft_strcmp(cmd->args[0], "-i") == 0)
 		{
 			if (!(tmp = (char **)malloc(sizeof(char *))))
 				malloc_error();
 			tmp[0] = NULL;
-			launch_bin(&args[2], &tmp);
+			ft_delentry(&(cmd->args), 1);
+			launch_bin(cmd, &tmp);
 			free(tmp);
 		}
 		else
-			launch_bin(&args[1], environ);
+			launch_bin(cmd, environ);
 	}
+	if (pid == 0)
+		exit (1);
 	return (1);
 }
