@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 14:23:11 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/06 17:21:55 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:21:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**init_shell(char **environ, t_built_in *builtin_fct)
 	env = NULL;
 	fill_built(builtin_fct);
 	if (!(env = ft_tabdup(env, environ)))
-		malloc_error();
+		return (NULL);
 	if ((var = ft_getenv(env, "SHLVL")) && var[0])
 	{
 		if (ft_strcmp(var[0], "1"))

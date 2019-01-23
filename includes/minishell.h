@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 14:04:02 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:17:54 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	error_rights(char *cmd, char *str);
 void	error_cmd(char *str);
 int		error_args(char *cmd);
 char	*ft_strjointab(char **tab, char c);
-int	do_pipe(t_cmdlst *cmd);
+int		do_pipe(t_cmdlst *cmd);
+int		throw_error(char *str);
 
 #endif

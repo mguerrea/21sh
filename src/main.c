@@ -6,39 +6,20 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 16:42:51 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:20:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "minishell.h"
 
-/*int	execute(char **args, const char **builtin_lst,
+int		execute(t_cmdlst *cmd, const char **builtin_lst,
 	t_built_in *builtin_fct, char ***environ)
 {
 	int i;
 
 	i = 0;
-	if (args[0] == NULL)
-		return (1);
-	while (i < NB_BUILTIN)
-	{
-		if (ft_strcmp(args[0], builtin_lst[i]) == 0)
-			return (builtin_fct[i](args, environ));
-		i++;
-	}
-	return (launch_bin(args, environ));
-}*/
-
-#include <stdio.h>
-
-int		execute_test(t_cmdlst *cmd, const char **builtin_lst,
-	t_built_in *builtin_fct, char ***environ)
-{
-	int i;
-
-	i = 0;
-	if (cmd->pipes && pipe(cmd->fd) == -1)
+	if (pipe(cmd->fd) == -1)
 		return (0);
 	while (i < NB_BUILTIN)
 	{
@@ -93,7 +74,8 @@ int		execute_test(t_cmdlst *cmd, const char **builtin_lst,
 
 	(void)argc;
 	(void)argv;
-	env = init_shell(environ, builtin_fct);
+	if (!(env = init_shell(environ, builtin_fct)))
+		return (throw_error("malloc error"));
 	run(&env, builtin_fct, builtin_lst);
 	free_tab(env);
 	return (0);
@@ -145,15 +127,15 @@ int main(int argc, char **argv, char **environ)
 	cmd3->args = (char **)malloc(sizeof(char *) * 4);
 	cmd3->prev = cmd2;
 	cmd3->next = NULL;
-	cmd3->args[0] = "wc";
-	cmd3->args[1] = "-c";
+	cmd3->args[0] = "cat";
+	cmd3->args[1] = "-e";
 	cmd3->args[2] = NULL;
 	cmd3->pipes = PIPE_L;
 	while (cmd1)
 	{
 //		printf("loop\n");
 		ft_putendl(cmd1->args[0]);
-		execute_test(cmd1, builtin_lst, builtin_fct, &env);
+		execute(cmd1, builtin_lst, builtin_fct, &env);
 		cmd1 = cmd1->next;
 	}
 //	printf ("return ?\n");

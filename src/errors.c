@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:56:10 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 11:42:42 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:18:08 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ void	error_rights(char *cmd, char *str)
 	}
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": Permission denied", 2);
+}
+
+int		throw_error(char *str)
+{
+	ft_putendl_fd(str, 2);
+	return (0);
 }
 
 void	malloc_error(void)

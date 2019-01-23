@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 12:57:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 16:56:21 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	ft_setvar(char ***environ, char *var, char *value)
 
 int		ft_setenv(t_cmdlst *cmd, char ***environ)
 {
+	pid_t pid;
+
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
 	if (cmd->args[1] && cmd->args[2])
 	{
 		if (ft_strchr(cmd->args[1], '='))
@@ -46,14 +50,19 @@ int		ft_setenv(t_cmdlst *cmd, char ***environ)
 	}
 	else
 		ft_putendl("too few arguments");
+	if (pid == 0)
+		exit (1);
 	return (1);
 }
 
 int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 {
 	int i;
+	pid_t pid;
 
 	i = 0;
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
 	if (cmd->args[1])
 	{
 		while ((*environ)[i] && ft_strncmp((*environ)[i], cmd->args[1],
@@ -62,6 +71,8 @@ int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 		if ((*environ)[i])
 			ft_delentry(environ, i);
 	}
+	if (pid == 0)
+		exit (1);
 	return (1);
 }
 
