@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 17:20:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 18:36:39 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int main(int argc, char **argv, char **environ)
 	cmd1->args[1] = NULL;
 	cmd1->args[2] = "hello";
 	cmd1->args[3] = NULL;
+	cmd1->redir[1].file = NULL;
 	cmd1->pipes = PIPE_R;
 	cmd1->prev = NULL;
 	cmd1->next = cmd2;
@@ -120,9 +121,10 @@ int main(int argc, char **argv, char **environ)
 	cmd2->args = (char **)malloc(sizeof(char *) * 4);
 	cmd2->args[0] = "grep";
 //	cmd2->args[0] = "cat";
-	cmd2->args[1] = "HOME";
+	cmd2->args[1] = "PATH";
 //	cmd2->args[1] = "-e";
 	cmd2->args[2] = NULL;
+	cmd2->redir[1].file = NULL;
 	cmd2->pipes = PIPE_L | PIPE_R;
 	cmd3->args = (char **)malloc(sizeof(char *) * 4);
 	cmd3->prev = cmd2;
@@ -130,6 +132,8 @@ int main(int argc, char **argv, char **environ)
 	cmd3->args[0] = "cat";
 	cmd3->args[1] = "-e";
 	cmd3->args[2] = NULL;
+	cmd3->redir[1].file = "test";
+	cmd3->redir[1].type = STDOUT_DBL;
 	cmd3->pipes = PIPE_L;
 	while (cmd1)
 	{

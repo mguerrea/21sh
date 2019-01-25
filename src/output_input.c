@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
+/*   output_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 16:48:03 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/23 18:35:30 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,23 @@ int do_pipe(t_cmdlst *cmd)
 			close(cmd->prev->fd[0]);
 	}
 	return (pid);
+}
+
+int redirection(t_cmdlst *cmd)
+{
+	int fd;
+
+	if (cmd->redir[1].file && cmd->redir[1].type == STDOUT_SPL)
+	{
+		if((fd = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_TRUNC, 0666)) == -1)
+			return (-1);
+		dup2(fd, STDOUT_FILENO);
+	}
+	else if (cmd->redir[1].type == STDOUT_DBL)
+	{
+		if((fd = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_APPEND, 0666)) == -1)
+			return (-1);
+		dup2(fd, STDOUT_FILENO);
+	}
+	return (1);
 }
