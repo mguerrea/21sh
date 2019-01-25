@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/21 16:58:20 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/01/22 12:48:22 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,14 @@ typedef enum		e_pipemask
 
 typedef enum		e_redirtype
 {
-	STDIN_SPL,
-	STDIN_DBL,
-	STDOUT_SPL,
-	STDOUT_DBL
+	SPL,
+	DBL
 }					t_redirtype;
 
 typedef struct		s_redir
 {
 	char			*file;
+	int				fd[2];
 	t_redirtype		type;
 }					t_redir;
 
