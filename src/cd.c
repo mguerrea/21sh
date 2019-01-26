@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 17:40:08 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 17:59:27 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:51:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ int		ft_cd(t_cmdlst *cmd, char ***environ)
 
 	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
 		return (1);
+	if (pid == -1)
+		return (throw_error("fork error"));
+	if (redirection(cmd) == -1)
+	{
+		if (pid == 0)
+			exit(1);
+		else
+			return (1);
+	}
 	if (cmd->args[1] && cmd->args[2])
 		return (error_args("cd"));
 	dir = format_dir(cmd->args, environ);

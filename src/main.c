@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/26 19:17:55 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:49:36 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ int main(int argc, char **argv, char **environ)
 	cmd1->redir[1].type = NONE;
 	cmd1->redir[1].file = NULL;
 	cmd1->redir[0].type = SPL;
-	cmd1->redir[0].file = "-";
+	cmd1->redir[0].file = "test1";
 	cmd1->redir[0].fd[0] = 0;
 	cmd1->redir[0].fd[1] = 1;
-	cmd1->pipes = 0;
+	cmd1->pipes = PIPE_R;
 	cmd1->prev = NULL;
 	cmd1->next = cmd2;
-	cmd1->next = NULL;
+//	cmd1->next = NULL;
 
 	cmd2->next = cmd3;
 	cmd2->prev = cmd1;

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 16:56:21 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:52:40 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ int		ft_setenv(t_cmdlst *cmd, char ***environ)
 	if (cmd->args[1] && cmd->args[2])
 	{
 		if (ft_strchr(cmd->args[1], '='))
-			ft_putendl("invalid name, cannot contain '='");
+			ft_putendl_fd("invalid name, cannot contain '='", 2);
 		else
 			ft_setvar(environ, cmd->args[1], cmd->args[2]);
 	}
 	else
-		ft_putendl("too few arguments");
+		ft_putendl_fd("too few arguments", 2);
 	if (pid == 0)
 		exit (1);
 	return (1);
