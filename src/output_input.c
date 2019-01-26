@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 18:35:30 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:17:23 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,73 @@ int do_pipe(t_cmdlst *cmd)
 	return (pid);
 }
 
+int redir_out(t_cmdlst *cmd)
+{
+	int fildes;
+
+	fildes = 0;
+	if ((cmd->redir[1].file == NULL || cmd->redir[1].file[0] == '-') && cmd->redir[1].type == SPL)
+	{
+		if (!(isatty(fildes = cmd->redir[1].fd[1])))
+		{
+			error_fd(fildes);
+			return (-1);
+		}
+	}
+	else if (cmd->redir[1].file[0] != '-' && cmd->redir[1].type == SPL)
+	{
+		if ((fildes = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_TRUNC, 0666)) == -1)
+		{
+			error_file(NULL, cmd->redir[1].file);
+			return (-1);
+		}
+	}
+	else if (cmd->redir[1].file[0] != '-' && cmd->redir[1].type == DBL)
+	{
+		if ((fildes = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_APPEND, 0666)) == -1)
+		{
+			error_file(NULL, cmd->redir[1].file);
+			return (-1);
+		}
+	}
+	dup2(fildes, STDOUT_FILENO);
+	if (cmd->redir[1].file && cmd->redir[1].file[0] == '-')
+		close(fildes);
+	return (1);
+}
+
+int redir_in(t_cmdlst *cmd)
+{
+	int fildes;
+
+	fildes = 0;
+	if ((cmd->redir[0].file == NULL || cmd->redir[0].file[0] == '-') && cmd->redir[0].type == SPL)
+	{
+		if (!(isatty(fildes = cmd->redir[0].fd[1])))
+		{
+			error_fd(fildes);
+			return (-1);
+		}
+	}
+	else if (cmd->redir[0].file && cmd->redir[0].type == SPL)
+	{
+		if ((fildes = open(cmd->redir[0].file, O_RDONLY)) == -1)
+		{
+			error_file(NULL, cmd->redir[0].file);
+			return (-1);
+		}
+	}
+	dup2(fildes, STDIN_FILENO);
+	if (cmd->redir[0].file && cmd->redir[0].file[0] == '-')
+		close(fildes);
+	return (1);
+}
+
 int redirection(t_cmdlst *cmd)
 {
-	int fd;
-
-	if (cmd->redir[1].file && cmd->redir[1].type == STDOUT_SPL)
-	{
-		if((fd = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_TRUNC, 0666)) == -1)
-			return (-1);
-		dup2(fd, STDOUT_FILENO);
-	}
-	else if (cmd->redir[1].type == STDOUT_DBL)
-	{
-		if((fd = open(cmd->redir[1].file, O_CREAT | O_RDWR | O_APPEND, 0666)) == -1)
-			return (-1);
-		dup2(fd, STDOUT_FILENO);
-	}
+	if (cmd->redir[1].type != NONE && redir_out(cmd) == -1)
+		return (-1);
+	if (cmd->redir[0].type != NONE && redir_in(cmd) == -1)
+		return (-1);
 	return (1);
 }

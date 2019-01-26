@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/26 13:26:44 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:49:29 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum		e_pipemask
 
 typedef enum		e_redirtype
 {
+	NONE,
 	SPL,
 	DBL
 }					t_redirtype;
@@ -85,5 +86,6 @@ char	*ft_strjointab(char **tab, char c);
 int		do_pipe(t_cmdlst *cmd);
 int		throw_error(char *str);
 int redirection(t_cmdlst *cmd);
+void	error_fd(int fd);
 
 #endif

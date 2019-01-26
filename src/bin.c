@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:18:45 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 18:33:04 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:02:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int		launch_bin(t_cmdlst *cmd, char ***environ)
 
 	i = 0;
 	if ((pid = do_pipe(cmd)) == -1)
-		ft_putendl_fd("fork error", 2);
+		throw_error("fork error");
 	else if (pid == 0)
 	{
 		if (redirection(cmd) == -1)
-			return (throw_error("invalid redirection"));
+			exit(1);
 		if (ft_strchr(cmd->args[0], '/'))
 		{
 			if (execve(cmd->args[0], cmd->args, *environ) < 0)

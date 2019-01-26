@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:56:10 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/23 17:18:08 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:54:49 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	error_file(char *cmd, char *errors)
 {
+	ft_putstr("21sh: ");
 	if (cmd)
 	{
 		ft_putstr_fd(cmd, 2);
@@ -25,12 +26,21 @@ void	error_file(char *cmd, char *errors)
 
 void	error_cmd(char *str)
 {
+	ft_putstr("21sh: ");
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": command not found", 2);
 }
 
+void	error_fd(int fd)
+{
+	ft_putstr("21sh: ");
+	ft_putnbr_fd(fd, 2);
+	ft_putendl_fd(": Bad file descriptor", 2);
+}
+
 void	error_rights(char *cmd, char *str)
 {
+	ft_putstr("21sh: ");
 	if (cmd)
 	{
 		ft_putstr_fd(cmd, 2);
@@ -54,6 +64,7 @@ void	malloc_error(void)
 
 int		error_args(char *cmd)
 {
+	ft_putstr("21sh: ");
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": too many arguments", 2);
 	return (1);
