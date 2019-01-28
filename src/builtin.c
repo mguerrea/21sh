@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 15:54:28 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/26 19:50:49 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/28 18:23:35 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,13 @@ int	ft_echo(t_cmdlst *cmd, char ***environ)
 	pid_t pid;
 
 	(void)environ;
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0 || pid == -1)
 		return (1);
-	if (pid == -1)
-		return (throw_error("fork error"));
 	if (redirection(cmd) == -1)
 	{
 		if (pid == 0)
 			exit(1);
-		else
-			return (1);
+		return (1);
 	}
 	n = (cmd->args[1]) ? ft_strcmp(cmd->args[1], "-n") : 1;
 	i = (n == 0) ? 2 : 1;
@@ -65,10 +62,8 @@ int	ft_env(t_cmdlst *cmd, char ***environ)
 	pid_t	pid;
 
 	i = 0;
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0 || pid == -1)
 		return (1);
-	if (pid == -1)
-		return (throw_error("fork error"));
 	if (redirection(cmd) == -1)
 	{
 		if (pid == 0)
