@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 15:57:20 by mguerrea          #+#    #+#             */
-/*   Updated: 2018/12/21 21:12:02 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/27 17:20:12 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isprint(int c);
+int					ft_isblank(int c);
+int					ft_isspace(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 
