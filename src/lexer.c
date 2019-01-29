@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:41:55 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/01/28 23:09:01 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:26:41 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	state_operator(t_lexer *lxr, t_token **tknlst)
 	}
 }
 
-void	state_ionumber(t_lexer *lxr, t_token **tknlst)
-{
-	char	*tkn_txt;
+// void	state_ionumber(t_lexer *lxr, t_token **tknlst)
+// {
+// 	char	*tkn_txt;
 
-	if (ft_isdigit(*lxr->current))
-		return ;
-}
+// 	if (ft_isdigit(*lxr->current))
+// 		return ;
+// }
 
 void	state_standard(t_lexer *lxr)
 {
