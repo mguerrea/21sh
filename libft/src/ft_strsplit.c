@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 14:19:33 by mguerrea          #+#    #+#             */
-/*   Updated: 2018/11/05 14:22:11 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/02/09 13:45:48 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static int		count_letters(char const *str, char c)
 
 char			**ft_strsplit(char const *s, char c)
 {
-	char	**tab;
+	char	**array;
 	int		j;
 
 	if (s)
 	{
 		j = 0;
-		if (!(tab = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1))))
+		if (!(array = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1))))
 			return (NULL);
 		while (*s != '\0')
 		{
@@ -61,13 +61,13 @@ char			**ft_strsplit(char const *s, char c)
 				s++;
 			if (*s == '\0')
 				break ;
-			if (!(tab[j] = ft_strsub((char *)s, 0, count_letters(s, c))))
+			if (!(array[j] = ft_strsub((char *)s, 0, count_letters(s, c))))
 				return (NULL);
 			s += count_letters(s, c);
 			j++;
 		}
-		tab[j] = NULL;
-		return (tab);
+		array[j] = NULL;
+		return (array);
 	}
 	return (NULL);
 }

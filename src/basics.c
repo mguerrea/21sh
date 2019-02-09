@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 17:58:37 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 13:34:24 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/02/09 13:47:47 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,39 +32,39 @@ char	**ft_tabdup(char **dest, char **src)
 	return (dest);
 }
 
-char	**ft_addentry(char **tab, int size, char *str)
+char	**ft_addentry(char **array, int size, char *str)
 {
-	char	**newtab;
+	char	**newarray;
 	int		i;
 
 	i = 0;
-	if (!(newtab = (char **)malloc(sizeof(char *) * (size + 2))))
+	if (!(newarray = (char **)malloc(sizeof(char *) * (size + 2))))
 		return (NULL);
-	while (tab[i])
+	while (array[i])
 	{
-		if (!(newtab[i] = ft_strdup(tab[i])))
+		if (!(newarray[i] = ft_strdup(array[i])))
 			return (NULL);
 		i++;
 	}
-	if (!(newtab[i] = ft_strdup(str)))
+	if (!(newarray[i] = ft_strdup(str)))
 		return (NULL);
-	newtab[i + 1] = NULL;
-	if (tab)
-		free_tab(tab);
-	return (newtab);
+	newarray[i + 1] = NULL;
+	if (array)
+		free_tab(array);
+	return (newarray);
 }
 
-void	ft_delentry(char ***tab, int pos)
+void	ft_delentry(char ***array, int pos)
 {
-	ft_strdel(&((*tab)[pos]));
-	while ((*tab)[pos + 1])
+	ft_strdel(&((*array)[pos]));
+	while ((*array)[pos + 1])
 	{
-		(*tab)[pos] = ft_strdup((*tab)[pos + 1]);
-		ft_strdel(&((*tab)[pos + 1]));
+		(*array)[pos] = ft_strdup((*array)[pos + 1]);
+		ft_strdel(&((*array)[pos + 1]));
 		pos++;
 	}
-	if ((*tab)[pos])
-		ft_strdel(&((*tab)[pos]));
+	if ((*array)[pos])
+		ft_strdel(&((*array)[pos]));
 }
 
 char	*ft_strjoin3(char *s1, char *s2, char *s3)
@@ -81,7 +81,7 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	return (str);
 }
 
-char	*ft_strjointab(char **tab, char c)
+char	*ft_strjointab(char **array, char c)
 {
 	int		i;
 	int		len;
@@ -89,15 +89,15 @@ char	*ft_strjointab(char **tab, char c)
 
 	i = 0;
 	len = 0;
-	while (tab[i])
-		len += ft_strlen(tab[i++]);
+	while (array[i])
+		len += ft_strlen(array[i++]);
 	if (!(str = ft_strnew(len + i - 1)))
 		return (NULL);
 	i = 0;
-	while (tab[i])
+	while (array[i])
 	{
-		ft_strcat(str, tab[i]);
-		if (tab[i + 1])
+		ft_strcat(str, array[i]);
+		if (array[i + 1])
 			str[ft_strlen(str)] = c;
 		i++;
 	}

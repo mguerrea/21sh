@@ -6,14 +6,14 @@
 #    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/01/23 18:23:46 by mguerrea         ###   ########.fr        #
+#    Updated: 2019/02/09 14:03:41 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
-	init.c main.c prompt.c split.c output_input.c
+	init.c main.c prompt.c split.c output_input.c termcaps.c
 
 INC_NAME = minishell.h
 
@@ -23,7 +23,7 @@ INC_FLAGS = -I./includes -I./libft/includes
 
 LIB_FLAGS = -L./libft
 
-LIBS = -lft
+LIBS = -lft -lncurses
 
 CC = clang
 

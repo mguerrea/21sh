@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/28 18:43:42 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/02/09 19:10:57 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,23 @@ int		execute(t_cmdlst *cmd, const char **builtin_lst,
 	return (0);
 }*/
 
+int ft_print(int c)
+{
+	ft_putchar(c);
+	return(1);
+}
+
+void	ft_insert(char *line, char c, int i)
+{
+
+}
+
 int main(int argc, char **argv, char **environ)
 {
 	char		**env;
+	char		line[ARG_MAX + 1];
+	t_term		*term;
+	char		*res;
 	t_built_in	builtin_fct[NB_BUILTIN];
 	const char	*builtin_lst[] = {
 		"cd",
@@ -93,6 +107,40 @@ int main(int argc, char **argv, char **environ)
 		"setenv",
 		"unsetenv"
 	};
+
+	char buff[16];
+	int ret;
+	int i;
+	i = 0;
+	ft_bzero(line, ARG_MAX);
+	term = NULL;
+	init_term(term);
+	res = tgetstr("im", NULL);
+	tputs(res, 1, ft_print);
+	while (1)
+	{
+		ret = read(STDIN_FILENO, buff, 15);
+		buff[ret] = 0;
+		if (strncmp(buff, "\033[D", 3) == 0)
+		{
+			res = tgetstr("le", NULL);
+			tputs(res, 1, ft_print);
+		}
+		else if (strncmp(buff, "\033[C", 3) == 0)
+		{
+			res = tgetstr("nd", NULL);
+			tputs(res, 1, ft_print);
+		}
+		else if (buff[0] == 27)
+			ft_putendl("fleche");
+		else
+		{
+			ft_putstr(buff);
+			ft_insert(line, buff[0], i);
+		}
+
+		
+	}
 
 	(void)argc;
 	(void)argv;
