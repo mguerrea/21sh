@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 17:40:08 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/21 17:04:54 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:51:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,27 @@ char	*format_dir(char **args, char ***environ)
 	return (dir);
 }
 
-int		ft_cd(char **args, char ***environ)
+int		ft_cd(t_cmdlst *cmd, char ***environ)
 {
 	char		*dir;
 	char		buf[PATH_MAX];
 	struct stat	sb;
+	pid_t		pid;
 
-	if (args[1] && args[2])
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
+		return (1);
+	if (pid == -1)
+		return (throw_error("fork error"));
+	if (redirection(cmd) == -1)
+	{
+		if (pid == 0)
+			exit(1);
+		else
+			return (1);
+	}
+	if (cmd->args[1] && cmd->args[2])
 		return (error_args("cd"));
-	dir = format_dir(args, environ);
+	dir = format_dir(cmd->args, environ);
 	getcwd(buf, PATH_MAX);
 	ft_setvar(environ, "OLDPWD", buf);
 	if (dir && lstat(dir, &sb) == 0)
@@ -63,5 +75,7 @@ int		ft_cd(char **args, char ***environ)
 	ft_setvar(environ, "PWD", buf);
 	if (dir)
 		ft_strdel(&dir);
+	if (pid == 0)
+		exit(1);
 	return (1);
 }

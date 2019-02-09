@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 13:34:02 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:52:40 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,44 @@ void	ft_setvar(char ***environ, char *var, char *value)
 	ft_strdel(&str);
 }
 
-int		ft_setenv(char **args, char ***environ)
+int		ft_setenv(t_cmdlst *cmd, char ***environ)
 {
-	if (args[1] && args[2])
+	pid_t pid;
+
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
+	if (cmd->args[1] && cmd->args[2])
 	{
-		if (ft_strchr(args[1], '='))
-			ft_putendl("invalid name, cannot contain '='");
+		if (ft_strchr(cmd->args[1], '='))
+			ft_putendl_fd("invalid name, cannot contain '='", 2);
 		else
-			ft_setvar(environ, args[1], args[2]);
+			ft_setvar(environ, cmd->args[1], cmd->args[2]);
 	}
 	else
-		ft_putendl("too few arguments");
+		ft_putendl_fd("too few arguments", 2);
+	if (pid == 0)
+		exit (1);
 	return (1);
 }
 
-int		ft_unsetenv(char **args, char ***environ)
+int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 {
 	int i;
+	pid_t pid;
 
 	i = 0;
-	if (args[1])
+	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
+		return (1);
+	if (cmd->args[1])
 	{
-		while ((*environ)[i] && ft_strncmp((*environ)[i], args[1],
-			ft_strlen(args[1])))
+		while ((*environ)[i] && ft_strncmp((*environ)[i], cmd->args[1],
+			ft_strlen(cmd->args[1])))
 			i++;
 		if ((*environ)[i])
 			ft_delentry(environ, i);
 	}
+	if (pid == 0)
+		exit (1);
 	return (1);
 }
 

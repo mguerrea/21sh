@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:18:45 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 11:58:58 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:26:03 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,29 @@ void	find_bin_path(char **environ, char **args, char **path_lst)
 	free_tab(path_lst);
 }
 
-int		launch_bin(char **args, char ***environ)
+int		launch_bin(t_cmdlst *cmd, char ***environ)
 {
 	pid_t	pid;
 	int		i;
 	char	**path_lst;
 
 	i = 0;
-	pid = fork();
-	if (pid == -1)
-		ft_putendl_fd("fork error", 2);
+	if ((pid = do_pipe(cmd)) == -1)
+		throw_error("fork error");
 	else if (pid == 0)
 	{
-		if (ft_strchr(args[0], '/'))
+		if (redirection(cmd) == -1)
+			exit(1);
+		if (ft_strchr(cmd->args[0], '/'))
 		{
-			if (execve(args[0], args, *environ) < 0)
-				error_cmd(args[0]);
+			if (execve(cmd->args[0], cmd->args, *environ) < 0)
+				error_cmd(cmd->args[0]);
 		}
 		else if ((path_lst = ft_getenv(*environ, "PATH")))
-			find_bin_path(*environ, args, path_lst);
+			find_bin_path(*environ, cmd->args, path_lst);
 		else
-			error_cmd(args[0]);
+			error_cmd(cmd->args[0]);
 		exit(1);
 	}
-	else
-		wait(NULL);
 	return (1);
 }

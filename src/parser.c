@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/02/09 18:53:24 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/02/09 19:14:26 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	cmd_lst_push(t_cmdlst **lst, t_cmdlst *cmd)
 {
 	if (lst && cmd)
 	{
+		if (*lst)
+			(*lst)->prev = cmd;
 		cmd->next = *lst;
 		*lst = cmd;
 	}
@@ -74,10 +76,10 @@ void	pipe_sequence(t_token **tkn, t_cmdlst **cmdlst)
 	{
 		if (!*cmdlst)
 			return ;
-		(*cmdlst)->pipes |= PIPE_R;
+		(*cmdlst)->pipes |= PIPE_L;
 		*tkn = (*tkn)->next;
 		pipe_sequence(tkn, cmdlst);
-		(*cmdlst)->pipes |= PIPE_L;
+		(*cmdlst)->pipes |= PIPE_R;
 	}
 }
 
