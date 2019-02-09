@@ -1,0 +1,14 @@
+list			: list SEMI pipe_sequence
+				| pipe_sequence
+				;
+pipe_sequence	: simple_command
+				| pipe_sequence PIPE simple_command
+				;
+simple_command	: cmd_name cmd_suffix
+				| cmd_name
+				;
+cmd_suffix		: WORD
+				| cmd_suffix WORD
+				;
+cmd_name		: WORD
+				;

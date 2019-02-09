@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/22 12:48:22 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/02/09 17:22:35 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,54 @@
 # include <uuid/uuid.h>
 # include "libft.h"
 # include "get_next_line.h"
+# include "sh_parser.h"
+
+# define TKN_END 1
+
+# define SGL_QUOTE 39
+# define DBL_QUOTE 34
+
+typedef enum		e_lxr_state
+{
+	STATE_STD,
+	STATE_OPERATOR,
+	STATE_WORD,
+	STATE_IO_NUMBER
+}					t_lxr_state;
+
+typedef enum		e_tkn_type
+{
+	TOKEN,
+	WORD,
+	LESS,
+	DLESS,
+	GREAT,
+	DGREAT,
+	LESSAND,
+	GREATAND,
+	PIPE,
+	SEMI
+}					t_tkn_type;
+
+typedef struct		e_token
+{
+	char			*word;
+	t_tkn_type		type;
+	struct e_token	*next;
+}					t_token;
+
+typedef struct		e_lexer
+{
+	const char		*tkn_start;
+	const char		*current;
+	char			quoting;
+	t_lxr_state		state;
+}					t_lexer;
+
+t_token				*tkn_create(char *word);
+void				tkn_lst_push(t_token **lst, t_token *tkn);
+void				tkn_lst_delfirst(t_token **lst);
+t_token				*tokenize_line(const char *line);
 
 # define NB_BUILTIN 6
 
@@ -45,6 +93,7 @@ typedef struct		s_redir
 
 typedef struct		s_cmdlst
 {
+	t_token			*argslst;
 	char			**args;
 	int				fd[2];
 	t_pipemask		pipes;
@@ -69,7 +118,8 @@ void	ft_delentry(char ***tab, int pos);
 int		ft_unsetenv(char **args, char ***environ);
 int		launch_bin(char **args, char ***envriton);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
-void	format_args(char ***args, char **environ);
+// void	format_args(char ***args, char **environ);
+void	format_args(t_cmdlst *cmd, char **environ);
 void	free_tab(char **tab);
 char	**split_quotes(char *line, char c);
 void	error_file(char *cmd, char *errors);
@@ -81,5 +131,6 @@ void	error_rights(char *cmd, char *str);
 void	error_cmd(char *str);
 int		error_args(char *cmd);
 char	*ft_strjointab(char **tab, char c);
+t_cmdlst			*parse(t_token *tknlst);
 
 #endif

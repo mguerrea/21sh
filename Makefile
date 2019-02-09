@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmichaud <gmichaud@student.42,fr>          +#+  +:+       +#+         #
+#    By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/01/27 17:46:11 by gmichaud         ###   ########.fr        #
+#    Updated: 2019/02/09 17:28:11 by gmichaud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
-	init.c main.c prompt.c split.c token_list.c lexer.c
+	init.c main.c prompt.c split.c token_list.c lexer.c parser.c
 
 INC_NAME = minishell.h sh_parser.h
 

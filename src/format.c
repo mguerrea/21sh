@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/08 13:50:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/02/09 17:48:08 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,55 @@ int		format_tilde(char **args, char **environ)
 	return (1);
 }
 
-void	format_args(char ***args, char **environ)
-{
-	int		i;
-	char	*tmp;
+// void	format_args(char ***args, char **environ)
+// {
+// 	int		i;
+// 	char	*tmp;
 
-	i = 0;
-	while ((*args)[i])
+// 	i = 0;
+// 	while ((*args)[i])
+// 	{
+// 		tmp = ft_strtrim((*args)[i]);
+// 		ft_strdel(&((*args)[i]));
+// 		if (tmp[0] == '~')
+// 			format_tilde(&tmp, environ);
+// 		(*args)[i] = ft_trimquotes(tmp);
+// 		ft_strdel(&tmp);
+// 		if ((*args)[i][0] == '$')
+// 			format_var(&((*args)[i]), environ);
+// 		i++;
+// 	}
+// }
+
+size_t	count_args(t_token *words)
+{
+	size_t len;
+
+	len = 0;
+	while (words)
 	{
-		tmp = ft_strtrim((*args)[i]);
-		ft_strdel(&((*args)[i]));
-		if (tmp[0] == '~')
-			format_tilde(&tmp, environ);
-		(*args)[i] = ft_trimquotes(tmp);
-		ft_strdel(&tmp);
-		if ((*args)[i][0] == '$')
-			format_var(&((*args)[i]), environ);
-		i++;
+		++len;
+		words = words->next;
 	}
+	return (len);
+}
+
+void	format_args(t_cmdlst *cmd, char **environ)
+{
+	size_t	i;
+	size_t	len;
+	t_token	*words;
+
+	(void)**environ;
+	words = cmd->argslst;
+	len = count_args(cmd->argslst);
+	i = 0;
+	cmd->args = (char**)malloc(sizeof(char*) * (len + 1));
+	while (words)
+	{
+		cmd->args[i] = ft_strdup(words->word);
+		++i;
+		words = words->next;
+	}
+	cmd->args[i] = NULL;
 }
