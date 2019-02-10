@@ -1,3 +1,4 @@
+
 list			: list SEMI pipe_sequence
 				| pipe_sequence
 				;
@@ -7,8 +8,20 @@ pipe_sequence	: simple_command
 simple_command	: cmd_name cmd_suffix
 				| cmd_name
 				;
+cmd_name		: WORD
+				;
 cmd_suffix		: WORD
 				| cmd_suffix WORD
+				| io_redirect
+				| cmd_suffix io_redirect
 				;
-cmd_name		: WORD
+io_redirect		: io_file
+				;
+io_file			: LESS filename
+				| LESSAND filename
+				| GREAT filename
+				| GREATAND filename
+				| DGREAT filename
+				;
+filename		: WORD
 				;

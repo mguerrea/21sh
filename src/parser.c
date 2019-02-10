@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/02/09 19:14:26 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/02/10 17:25:15 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ t_cmdlst	*cmd_name(t_token **tkn)
 	}
 	return (cmd);
 }
+
+// int			filename(t_token **tkn, t_redir *redir)
+// {
+// 	if ((*tkn)->type == WORD)
+// 	{
+// 		redir->file = (*tkn)->word;
+// 		*tkn = (*tkn)->next;
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+// void		io_file(t_token **tkn, t_redir *redir)
+// {
+
+// }
 
 void		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
 {
