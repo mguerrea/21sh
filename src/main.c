@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 19:10:57 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/10 15:42:04 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,6 @@ int ft_print(int c)
 	return(1);
 }
 
-void	ft_insert(char *line, char c, int i)
-{
-
-}
-
 int main(int argc, char **argv, char **environ)
 {
 	char		**env;
@@ -110,37 +105,70 @@ int main(int argc, char **argv, char **environ)
 
 	char buff[16];
 	int ret;
-	int i;
-	i = 0;
-	ft_bzero(line, ARG_MAX);
+	int pos;
 	term = NULL;
-	init_term(term);
+	pos = 0;
+	ft_bzero(line, ARG_MAX);
+	term = init_term(term);
 	res = tgetstr("im", NULL);
 	tputs(res, 1, ft_print);
+	env = init_shell(environ, builtin_fct);
+	print_prompt(env);
 	while (1)
 	{
+		
 		ret = read(STDIN_FILENO, buff, 15);
 		buff[ret] = 0;
-		if (strncmp(buff, "\033[D", 3) == 0)
+		if (strncmp(buff, "\033[D", 3) == 0 && pos > 0)
 		{
-			res = tgetstr("le", NULL);
+			res = tgetstr("le", NULL); // move left
 			tputs(res, 1, ft_print);
+			pos--;
 		}
-		else if (strncmp(buff, "\033[C", 3) == 0)
+		else if (strncmp(buff, "\033[C", 3) == 0 && line[pos]) // and pos < strlen(buf)
 		{
-			res = tgetstr("nd", NULL);
+			res = tgetstr("nd", NULL); // move right
 			tputs(res, 1, ft_print);
+			pos++;
 		}
-		else if (buff[0] == 27)
-			ft_putendl("fleche");
-		else
+		else if (buff[0] == 127 && pos > 0)
+		{
+			res = tgetstr("le", NULL); // move left
+			tputs(res, 1, ft_print);
+			res = tgetstr("dc", NULL); // delete
+			tputs(res, 1, ft_print);
+			pos--;
+			ft_delete(line, pos);
+		}
+		else if (buff[0] == '\n')
+		{
+			if (line[pos - 1] == '\\')
+			{
+				ft_putstr("\n> ");
+				ft_delete(line, pos - 1);
+				pos--;
+			}
+			else if (wrong_quote(line))
+			{
+				ft_putstr("\n> ");
+				ft_insert(line, '\n', pos);
+				pos++;
+			}		
+			else
+				break ;
+		}
+		else if (buff[0] != 27 && pos < ARG_MAX)
 		{
 			ft_putstr(buff);
-			ft_insert(line, buff[0], i);
+			ft_insert(line, buff[0], pos);
+			pos++;
 		}
-
 		
 	}
+	ft_putchar('\n');
+	ft_putendl(line);
+	ft_putnbr(tcsetattr(0, TCSANOW, &term->init));
+//	perror(NULL);
 
 	(void)argc;
 	(void)argv;
@@ -148,7 +176,7 @@ int main(int argc, char **argv, char **environ)
 	t_cmdlst *cmd2;
 	t_cmdlst *cmd3;
 
-	env = init_shell(environ, builtin_fct);
+	
 	cmd1 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
 	cmd2 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
 	cmd3 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
@@ -201,10 +229,10 @@ int main(int argc, char **argv, char **environ)
 	while (cmd1)
 	{
 	//	dprintf(2, "loop\n");
-		ft_putendl(cmd1->args[0]);
+	//	ft_putendl(cmd1->args[0]);
 		execute(cmd1, builtin_lst, builtin_fct, &env);
 		cmd1 = cmd1->next;
 	}
-//	printf ("return ?\n");
+//	printf ("return ?\n"); 
 	return (0);
 }

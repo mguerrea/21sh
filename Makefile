@@ -6,14 +6,14 @@
 #    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/02/09 14:03:41 by mguerrea         ###   ########.fr        #
+#    Updated: 2019/04/10 14:01:52 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
-	init.c main.c prompt.c split.c output_input.c termcaps.c
+	init.c main.c prompt.c split.c output_input.c termcaps.c buffer.c
 
 INC_NAME = minishell.h
 

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 17:41:25 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/10 15:22:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ int		do_pipe(t_cmdlst *cmd);
 int		throw_error(char *str);
 int		redirection(t_cmdlst *cmd);
 void	error_fd(int fd);
-int		init_term(t_term *term);
+t_term		*init_term(t_term *term);
+void ft_insert(char *line, char c, int pos);
+void ft_delete(char *line, int pos);
+int		wrong_quote(char *str);
 
 #endif
