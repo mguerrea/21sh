@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/10 15:22:18 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 12:54:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ t_term		*init_term(t_term *term);
 void ft_insert(char *line, char c, int pos);
 void ft_delete(char *line, int pos);
 int		wrong_quote(char *str);
+void	get_line(char *line, char **env);
 
 #endif

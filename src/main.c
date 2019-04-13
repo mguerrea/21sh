@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/10 15:42:04 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 12:55:54 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,12 @@ int		execute(t_cmdlst *cmd, const char **builtin_lst,
 	return (0);
 }*/
 
-int ft_print(int c)
-{
-	ft_putchar(c);
-	return(1);
-}
 
 int main(int argc, char **argv, char **environ)
 {
 	char		**env;
 	char		line[ARG_MAX + 1];
 	t_term		*term;
-	char		*res;
 	t_built_in	builtin_fct[NB_BUILTIN];
 	const char	*builtin_lst[] = {
 		"cd",
@@ -103,72 +97,18 @@ int main(int argc, char **argv, char **environ)
 		"unsetenv"
 	};
 
-	char buff[16];
-	int ret;
-	int pos;
+	
 	term = NULL;
-	pos = 0;
 	ft_bzero(line, ARG_MAX);
 	term = init_term(term);
-	res = tgetstr("im", NULL);
-	tputs(res, 1, ft_print);
 	env = init_shell(environ, builtin_fct);
-	print_prompt(env);
-	while (1)
-	{
-		
-		ret = read(STDIN_FILENO, buff, 15);
-		buff[ret] = 0;
-		if (strncmp(buff, "\033[D", 3) == 0 && pos > 0)
-		{
-			res = tgetstr("le", NULL); // move left
-			tputs(res, 1, ft_print);
-			pos--;
-		}
-		else if (strncmp(buff, "\033[C", 3) == 0 && line[pos]) // and pos < strlen(buf)
-		{
-			res = tgetstr("nd", NULL); // move right
-			tputs(res, 1, ft_print);
-			pos++;
-		}
-		else if (buff[0] == 127 && pos > 0)
-		{
-			res = tgetstr("le", NULL); // move left
-			tputs(res, 1, ft_print);
-			res = tgetstr("dc", NULL); // delete
-			tputs(res, 1, ft_print);
-			pos--;
-			ft_delete(line, pos);
-		}
-		else if (buff[0] == '\n')
-		{
-			if (line[pos - 1] == '\\')
-			{
-				ft_putstr("\n> ");
-				ft_delete(line, pos - 1);
-				pos--;
-			}
-			else if (wrong_quote(line))
-			{
-				ft_putstr("\n> ");
-				ft_insert(line, '\n', pos);
-				pos++;
-			}		
-			else
-				break ;
-		}
-		else if (buff[0] != 27 && pos < ARG_MAX)
-		{
-			ft_putstr(buff);
-			ft_insert(line, buff[0], pos);
-			pos++;
-		}
-		
-	}
+	
+	get_line(line, env);
+
 	ft_putchar('\n');
 	ft_putendl(line);
-	ft_putnbr(tcsetattr(0, TCSANOW, &term->init));
-//	perror(NULL);
+	tcsetattr(0, TCSANOW, &term->init);
+
 
 	(void)argc;
 	(void)argv;

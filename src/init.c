@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 14:23:11 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 14:13:33 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 12:58:07 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,28 @@ inside another minishell.\n\
 	else
 		ft_setvar(&env, "SHLVL", "2");
 	return (env);
+}
+
+t_term *init_term(t_term *term)
+{
+	int ret;
+	char *term_type;
+
+	if ((term_type = getenv("TERM")) == NULL)
+		return (NULL);
+	if ((ret = tgetent(NULL, term_type)) == -1)
+		return (NULL);
+	if (!(term = (t_term *)malloc(sizeof(t_term))))
+		return (NULL);
+	if (tcgetattr(0, &term->init) == -1)
+		return (NULL);
+	if (tcgetattr(0, &term->cur) == -1)
+		return (NULL);
+	term->cur.c_lflag &= ~ICANON;
+	term->cur.c_lflag &= ~ECHO;
+	term->cur.c_cc[VMIN] = 1;
+	term->cur.c_cc[VTIME] = 0;
+	if (tcsetattr(0, TCSANOW, &term->cur) == -1)
+		return (NULL);
+	return (term);
 }
