@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 12:55:54 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 17:30:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,27 @@ int		execute(t_cmdlst *cmd, const char **builtin_lst,
 	return (0);
 }*/
 
+t_history *add_to_history(t_history **history)
+{
+	t_history *new;
+
+	if(!(new = (t_history *)malloc(sizeof(t_history))))
+			return (NULL);
+	if(!(new->line = ft_strnew(ARG_MAX)))
+		return (NULL);
+	new->next = NULL;
+	new->prev = *history;
+	if (*history == NULL)
+		*history = new;
+	else
+		(*history)->next = new;
+	return (*history);
+}
+
 
 int main(int argc, char **argv, char **environ)
 {
 	char		**env;
-	char		line[ARG_MAX + 1];
 	t_term		*term;
 	t_built_in	builtin_fct[NB_BUILTIN];
 	const char	*builtin_lst[] = {
@@ -96,17 +112,52 @@ int main(int argc, char **argv, char **environ)
 		"setenv",
 		"unsetenv"
 	};
+	t_history *history;
+	int saved;
 
-	
 	term = NULL;
-	ft_bzero(line, ARG_MAX);
 	term = init_term(term);
 	env = init_shell(environ, builtin_fct);
-	
-	get_line(line, env);
 
-	ft_putchar('\n');
-	ft_putendl(line);
+	history = NULL;
+	
+
+		if(!(add_to_history(&history)))
+			return (-1);
+		get_line(history, env);
+		ft_putchar('\n');
+	
+	
+
+	if(!(add_to_history(&history)))
+			return (-1);
+	history = history->next;
+		get_line(history, env);
+		ft_putchar('\n');
+
+
+
+		if(!(add_to_history(&history)))
+			return (-1);
+		history = history->next;
+		get_line(history, env);
+		ft_putchar('\n');
+
+
+
+		if(!(add_to_history(&history)))
+			return (-1);
+		history = history->next;
+		get_line(history, env);
+		ft_putchar('\n');
+
+	while (history->prev)
+		history = history->prev;
+	while (history)
+	{
+		ft_putendl(history->line);
+		history = history->next;
+	}
 	tcsetattr(0, TCSANOW, &term->init);
 
 
@@ -122,36 +173,42 @@ int main(int argc, char **argv, char **environ)
 	cmd3 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
 	cmd1->args = (char **)malloc(sizeof(char *) * 4);
 //	cmd1->args[0] = "ls";
-//	cmd1->args[0] = "echo";
-	cmd1->args[0] = "cat";
+	cmd1->args[0] = "echo";
+//	cmd1->args[0] = "cat";
 //	cmd1->args[1] = "-l";
-	cmd1->args[1] = NULL;
+	cmd1->args[1] = "JPP";
 	cmd1->args[2] = "hello";
 	cmd1->args[3] = NULL;
 	cmd1->redir[1].type = NONE;
 	cmd1->redir[1].file = NULL;
-	cmd1->redir[0].type = DBL;
-	cmd1->redir[0].file = "bla\n";
+	cmd1->redir[0].type = NONE;
+	cmd1->redir[0].file = NULL;
 	cmd1->redir[0].fd[0] = 0;
-	cmd1->redir[0].fd[1] = 1;
-	cmd1->pipes = 0;
+	cmd1->redir[0].fd[1] = 0;
+	cmd1->redir[1].fd[0] = 1;
+	cmd1->redir[1].fd[1] = 1;
+	cmd1->pipes = PIPE_R;
 	cmd1->prev = NULL;
-//	cmd1->next = cmd2;
-	cmd1->next = NULL;
+	cmd1->next = cmd2;
+//	cmd1->next = NULL;
 
-	cmd2->next = cmd3;
+	cmd2->next = NULL;
 	cmd2->prev = cmd1;
 	cmd2->args = (char **)malloc(sizeof(char *) * 4);
-	cmd2->args[0] = "grep";
-//	cmd2->args[0] = "cat";
-	cmd2->args[1] = "PATH";
-//	cmd2->args[1] = "-e";
+//	cmd2->args[0] = "ls";
+	cmd2->args[0] = "cat";
+//	cmd2->args[1] = "-l";
+	cmd2->args[1] = "-e";
 	cmd2->args[2] = NULL;
 	cmd2->redir[1].file = NULL;
 	cmd2->redir[1].type = NONE;
 	cmd2->redir[0].file = NULL;
 	cmd2->redir[0].type = NONE;
-	cmd2->pipes = PIPE_L | PIPE_R;
+	cmd2->redir[0].fd[0] = 0;
+	cmd2->redir[0].fd[1] = 0;
+	cmd2->redir[1].fd[0] = 1;
+	cmd2->redir[1].fd[0] = 1;
+	cmd2->pipes = PIPE_L;
 
 	cmd3->args = (char **)malloc(sizeof(char *) * 4);
 	cmd3->prev = cmd2;
@@ -168,9 +225,11 @@ int main(int argc, char **argv, char **environ)
 	cmd3->pipes = PIPE_L;
 	while (cmd1)
 	{
+		saved = dup(cmd1->redir[1].fd[0]);
 	//	dprintf(2, "loop\n");
 	//	ft_putendl(cmd1->args[0]);
 		execute(cmd1, builtin_lst, builtin_fct, &env);
+		dup2(saved, cmd1->redir[1].fd[0]);
 		cmd1 = cmd1->next;
 	}
 //	printf ("return ?\n"); 

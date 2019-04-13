@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 12:54:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:46:33 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ typedef struct		s_term
 	struct termios	cur;
 }					t_term;
 
+typedef struct 		s_history
+{
+	char				*line;
+	struct s_history	*prev;
+	struct s_history	*next;
+}					t_history;
+
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
 void	print_prompt(char **environ);
@@ -100,6 +107,6 @@ t_term		*init_term(t_term *term);
 void ft_insert(char *line, char c, int pos);
 void ft_delete(char *line, int pos);
 int		wrong_quote(char *str);
-void	get_line(char *line, char **env);
+void	get_line(t_history *history, char **env);
 
 #endif
