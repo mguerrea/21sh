@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 19:15:07 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:24:44 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 	int			run;
 	t_token		*tknlst;
 	t_cmdlst	*cmd;
+	int			saved;
 
 	run = 1;
 	while (run)
@@ -54,11 +55,13 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 		// cmd = split_quotes(line, ';');
 		while (cmd)
 		{
+			saved = dup(cmd->redir[1].fd[0]);
 			// args = split_quotes(cmd[i], ' ');
 			// format_args(&args, *env);
 			format_args(cmd, *env);
 			run = execute(cmd, builtin_lst, builtin_fct, env);
 			// free_tab(args);
+			dup2(saved, cmd->redir[1].fd[0]);
 			cmd = cmd->next;
 		}
 		// free_tab(cmd);

@@ -6,7 +6,7 @@
 #    By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/02/09 19:03:41 by gmichaud         ###   ########.fr        #
+#    Updated: 2019/04/13 13:14:33 by gmichaud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBS = -lft
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRC_PATH = src
 
@@ -53,9 +53,11 @@ ERASE = \033[2K
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+libftmake:
 	@make -C ./libft --no-print-directory
-	@$(CC) -o $@ $(OBJ) $(LIB_FLAGS) $(LIBS)
+
+$(NAME): $(OBJ) | libftmake
+	@$(CC) $(LIB_FLAGS) $(LIBS) -o $@ $(OBJ)
 	@echo "\n$(BLU)[$(NAME)]$(GRN) Compilation success$(RESET)"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INC)
@@ -77,4 +79,4 @@ fclean: clean
 
 re: fclean $(NAME)
 
-.PHONY: all, clean, fclean, re
+.PHONY: all, clean, fclean, re, lib

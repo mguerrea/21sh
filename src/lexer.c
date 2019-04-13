@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:41:55 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/02/09 17:22:47 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:20:33 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,16 @@ int		isoperator_start(char c)
 
 void	state_operator(t_lexer *lxr, t_token **tknlst)
 {
+	t_token	*tkn;
 	char	*tkn_txt;
 
 	if (isoperator(lxr->tkn_start, lxr->current))
 		return ;
 	tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
-	tkn_lst_push(tknlst, tkn_create(tkn_txt));
-	set_operator_type(*tknlst);
+	// tkn_lst_push(tknlst, tkn_create(tkn_txt));
+	tkn = tkn_create(tkn_txt);
+	set_operator_type(tkn);
+	tkn_lst_append(tknlst, tkn);
 	if (ft_isspace(*lxr->current))
 		lxr->state = STATE_STD;
 	else
@@ -79,13 +82,22 @@ void	state_operator(t_lexer *lxr, t_token **tknlst)
 
 // void	state_ionumber(t_lexer *lxr, t_token **tknlst)
 // {
+// 	t_token	*tkn;
 // 	char	*tkn_txt;
 
 // 	if (ft_isdigit(*lxr->current))
 // 		return ;
 // 	if (*lxr->current == '>' || *lxr->current == '<')
 // 	{
-
+// 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
+// 		tkn = tkn_create(tkn_txt);
+// 		tkn->type = IO_NUMBER;
+// 		tkn_lst_append(tknlst, tkn);
+// 		lxr->state = STATE_OPERATOR;
+// 	}
+// 	else
+// 	{
+// 		lxr->state = STATE_WORD;
 // 	}
 // }
 
@@ -106,6 +118,7 @@ void	state_standard(t_lexer *lxr)
 
 void	state_word(t_lexer *lxr, t_token **tknlst)
 {
+	t_token	*tkn;
 	char	*tkn_txt;
 
 	if (lxr->quoting)
@@ -117,15 +130,19 @@ void	state_word(t_lexer *lxr, t_token **tknlst)
 	if (ft_isspace(*lxr->current))
 	{
 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
-		tkn_lst_push(tknlst, tkn_create(tkn_txt));
-		(*tknlst)->type = WORD;
+		// tkn_lst_push(tknlst, tkn_create(tkn_txt));
+		tkn = tkn_create(tkn_txt);
+		tkn->type = WORD;
+		tkn_lst_append(tknlst, tkn);
 		lxr->state = STATE_STD;
 	}
 	else if (isoperator_start(*lxr->current))
 	{
 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
-		tkn_lst_push(tknlst, tkn_create(tkn_txt));
-		(*tknlst)->type = WORD;
+		// tkn_lst_push(tknlst, tkn_create(tkn_txt));
+		tkn = tkn_create(tkn_txt);
+		tkn->type = WORD;
+		tkn_lst_append(tknlst, tkn);
 		lxr->state = STATE_OPERATOR;
 		lxr->tkn_start = lxr->current;
 	}
@@ -137,6 +154,7 @@ t_token	*tokenize_line(const char *line)
 {
 	t_lexer		lxr;
 	t_token		*tknlst;
+	t_token		*tkn;
 
 	lxr.quoting = 0;
 	lxr.state = STATE_STD;
@@ -155,12 +173,12 @@ t_token	*tokenize_line(const char *line)
 	}
 	if (lxr.state != STATE_STD)
 	{
-		tkn_lst_push(&tknlst, tkn_create(
-			ft_strsub(lxr.tkn_start, 0, lxr.current - lxr.tkn_start)));
+		tkn = tkn_create(ft_strsub(lxr.tkn_start, 0, lxr.current - lxr.tkn_start));
 		if (lxr.state == STATE_WORD)
-			tknlst->type = WORD;
+			tkn->type = WORD;
 		else if (lxr.state == STATE_OPERATOR)
-			set_operator_type(tknlst);
+			set_operator_type(tkn);
+		tkn_lst_append(&tknlst, tkn);
 	}
 	return (tknlst);
 }

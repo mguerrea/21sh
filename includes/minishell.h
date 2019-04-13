@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 19:00:27 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:09:12 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ typedef enum		e_tkn_type
 	LESSAND,
 	GREATAND,
 	PIPE,
-	SEMI
+	SEMI,
+	IO_NUMBER
 }					t_tkn_type;
 
 typedef struct		e_token
@@ -69,6 +70,7 @@ t_token				*tkn_create(char *word);
 void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
+void 				tkn_lst_append(t_token **lst, t_token *tkn);
 
 # define NB_BUILTIN 6
 

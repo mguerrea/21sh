@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/28 18:43:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:25:38 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int redir_out(t_cmdlst *cmd)
 			return (-1);
 		}
 	}
-	dup2(fildes, STDOUT_FILENO);
+	dup2(fildes, cmd->redir[1].fd[0]);
 	if (cmd->redir[1].file && cmd->redir[1].file[0] == '-')
 		close(fildes);
 	return (1);
@@ -111,7 +111,7 @@ int redir_in(t_cmdlst *cmd)
 	}
 	else if (cmd->redir[0].type == DBL)
 		fildes = here_doc(cmd);
-	dup2(fildes, STDIN_FILENO);
+	dup2(fildes, cmd->redir[0].fd[0]);
 	if (cmd->redir[0].file && cmd->redir[0].file[0] == '-')
 		close(fildes);
 	return (1);
