@@ -6,17 +6,11 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/19 13:01:25 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:20:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int ft_print(int c)
-{
-	ft_putchar(c);
-	return(1);
-}
 
 void manage_arrows(int *pos, char *buff, char *line)
 {
@@ -92,14 +86,12 @@ void get_line(t_history *history)
 	char *line;
 
 	pos = 0;
-	res = tgetstr("im", NULL);
-	tputs(res, 1, ft_print);
+	if ((res = tgetstr("im", NULL)))
+		tputs(res, 1, ft_print);
 	print_prompt();
 	line = ft_strnew(ARG_MAX);
-	while (1)
+	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
-		
-		ret = read(STDIN_FILENO, buff, 15);
 		buff[ret] = 0;
 		manage_arrows(&pos, buff, line);
 		manage_delete(&pos, buff, line);
@@ -108,7 +100,5 @@ void get_line(t_history *history)
 			break ;
 		manage_char(&pos, buff, line);
 	}
-	res = tgetstr("ei", NULL);
-	tputs(res, 1, ft_print);
 	save_history(history, &line);
 }

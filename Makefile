@@ -6,7 +6,7 @@
 #    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/04/19 12:59:49 by mguerrea         ###   ########.fr        #
+#    Updated: 2019/04/19 13:11:05 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
 	init.c main.c prompt.c split.c output_input.c command_line.c buffer.c \
-	history.c
+	history.c array_functions.c
 
 INC_NAME = minishell.h
 

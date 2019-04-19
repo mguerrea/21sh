@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:58:17 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/19 13:05:31 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:20:56 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void	save_history(t_history *history, char **line)
 {
+	char *res;
+
 	while (history->next)
 		history = history->next;
 	ft_strcpy(history->line, *line);
 	ft_strdel(line);
+	if ((res = tgetstr("ei", NULL)))
+		tputs(res, 1, ft_print);
 }
 
 void manage_history(char *buff, t_history **history, char *line, int *pos)
