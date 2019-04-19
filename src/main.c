@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 17:30:18 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:56:28 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,31 +124,25 @@ int main(int argc, char **argv, char **environ)
 
 		if(!(add_to_history(&history)))
 			return (-1);
-		get_line(history, env);
-		ft_putchar('\n');
-	
-	
+		get_line(history);
+		ft_putchar('\n');	
 
 	if(!(add_to_history(&history)))
 			return (-1);
 	history = history->next;
-		get_line(history, env);
+		get_line(history);
 		ft_putchar('\n');
-
-
 
 		if(!(add_to_history(&history)))
 			return (-1);
 		history = history->next;
-		get_line(history, env);
+		get_line(history);
 		ft_putchar('\n');
-
-
 
 		if(!(add_to_history(&history)))
 			return (-1);
 		history = history->next;
-		get_line(history, env);
+		get_line(history);
 		ft_putchar('\n');
 
 	while (history->prev)

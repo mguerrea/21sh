@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 17:51:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:01:25 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,17 @@ int ft_print(int c)
 	return(1);
 }
 
-void manage_arrows(int *pos, char *buff, t_history *history, char **env)
+void manage_arrows(int *pos, char *buff, char *line)
 {
 	char *res;
 
-/*	if (strncmp(buff, "\033[A", 3) == 0 && history->prev) //up
-		{
-			ft_putchar('U');
-			res = tgetstr("dl", NULL); // del line
-			tputs(res, 1, ft_print);
-			history = history->prev;
-			res = tgetstr("cr", NULL); // move at the start
-			tputs(res, 1, ft_print);
-			print_prompt(env);
-			ft_putstr(history->line);
-		}*/
 	if (strncmp(buff, "\033[D", 3) == 0 && *pos > 0)
 		{
 			res = tgetstr("le", NULL); // move left
 			tputs(res, 1, ft_print);
 			(*pos)--;
 		}
-		else if (strncmp(buff, "\033[C", 3) == 0 && history->line[*pos])
+		else if (strncmp(buff, "\033[C", 3) == 0 && line[*pos])
 		{
 			res = tgetstr("nd", NULL); // move right
 			tputs(res, 1, ft_print);
@@ -47,7 +36,7 @@ void manage_arrows(int *pos, char *buff, t_history *history, char **env)
 		}
 }
 
-void manage_delete(int *pos, char *buff, t_history *history)
+void manage_delete(int *pos, char *buff, char *line)
 {
 	char *res;
 
@@ -58,24 +47,24 @@ void manage_delete(int *pos, char *buff, t_history *history)
 			res = tgetstr("dc", NULL); // delete
 			tputs(res, 1, ft_print);
 			(*pos)--;
-			ft_delete(history->line, *pos);
+			ft_delete(line, *pos);
 		}
 }
 
-int manage_endline(int *pos, char *buff, t_history *history)
+int manage_endline(int *pos, char *buff, char *line)
 {
 	if (buff[0] == '\n')
 		{
-			if (history->line[*pos - 1] == '\\')
+			if (line[*pos - 1] == '\\')
 			{
 				ft_putstr("\n> ");
-				ft_delete(history->line, *pos - 1);
+				ft_delete(line, *pos - 1);
 				(*pos)--;
 			}
-			else if (wrong_quote(history->line))
+			else if (wrong_quote(line))
 			{
 				ft_putstr("\n> ");
-				ft_insert(history->line, '\n', *pos);
+				ft_insert(line, '\n', *pos);
 				(*pos)++;
 			}		
 			else
@@ -84,34 +73,17 @@ int manage_endline(int *pos, char *buff, t_history *history)
 		return (0);
 }
 
-void manage_char(int *pos, char *buff, t_history *history)
+void manage_char(int *pos, char *buff, char *line)
 {
 	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n' && *pos < ARG_MAX)
 		{
 			ft_putstr(buff);
-			ft_insert(history->line, buff[0], *pos);
+			ft_insert(line, buff[0], *pos);
 			(*pos)++;
 		}
 }
 
-void manage_history(char *buff, t_history *history, char **env)
-{
-	char *res;
-
-	if (strncmp(buff, "\033[A", 3) == 0 && history->prev) //up
-		{
-			ft_putchar('U');
-			res = tgetstr("dl", NULL); // del line
-			tputs(res, 1, ft_print);
-			history = history->prev;
-			res = tgetstr("cr", NULL); // move at the start
-			tputs(res, 1, ft_print);
-			print_prompt(env);
-			ft_putstr(history->line);
-		}
-}
-
-void get_line(t_history *history, char **env)
+void get_line(t_history *history)
 {
 	char buff[16];
 	int ret;
@@ -122,20 +94,21 @@ void get_line(t_history *history, char **env)
 	pos = 0;
 	res = tgetstr("im", NULL);
 	tputs(res, 1, ft_print);
-	print_prompt(env);
+	print_prompt();
 	line = ft_strnew(ARG_MAX);
 	while (1)
 	{
 		
 		ret = read(STDIN_FILENO, buff, 15);
 		buff[ret] = 0;
-		manage_arrows(&pos, buff, history, env);
-		manage_delete(&pos, buff, history);
-		manage_history(buff, history, env);
-		if (manage_endline(&pos, buff, history))
+		manage_arrows(&pos, buff, line);
+		manage_delete(&pos, buff, line);
+		manage_history(buff, &history, line, &pos);
+		if (manage_endline(&pos, buff, line))
 			break ;
-		manage_char(&pos, buff, history);
+		manage_char(&pos, buff, line);
 	}
 	res = tgetstr("ei", NULL);
 	tputs(res, 1, ft_print);
+	save_history(history, &line);
 }
