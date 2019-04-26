@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/19 13:20:38 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:17:25 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int manage_endline(int *pos, char *buff, char *line)
 
 void manage_char(int *pos, char *buff, char *line)
 {
-	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n' && *pos < ARG_MAX)
+	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n' && *pos < ARG_MAX
+			&& buff[0] != '\t')
 		{
 			ft_putstr(buff);
 			ft_insert(line, buff[0], *pos);
@@ -77,7 +78,7 @@ void manage_char(int *pos, char *buff, char *line)
 		}
 }
 
-void get_line(t_history *history)
+void get_line(t_history **history)
 {
 	char buff[16];
 	int ret;
@@ -95,10 +96,11 @@ void get_line(t_history *history)
 		buff[ret] = 0;
 		manage_arrows(&pos, buff, line);
 		manage_delete(&pos, buff, line);
-		manage_history(buff, &history, line, &pos);
+		manage_history(buff, history, line, &pos);
 		if (manage_endline(&pos, buff, line))
 			break ;
 		manage_char(&pos, buff, line);
 	}
 	save_history(history, &line);
+	ft_putchar('\n');
 }

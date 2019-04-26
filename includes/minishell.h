@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/26 15:41:05 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:20:11 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "sh_parser.h"
+# include <stdio.h>
+# include <term.h>
+# include <termios.h>
+# include <curses.h>
+
+# define NB_BUILTIN 6
 
 # define TKN_END 1
 
@@ -71,12 +77,7 @@ void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
 void 				tkn_lst_append(t_token **lst, t_token *tkn);
-# include <stdio.h>
-# include <term.h>
-# include <termios.h>
-# include <curses.h>
 
-# define NB_BUILTIN 6
 
 typedef enum		e_pipemask
 {
@@ -124,6 +125,8 @@ typedef struct 		s_history
 
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
+
+
 void	print_prompt(void);
 int		ft_cd(t_cmdlst *cmd, char ***environ);
 int		ft_exit(t_cmdlst *cmd, char ***environ);
@@ -138,9 +141,8 @@ void	ft_delentry(char ***array, int pos);
 int		ft_unsetenv(t_cmdlst *cmd, char ***environ);
 int		launch_bin(t_cmdlst *cmd, char ***envriton);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
-// void	format_args(char ***args, char **environ);
 void	format_args(t_cmdlst *cmd, char **environ);
-void	free_tab(char **tab);
+void	free_tab(char **array);
 char	**split_quotes(char *line, char c);
 void	error_file(char *cmd, char *errors);
 char	**init_shell(char **environ, t_built_in *builin_fct);
@@ -160,9 +162,10 @@ t_term		*init_term(t_term *term);
 void ft_insert(char *line, char c, int pos);
 void ft_delete(char *line, int pos);
 int		wrong_quote(char *str);
-void	get_line(t_history *history);
-void	save_history(t_history *history, char **line);
+void	get_line(t_history **history);
+void	save_history(t_history **history, char **line);
 void 	manage_history(char *buff, t_history **history, char *line, int *pos);
 int ft_print(int c);
+t_history *add_to_history(t_history **history);
 
 #endif
