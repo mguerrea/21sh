@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 19:09:12 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/04/26 15:41:05 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
 void 				tkn_lst_append(t_token **lst, t_token *tkn);
+# include <stdio.h>
+# include <term.h>
+# include <termios.h>
+# include <curses.h>
 
 # define NB_BUILTIN 6
 
@@ -105,9 +109,22 @@ typedef struct		s_cmdlst
 	struct s_cmdlst	*next;
 }					t_cmdlst;
 
+typedef struct		s_term
+{
+	struct termios	init;
+	struct termios	cur;
+}					t_term;
+
+typedef struct 		s_history
+{
+	char				*line;
+	struct s_history	*prev;
+	struct s_history	*next;
+}					t_history;
+
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
-void	print_prompt(char **environ);
+void	print_prompt(void);
 int		ft_cd(t_cmdlst *cmd, char ***environ);
 int		ft_exit(t_cmdlst *cmd, char ***environ);
 int		ft_echo(t_cmdlst *cmd, char ***environ);
@@ -116,8 +133,8 @@ void	ft_setvar(char ***environ, char *var, char *value);
 int		ft_setenv(t_cmdlst *cmd, char ***environ);
 char	**ft_tabdup(char **dest, char **src);
 char	**ft_getenv(char **environ, char *var);
-char	**ft_addentry(char **tab, int size, char *str);
-void	ft_delentry(char ***tab, int pos);
+char	**ft_addentry(char **array, int size, char *str);
+void	ft_delentry(char ***array, int pos);
 int		ft_unsetenv(t_cmdlst *cmd, char ***environ);
 int		launch_bin(t_cmdlst *cmd, char ***envriton);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
@@ -133,11 +150,19 @@ void	malloc_error(void);
 void	error_rights(char *cmd, char *str);
 void	error_cmd(char *str);
 int		error_args(char *cmd);
-char	*ft_strjointab(char **tab, char c);
 t_cmdlst			*parse(t_token *tknlst);
+char	*ft_strjointab(char **array, char c);
 int		do_pipe(t_cmdlst *cmd);
 int		throw_error(char *str);
-int redirection(t_cmdlst *cmd);
+int		redirection(t_cmdlst *cmd);
 void	error_fd(int fd);
+t_term		*init_term(t_term *term);
+void ft_insert(char *line, char c, int pos);
+void ft_delete(char *line, int pos);
+int		wrong_quote(char *str);
+void	get_line(t_history *history);
+void	save_history(t_history *history, char **line);
+void 	manage_history(char *buff, t_history **history, char *line, int *pos);
+int ft_print(int c);
 
 #endif

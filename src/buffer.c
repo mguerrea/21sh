@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   buffer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/04 00:03:40 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 13:47:07 by mguerrea         ###   ########.fr       */
+/*   Created: 2019/04/10 13:50:08 by mguerrea          #+#    #+#             */
+/*   Updated: 2019/04/10 15:04:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tab(char **array)
+void ft_insert(char *line, char c, int pos)
 {
 	int i;
 
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
+	i = ft_strlen(line);
+	while (i > pos)
 	{
-		ft_strdel(&(array[i]));
-		i++;
+		line[i] = line[i - 1];
+		i--;
 	}
-	free(array);
+	line[pos] = c;
+}
+
+void ft_delete(char *line, int pos)
+{
+	int len;
+
+	len = ft_strlen(line);
+	while (pos < len)
+	{
+		line[pos] = line[pos + 1];
+		pos++;
+	}
 }

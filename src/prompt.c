@@ -6,17 +6,16 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/20 14:38:16 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:50:52 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_prompt(char **environ)
+void	print_prompt(void)
 {
 	char buf[PATH_MAX];
 
-	(void)environ;
 	getcwd(buf, PATH_MAX);
 	ft_putstr(ft_strrchr(buf, '/') + 1);
 	ft_putstr(" $> ");
@@ -52,14 +51,14 @@ char	*ask_newline(char *line)
 	return (line);
 }
 
-char	*get_cmd(char **env)
+/*char	*get_cmd(char **env)
 {
 	char *line;
 
-	print_prompt(env);
+	print_prompt();
 	if (get_next_line(0, &line) != 1)
 		return (NULL);
 	while (wrong_quote(line))
 		line = ask_newline(line);
-	return (line);
-}
+	return (line); 
+} */

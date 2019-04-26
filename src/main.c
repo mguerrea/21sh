@@ -6,7 +6,11 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/04/13 16:24:44 by gmichaud         ###   ########.fr       */
+=======
+/*   Updated: 2019/04/19 12:56:28 by mguerrea         ###   ########.fr       */
+>>>>>>> termcaps
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +48,19 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 	t_token		*tknlst;
 	t_cmdlst	*cmd;
 	int			saved;
+	t_history *history;
+	history = NULL;
 
 	run = 1;
 	while (run)
 	{
-		if (!(line = get_cmd(*env)))
-			break ;
+		if(!(add_to_history(&history)))
+			return (-1);
+		get_line(history);
+		ft_putchar('\n');
+		line = history->line;
+	//	if (!(line = get_cmd(*env)))
+	//		break ;
 		tknlst = tokenize_line(line);
 		cmd = parse(tknlst);
 		// cmd = split_quotes(line, ';');
@@ -65,7 +76,7 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 			cmd = cmd->next;
 		}
 		// free_tab(cmd);
-		ft_strdel(&line);
+//		ft_strdel(&line);
 	}
 	return (0);
 }
@@ -82,113 +93,92 @@ int	main(int argc, char **argv, char **environ)
 		"setenv",
 		"unsetenv"
 	};
+	
 
 	(void)argc;
 	(void)argv;
+	term = NULL;
+	term = init_term(term);
+	
 	if (!(env = init_shell(environ, builtin_fct)))
 		return (throw_error("malloc error"));
 	run(&env, builtin_fct, builtin_lst);
 	free_tab(env);
+	tcsetattr(0, TCSANOW, &term->init);
 	return (0);
 }
 
-// int main(int argc, char **argv, char **environ)
-// {
-// 	char		**env;
-// 	t_built_in	builtin_fct[NB_BUILTIN];
-// 	const char	*builtin_lst[] = {
-// 		"cd",
-// 		"exit",
-// 		"echo",
-// 		"env",
-// 		"setenv",
-// 		"unsetenv"
-// 	};
+t_history *add_to_history(t_history **history)
+{
+	t_history *new;
 
-// 	(void)argc;
-// 	(void)argv;
-// 	t_cmdlst *cmd1;
-// 	t_cmdlst *cmd2;
-// 	t_cmdlst *cmd3;
+	if(!(new = (t_history *)malloc(sizeof(t_history))))
+			return (NULL);
+	if(!(new->line = ft_strnew(ARG_MAX)))
+		return (NULL);
+	new->next = NULL;
+	new->prev = *history;
+	if (*history == NULL)
+		*history = new;
+	else
+		(*history)->next = new;
+	return (*history);
+}
 
-// 	env = init_shell(environ, builtin_fct);
-// 	cmd1 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
-// 	cmd2 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
-// 	cmd3 = (t_cmdlst *)malloc(sizeof(t_cmdlst));
-// 	cmd1->args = (char **)malloc(sizeof(char *) * 4);
-// //	cmd1->args[0] = "ls";
-// //	cmd1->args[0] = "echo";
-// 	cmd1->args[0] = "cat";
-// //	cmd1->args[1] = "-l";
-// 	cmd1->args[1] = NULL;
-// 	cmd1->args[2] = "hello";
-// 	cmd1->args[3] = NULL;
-// 	cmd1->redir[1].type = NONE;
-// 	cmd1->redir[1].file = NULL;
-// 	cmd1->redir[0].type = DBL;
-// 	cmd1->redir[0].file = "bla\n";
-// 	cmd1->redir[0].fd[0] = 0;
-// 	cmd1->redir[0].fd[1] = 1;
-// 	cmd1->pipes = 0;
-// 	cmd1->prev = NULL;
-// //	cmd1->next = cmd2;
-// 	cmd1->next = NULL;
 
-// 	cmd2->next = cmd3;
-// 	cmd2->prev = cmd1;
-// 	cmd2->args = (char **)malloc(sizeof(char *) * 4);
-// 	cmd2->args[0] = "grep";
-// //	cmd2->args[0] = "cat";
-// 	cmd2->args[1] = "PATH";
-// //	cmd2->args[1] = "-e";
-// 	cmd2->args[2] = NULL;
-// 	cmd2->redir[1].file = NULL;
-// 	cmd2->redir[1].type = NONE;
-// 	cmd2->redir[0].file = NULL;
-// 	cmd2->redir[0].type = NONE;
-// 	cmd2->pipes = PIPE_L | PIPE_R;
+int main(int argc, char **argv, char **environ)
+{
+	char		**env;
+	t_term		*term;
+	t_built_in	builtin_fct[NB_BUILTIN];
+	const char	*builtin_lst[] = {
+		"cd",
+		"exit",
+		"echo",
+		"env",
+		"setenv",
+		"unsetenv"
+	};
+	t_history *history;
+	int saved;
 
-// 	cmd3->args = (char **)malloc(sizeof(char *) * 4);
-// 	cmd3->prev = cmd2;
-// 	cmd3->next = NULL;
-// 	cmd3->args[0] = "cat";
-// 	cmd3->args[1] = "-e";
-// 	cmd3->args[2] = NULL;
-// 	cmd3->redir[1].file = "test2";
-// 	cmd3->redir[1].fd[0] = 1;
-// 	cmd3->redir[1].fd[1] = 2;	
-// 	cmd3->redir[1].type = SPL;
-// 	cmd3->redir[0].file = NULL;
-// 	cmd3->redir[0].type = NONE;
-// 	cmd3->pipes = PIPE_L;
-// 	while (cmd1)
-// 	{
-// 	//	dprintf(2, "loop\n");
-// 		ft_putendl(cmd1->args[0]);
-// 		execute(cmd1, builtin_lst, builtin_fct, &env);
-// 		cmd1 = cmd1->next;
-// 	}
-// //	printf ("return ?\n");
-// 	return (0);
-// }
+	term = NULL;
+	term = init_term(term);
+	env = init_shell(environ, builtin_fct);
 
-// int main(int argc, char **argv)
-// {
-// 	t_token *tknlst;
-// 	t_token *tmp;
+	history = NULL;
+	
 
-// 	if (argc > 1)
-// 	{
-// 		tknlst = tokenize_line(argv[1]);
-// 		tmp = tknlst;
-// 		while (tmp)
-// 		{
-// 			ft_putstr(tmp->word);
-// 			ft_putstr(" : ");
-// 			ft_putnbr(tmp->type);
-// 			ft_putchar('\n');
-// 			tmp = tmp->next;
-// 		}
-// 	}
-// 	return (0);
-// }
+		if(!(add_to_history(&history)))
+			return (-1);
+		get_line(history);
+		ft_putchar('\n');	
+
+	if(!(add_to_history(&history)))
+			return (-1);
+	history = history->next;
+		get_line(history);
+		ft_putchar('\n');
+
+		if(!(add_to_history(&history)))
+			return (-1);
+		history = history->next;
+		get_line(history);
+		ft_putchar('\n');
+
+		if(!(add_to_history(&history)))
+			return (-1);
+		history = history->next;
+		get_line(history);
+		ft_putchar('\n');
+
+	while (history->prev)
+		history = history->prev;
+	while (history)
+	{
+		ft_putendl(history->line);
+		history = history->next;
+	}
+	tcsetattr(0, TCSANOW, &term->init);
+
+

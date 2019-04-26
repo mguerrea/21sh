@@ -3,17 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+         #
+#    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/04/13 13:14:33 by gmichaud         ###   ########.fr        #
+#    Updated: 2019/04/26 15:42:25 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
-	init.c main.c prompt.c split.c token_list.c lexer.c parser.c output_input.c
+	token_list.c lexer.c parser.c output_input.c init.c main.c prompt.c \
+	split.c command_line.c buffer.c history.c array_functions.c
 
 INC_NAME = minishell.h sh_parser.h
 
@@ -23,7 +24,7 @@ INC_FLAGS = -I./includes -I./libft/includes
 
 LIB_FLAGS = -L./libft
 
-LIBS = -lft
+LIBS = -lft -lncurses
 
 CC = clang
 
