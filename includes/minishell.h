@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/26 16:20:11 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/27 14:49:12 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,6 @@ typedef struct		e_lexer
 	t_lxr_state		state;
 }					t_lexer;
 
-t_token				*tkn_create(char *word);
-void				tkn_lst_push(t_token **lst, t_token *tkn);
-void				tkn_lst_delfirst(t_token **lst);
-t_token				*tokenize_line(const char *line);
-void 				tkn_lst_append(t_token **lst, t_token *tkn);
-
-
 typedef enum		e_pipemask
 {
 	PIPE_R = 1 << 0,
@@ -125,47 +118,103 @@ typedef struct 		s_history
 
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
+/*
+** RUN
+*/
 
-
-void	print_prompt(void);
-int		ft_cd(t_cmdlst *cmd, char ***environ);
 int		ft_exit(t_cmdlst *cmd, char ***environ);
 int		ft_echo(t_cmdlst *cmd, char ***environ);
 int		ft_env(t_cmdlst *cmd, char ***environ);
+int		ft_cd(t_cmdlst *cmd, char ***environ);
+int		launch_bin(t_cmdlst *cmd, char ***envriton);
+
+/*
+** PROMPT
+*/
+
+void	print_prompt(void);
+int		wrong_quote(char *str);
+
+/*
+** ENVIRON
+*/
+
 void	ft_setvar(char ***environ, char *var, char *value);
 int		ft_setenv(t_cmdlst *cmd, char ***environ);
-char	**ft_tabdup(char **dest, char **src);
 char	**ft_getenv(char **environ, char *var);
+int		ft_unsetenv(t_cmdlst *cmd, char ***environ);
+
+/*
+** ARRAY_FUNCTIONS
+*/
+
+char	**ft_tabdup(char **dest, char **src);
 char	**ft_addentry(char **array, int size, char *str);
 void	ft_delentry(char ***array, int pos);
-int		ft_unsetenv(t_cmdlst *cmd, char ***environ);
-int		launch_bin(t_cmdlst *cmd, char ***envriton);
-char	*ft_strjoin3(char *s1, char *s2, char *s3);
-void	format_args(t_cmdlst *cmd, char **environ);
 void	free_tab(char **array);
-char	**split_quotes(char *line, char c);
+char	*ft_strjointab(char **array, char c);
+
+/*
+** HISTORY
+*/
+
+void		save_history(t_history **history, char **line);
+void 		manage_history(char *buff, t_history **history, char *line, int *pos);
+t_history 	*add_to_history(t_history **history);
+void		free_history(t_history **history);
+
+/*
+** ERRORS
+*/
+
 void	error_file(char *cmd, char *errors);
-char	**init_shell(char **environ, t_built_in *builin_fct);
-void	fill_built(t_built_in *builtin_fct);
-char	*get_cmd(char **env);
 void	malloc_error(void);
 void	error_rights(char *cmd, char *str);
 void	error_cmd(char *str);
 int		error_args(char *cmd);
-t_cmdlst			*parse(t_token *tknlst);
-char	*ft_strjointab(char **array, char c);
-int		do_pipe(t_cmdlst *cmd);
 int		throw_error(char *str);
-int		redirection(t_cmdlst *cmd);
 void	error_fd(int fd);
+
+/*
+** INIT
+*/
+
+char	**init_shell(char **environ, t_built_in *builin_fct);
+void	fill_built(t_built_in *builtin_fct);
 t_term		*init_term(t_term *term);
+
+/*
+** BASICS
+*/
+
+char	*ft_strjoin3(char *s1, char *s2, char *s3);
+int		ft_print(int c);
+
+/*
+** COMMAND LINE
+*/
+
 void ft_insert(char *line, char c, int pos);
 void ft_delete(char *line, int pos);
-int		wrong_quote(char *str);
 void	get_line(t_history **history);
-void	save_history(t_history **history, char **line);
-void 	manage_history(char *buff, t_history **history, char *line, int *pos);
-int ft_print(int c);
-t_history *add_to_history(t_history **history);
+
+/*
+** I/O
+*/
+
+int		do_pipe(t_cmdlst *cmd);
+int		redirection(t_cmdlst *cmd);
+
+/*
+**
+*/
+
+void				format_args(t_cmdlst *cmd, char **environ);
+t_cmdlst			*parse(t_token *tknlst);
+t_token				*tkn_create(char *word);
+void				tkn_lst_push(t_token **lst, t_token *tkn);
+void				tkn_lst_delfirst(t_token **lst);
+t_token				*tokenize_line(const char *line);
+void 				tkn_lst_append(t_token **lst, t_token *tkn);
 
 #endif

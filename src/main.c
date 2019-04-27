@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/26 16:18:23 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:50:44 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@ int		execute(t_cmdlst *cmd, const char **builtin_lst,
 	t_built_in *builtin_fct, char ***environ)
 {
 	int i;
+	int ret;
 
 	i = 0;
-	if (pipe(cmd->fd) == -1)
-		return (0);
-	// ft_putendl(cmd->args[0]);
-	// ft_putendl(cmd->args[1]);
-	// ft_putnbr(cmd->pipes);
-	// ft_putchar('\n');
+	//printf("pipe = %d\n", cmd->pipes);
+	//if (cmd->pipes & (PIPE_L | PIPE_R))
+	//	if (pipe(cmd->fd) == -1)
+	//		return (0);
 	while (i < NB_BUILTIN)
 	{
 		if (ft_strcmp(cmd->args[0], builtin_lst[i]) == 0)
 			return (builtin_fct[i](cmd, environ));
 		i++;
 	}
-	return (launch_bin(cmd, environ));
+	ret = launch_bin(cmd, environ);
+	return (ret);
 }
 
 int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
@@ -58,11 +58,12 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 			format_args(cmd, *env);
 			run = execute(cmd, builtin_lst, builtin_fct, env);
 			dup2(saved, cmd->redir[1].fd[0]);
+			close(saved);
 			cmd = cmd->next;
 		}
-		// we have to free cmd
+		// we have to free cmd and tknlst
 	}
-	// we have to free history
+	free_history(&history);
 	return (0);
 }
 

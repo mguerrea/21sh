@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 17:48:08 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/04/27 14:56:57 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	format_args(t_cmdlst *cmd, char **environ)
 	cmd->args = (char**)malloc(sizeof(char*) * (len + 1));
 	while (words)
 	{
-		cmd->args[i] = ft_strdup(words->word);
+		cmd->args[i] = ft_trimquotes(words->word);
 		++i;
 		words = words->next;
 	}

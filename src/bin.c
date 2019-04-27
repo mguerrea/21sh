@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:18:45 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/26 19:26:03 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:04:31 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,4 @@ int		launch_bin(t_cmdlst *cmd, char ***environ)
 	}
 	return (1);
 }
+

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/04 00:03:40 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 13:47:07 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/04/27 14:39:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,14 @@ void	free_tab(char **array)
 		i++;
 	}
 	free(array);
+}
+
+void	free_history(t_history **history)
+{
+	if (*history)
+	{
+		if ((*history)->next)
+			free_history(&(*history)->next);
+		ft_strdel(&((*history)->line));
+	}
 }
