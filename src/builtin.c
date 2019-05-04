@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 15:54:28 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/02/09 19:00:35 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/05/04 13:44:31 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 int	ft_exit(t_cmdlst *cmd, char ***environ)
 {
-	pid_t pid;
-
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -1) > 0)
-		return (1);
 	(void)environ;
-	if (pid == 0)
-		exit (1);
+	(void)cmd;
 	return (0);
 }
 
@@ -28,17 +23,10 @@ int	ft_echo(t_cmdlst *cmd, char ***environ)
 {
 	int i;
 	int n;
-	pid_t pid;
 
 	(void)environ;
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0 || pid == -1)
-		return (1);
 	if (redirection(cmd) == -1)
-	{
-		if (pid == 0)
-			exit(1);
 		return (1);
-	}
 	n = (cmd->args[1]) ? ft_strcmp(cmd->args[1], "-n") : 1;
 	i = (n == 0) ? 2 : 1;
 	while (cmd->args[i])
@@ -50,8 +38,6 @@ int	ft_echo(t_cmdlst *cmd, char ***environ)
 	}
 	if (n != 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	if (pid == 0)
-		exit(1);
 	return (1);
 }
 
@@ -59,18 +45,10 @@ int	ft_env(t_cmdlst *cmd, char ***environ)
 {
 	int		i;
 	char	**tmp;
-	pid_t	pid;
 
 	i = 0;
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0 || pid == -1)
-		return (1);
 	if (redirection(cmd) == -1)
-	{
-		if (pid == 0)
-			exit(1);
-		else
-			return (1);
-	}
+		return (1);
 	if (cmd->args[1] == NULL)
 	{
 		while ((*environ)[i])
@@ -91,7 +69,5 @@ int	ft_env(t_cmdlst *cmd, char ***environ)
 		else
 			launch_bin(cmd, environ);
 	}
-	if (pid == 0)
-		exit (1);
 	return (1);
 }

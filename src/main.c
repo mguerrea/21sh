@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/27 15:50:44 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/05/04 13:42:40 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,31 @@ int		execute(t_cmdlst *cmd, const char **builtin_lst,
 {
 	int i;
 	int ret;
+	pid_t pid;
 
 	i = 0;
-	//printf("pipe = %d\n", cmd->pipes);
-	//if (cmd->pipes & (PIPE_L | PIPE_R))
-	//	if (pipe(cmd->fd) == -1)
-	//		return (0);
+	ret = 1;
 	while (i < NB_BUILTIN)
 	{
 		if (ft_strcmp(cmd->args[0], builtin_lst[i]) == 0)
-			return (builtin_fct[i](cmd, environ));
+			break ;
 		i++;
 	}
-	ret = launch_bin(cmd, environ);
+	if (((cmd->pipes & PIPE_R) && i < NB_BUILTIN) || i == NB_BUILTIN)
+	{
+		if ((pid = do_pipe(cmd)) == -1)
+			throw_error("fork error");
+		if (pid == 0)
+		{
+			if (i < NB_BUILTIN)
+				ret = builtin_fct[i](cmd, environ);
+			else
+				ret = launch_bin(cmd, environ);
+			exit (0);
+		}
+	}
+	else
+		ret = builtin_fct[i](cmd, environ);
 	return (ret);
 }
 

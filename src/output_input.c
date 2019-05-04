@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/27 15:46:10 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/05/04 13:51:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,29 @@ int do_pipe(t_cmdlst *cmd)
 
 	if (cmd->pipes & PIPE_R)
 	{
-		printf("wtf\n");
 		if (pipe(mypipe) < 0)
 			return(-1);
 		cmd->fd[1] = mypipe[1];
 		cmd->next->fd[0] = mypipe[0];
 	}
-	pid = fork();
-	if (pid == -1)
+	if ((pid = fork()) == -1)
 		ft_putendl_fd("fork error", 2);
 	else if (pid == 0)
 	{
 		if (cmd->pipes & PIPE_L) // piped with last process
 		{
-			printf("jpp\n");
 			dup2(cmd->fd[0], STDIN_FILENO);
 			close(cmd->fd[0]);
-//			dup2(cmd->prev->fd[0], STDIN_FILENO);
-//			close(cmd->prev->fd[1]);
 		}
 		if (cmd->pipes & PIPE_R) // piped with next process
 		{
-			printf("jpp * 2\n");
 			dup2(cmd->fd[1], STDOUT_FILENO);
 			close(cmd->fd[1]);
-//			dup2(cmd->fd[1], STDOUT_FILENO);
-//			close(cmd->fd[0]);
 		}
 	}
 	else
 	{
 		wait(NULL);
-	//	close(cmd->fd[1]);
-	//	if (cmd->prev)
-	//		close(cmd->prev->fd[0]);
 		if (cmd->pipes & PIPE_L)
 			close (cmd->fd[0]);
 		if (cmd->pipes & PIPE_R)
@@ -66,7 +55,6 @@ int redir_out(t_cmdlst *cmd)
 	int fildes;
 
 	fildes = 0;
-	printf("redir out\n");
 	if ((cmd->redir[1].file == NULL || cmd->redir[1].file[0] == '-') && cmd->redir[1].type == SPL)
 	{
 		if (!(isatty(fildes = cmd->redir[1].fd[1])))
@@ -101,7 +89,6 @@ int here_doc(t_cmdlst *cmd)
 {
 	int	fildes[2];
 
-	printf("heredoc\n");
 	if (pipe(fildes) == -1)
 		return (-1);
 	write(fildes[1], cmd->redir[0].file, ft_strlen(cmd->redir[0].file));
@@ -114,7 +101,6 @@ int redir_in(t_cmdlst *cmd)
 	int fildes;
 
 	fildes = 0;
-	printf("redir in\n");
 	if ((cmd->redir[0].file == NULL || cmd->redir[0].file[0] == '-') && cmd->redir[0].type == SPL)
 	{
 		if (!(isatty(fildes = cmd->redir[0].fd[1])))

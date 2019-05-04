@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 17:40:08 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/01/26 19:51:38 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/05/04 13:35:34 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ int		ft_cd(t_cmdlst *cmd, char ***environ)
 	char		*dir;
 	char		buf[PATH_MAX];
 	struct stat	sb;
-	pid_t		pid;
+//	pid_t		pid;
 
-	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
-		return (1);
-	if (pid == -1)
-		return (throw_error("fork error"));
+//	if ((pid = (cmd->pipes) ? do_pipe(cmd) : -2) > 0)
+//		return (1);
+//	if (pid == -1)
+//		return (throw_error("fork error"));
 	if (redirection(cmd) == -1)
 	{
-		if (pid == 0)
-			exit(1);
-		else
+//		if (pid == 0)
+//			exit(1);
+//		else
 			return (1);
 	}
 	if (cmd->args[1] && cmd->args[2])
@@ -75,7 +75,7 @@ int		ft_cd(t_cmdlst *cmd, char ***environ)
 	ft_setvar(environ, "PWD", buf);
 	if (dir)
 		ft_strdel(&dir);
-	if (pid == 0)
-		exit(1);
+//	if (pid == 0)
+//		exit(1);
 	return (1);
 }
