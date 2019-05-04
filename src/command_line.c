@@ -6,29 +6,11 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/26 16:17:25 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/05/04 14:56:54 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void manage_arrows(int *pos, char *buff, char *line)
-{
-	char *res;
-
-	if (strncmp(buff, "\033[D", 3) == 0 && *pos > 0)
-		{
-			res = tgetstr("le", NULL); // move left
-			tputs(res, 1, ft_print);
-			(*pos)--;
-		}
-		else if (strncmp(buff, "\033[C", 3) == 0 && line[*pos])
-		{
-			res = tgetstr("nd", NULL); // move right
-			tputs(res, 1, ft_print);
-			(*pos)++;
-		}
-}
 
 void manage_delete(int *pos, char *buff, char *line)
 {
@@ -36,11 +18,9 @@ void manage_delete(int *pos, char *buff, char *line)
 
 	if (buff[0] == 127 && *pos > 0)
 		{
-			res = tgetstr("le", NULL); // move left
-			tputs(res, 1, ft_print);
+			move_left(pos);
 			res = tgetstr("dc", NULL); // delete
 			tputs(res, 1, ft_print);
-			(*pos)--;
 			ft_delete(line, *pos);
 		}
 }
@@ -78,6 +58,34 @@ void manage_char(int *pos, char *buff, char *line)
 		}
 }
 
+void manage_pos(int *pos, char *buff, char *line)
+{
+	if (ft_strncmp(buff, "\033\033[C", 4) == 0) //opt right
+	{
+		while (line[*pos] != ' ' && line[*pos])
+			move_right(pos);
+		while (line[*pos] == ' ')
+			move_right(pos);
+	}
+	if (ft_strncmp(buff, "\033\033[D", 4) == 0) // opt left
+	{
+		while (*pos > 0 && line[*pos - 1] == ' ')
+			move_left(pos);
+		while (*pos > 0 && line[*pos - 1] != ' ')
+			move_left(pos);
+	}
+	if (ft_strncmp(buff, "\033[D", 3) == 0 && *pos > 0)
+		move_left(pos);
+	else if (ft_strncmp(buff, "\033[C", 3) == 0 && line[*pos])
+		move_right(pos);
+	if (ft_strncmp(buff, "\033[F", 3) == 0) //end
+		while (line[*pos])
+			move_right(pos);
+	if (ft_strncmp(buff, "\033[H", 3) == 0) //home
+		while (*pos > 0)
+			move_left(pos);
+}
+
 void get_line(t_history **history)
 {
 	char buff[16];
@@ -94,7 +102,7 @@ void get_line(t_history **history)
 	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
 		buff[ret] = 0;
-		manage_arrows(&pos, buff, line);
+		manage_pos(&pos, buff, line);
 		manage_delete(&pos, buff, line);
 		manage_history(buff, history, line, &pos);
 		if (manage_endline(&pos, buff, line))

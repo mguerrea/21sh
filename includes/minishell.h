@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/27 14:49:12 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/05/04 14:38:29 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,12 @@ int		do_pipe(t_cmdlst *cmd);
 int		redirection(t_cmdlst *cmd);
 
 /*
-**
+** CURSOR
 */
+
+void	move_right(int *pos);
+void	move_left(int *pos);
+
 
 void				format_args(t_cmdlst *cmd, char **environ);
 t_cmdlst			*parse(t_token *tknlst);

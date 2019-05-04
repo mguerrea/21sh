@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   cursor.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/03 14:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/05/04 14:18:48 by mguerrea         ###   ########.fr       */
+/*   Created: 2019/05/04 14:32:29 by mguerrea          #+#    #+#             */
+/*   Updated: 2019/05/04 14:37:51 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_prompt(void)
+void	move_right(int *pos)
 {
-	char buf[PATH_MAX];
+	char *res;
 
-	getcwd(buf, PATH_MAX);
-	ft_putstr(ft_strrchr(buf, '/') + 1);
-	ft_putstr(" $> ");
+	res = tgetstr("nd", NULL);
+	tputs(res, 1, ft_print);
+	(*pos)++;
 }
 
-int		wrong_quote(char *str)
+void	move_left(int *pos)
 {
-	int i;
-	int count;
+	char *res;
 
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		i++;
-		if (str[i] == '"')
-			count++;
-	}
-	return (count % 2);
+	res = tgetstr("le", NULL);
+	tputs(res, 1, ft_print);
+	(*pos)--;
 }
