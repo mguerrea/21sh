@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/04/13 17:33:19 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:15:34 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,13 @@ int			get_fd(t_token **tkn, t_redir *redir)
 	return (0);
 }
 
-int		io_file(t_token **tkn, t_cmdlst *cmd)
+int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 {
 	if ((*tkn)->type == GREAT)
 	{
 		cmd->redir[1].type = SPL;
+		if (io_number)
+			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		filename(tkn, &cmd->redir[1]);
 		return (1);
@@ -93,6 +95,8 @@ int		io_file(t_token **tkn, t_cmdlst *cmd)
 	else if ((*tkn)->type == DGREAT)
 	{
 		cmd->redir[1].type = DBL;
+		if (io_number)
+			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		filename(tkn, &cmd->redir[1]);
 		return (1);
@@ -100,6 +104,8 @@ int		io_file(t_token **tkn, t_cmdlst *cmd)
 	else if ((*tkn)->type == GREATAND)
 	{
 		cmd->redir[1].type = SPL;
+		if (io_number)
+			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		if (!get_fd(tkn, &cmd->redir[1]))
 			filename(tkn, &cmd->redir[1]);
@@ -108,6 +114,8 @@ int		io_file(t_token **tkn, t_cmdlst *cmd)
 	else if ((*tkn)->type == LESS)
 	{
 		cmd->redir[0].type = SPL;
+		if (io_number)
+			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		filename(tkn, &cmd->redir[0]);
 		return (1);
@@ -115,6 +123,8 @@ int		io_file(t_token **tkn, t_cmdlst *cmd)
 	else if ((*tkn)->type == LESSAND)
 	{
 		cmd->redir[1].type = SPL;
+		if (io_number)
+			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		if (!get_fd(tkn, &cmd->redir[0]))
 			filename(tkn, &cmd->redir[0]);
@@ -125,7 +135,15 @@ int		io_file(t_token **tkn, t_cmdlst *cmd)
 
 int		io_redirect(t_token **tkn, t_cmdlst *cmd)
 {
-	return (io_file(tkn, cmd));
+	t_token	*io_number;
+
+	io_number = NULL;
+	if ((*tkn)->type == IO_NUMBER)
+	{
+		io_number = *tkn;
+		*tkn = (*tkn)->next;
+	}
+	return (io_file(tkn, cmd, io_number));
 }
 
 void		cmd_suffix(t_token **tkn, t_cmdlst *cmd)

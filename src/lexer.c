@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:41:55 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/04/13 19:20:33 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:41:56 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,33 +80,40 @@ void	state_operator(t_lexer *lxr, t_token **tknlst)
 	}
 }
 
-// void	state_ionumber(t_lexer *lxr, t_token **tknlst)
-// {
-// 	t_token	*tkn;
-// 	char	*tkn_txt;
+void	state_ionumber(t_lexer *lxr, t_token **tknlst)
+{
+	t_token	*tkn;
+	char	*tkn_txt;
 
-// 	if (ft_isdigit(*lxr->current))
-// 		return ;
-// 	if (*lxr->current == '>' || *lxr->current == '<')
-// 	{
-// 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
-// 		tkn = tkn_create(tkn_txt);
-// 		tkn->type = IO_NUMBER;
-// 		tkn_lst_append(tknlst, tkn);
-// 		lxr->state = STATE_OPERATOR;
-// 	}
-// 	else
-// 	{
-// 		lxr->state = STATE_WORD;
-// 	}
-// }
+	if (ft_isdigit(*lxr->current))
+		return ;
+	if (*lxr->current == '>' || *lxr->current == '<')
+	{
+		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
+		tkn = tkn_create(tkn_txt);
+		tkn->type = IO_NUMBER;
+		tkn_lst_append(tknlst, tkn);
+		lxr->state = STATE_OPERATOR;
+		lxr->tkn_start = lxr->current;
+	}
+	else
+	{
+		lxr->state = STATE_WORD;
+	}
+}
 
 void	state_standard(t_lexer *lxr)
 {
 	if (ft_isspace(*lxr->current))
 		return ;
 	if (isoperator_start(*lxr->current))
+	{
 		lxr->state = STATE_OPERATOR;
+	}
+	else if (ft_isdigit(*lxr->current))
+	{
+		lxr->state = STATE_IO_NUMBER;
+	}
 	else
 	{
 		if (*lxr->current == SGL_QUOTE || *lxr->current == DBL_QUOTE)
@@ -169,12 +176,14 @@ t_token	*tokenize_line(const char *line)
 			state_word(&lxr, &tknlst);
 		else if (lxr.state == STATE_OPERATOR)
 			state_operator(&lxr, &tknlst);
+		else if (lxr.state == STATE_IO_NUMBER)
+			state_ionumber(&lxr, &tknlst);
 		++lxr.current;
 	}
 	if (lxr.state != STATE_STD)
 	{
 		tkn = tkn_create(ft_strsub(lxr.tkn_start, 0, lxr.current - lxr.tkn_start));
-		if (lxr.state == STATE_WORD)
+		if (lxr.state == STATE_WORD || lxr.state == STATE_IO_NUMBER)
 			tkn->type = WORD;
 		else if (lxr.state == STATE_OPERATOR)
 			set_operator_type(tkn);

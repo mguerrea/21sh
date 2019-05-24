@@ -16,6 +16,7 @@ cmd_suffix		: WORD
 				| cmd_suffix io_redirect
 				;
 io_redirect		: io_file
+				| IO_NUMBER io_file
 				;
 io_file			: LESS filename
 				| LESSAND filename
