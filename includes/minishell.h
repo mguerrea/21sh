@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/05/04 14:38:29 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:11:44 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <term.h>
 # include <termios.h>
 # include <curses.h>
+# include <signal.h>
 
 # define NB_BUILTIN 6
 
@@ -33,6 +34,8 @@
 
 # define SGL_QUOTE 39
 # define DBL_QUOTE 34
+
+pid_t g_pid;
 
 typedef enum		e_lxr_state
 {
@@ -117,6 +120,8 @@ typedef struct 		s_history
 }					t_history;
 
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
+
+t_term *g_term;
 
 /*
 ** RUN
@@ -212,6 +217,8 @@ int		redirection(t_cmdlst *cmd);
 void	move_right(int *pos);
 void	move_left(int *pos);
 
+void handle_parent(int sig);
+void catch_signals(int parent);
 
 void				format_args(t_cmdlst *cmd, char **environ);
 t_cmdlst			*parse(t_token *tknlst);

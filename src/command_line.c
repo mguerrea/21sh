@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/05/04 14:56:54 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:51:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void get_line(t_history **history)
 		tputs(res, 1, ft_print);
 	print_prompt();
 	line = ft_strnew(ARG_MAX);
+//	signal(SIGINT, handle_parent);
+//	signal(SIGQUIT, handle_parent);
 	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
 		buff[ret] = 0;

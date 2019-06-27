@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/06/24 11:48:45 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:11:32 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	run(char ***env, t_built_in *builtin_fct, const char **builtin_lst)
 	{
 		if(!(add_to_history(&history)))
 			return (-1);
+		catch_signals(1);
 		get_line(&history);
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
@@ -91,17 +92,17 @@ int	main(int argc, char **argv, char **environ)
 		"setenv",
 		"unsetenv"
 	};
-	t_term		*term;
+//	t_term		*g_term;
 
 	(void)argc;
 	(void)argv;
-	term = NULL;
-	term = init_term(term);
+	g_term = NULL;
+	g_term = init_term(g_term);
 	
 	if (!(env = init_shell(environ, builtin_fct)))
 		return (throw_error("malloc error"));
 	run(&env, builtin_fct, builtin_lst);
 	free_tab(env);
-	tcsetattr(0, TCSANOW, &term->init);
+	tcsetattr(0, TCSANOW, &g_term->init);
 	return (0);
 }

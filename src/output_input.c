@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/06/24 11:51:30 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:18:27 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int do_pipe(t_cmdlst *cmd)
 {
-	pid_t pid;
+//	pid_t pid;
 	int mypipe[2];
 
 	if (cmd->pipes & PIPE_R)
@@ -24,10 +24,11 @@ int do_pipe(t_cmdlst *cmd)
 		cmd->fd[1] = mypipe[1];
 		cmd->next->fd[0] = mypipe[0];
 	}
-	if ((pid = fork()) == -1)
+	if ((g_pid = fork()) == -1)
 		ft_putendl_fd("fork error", 2);
-	else if (pid == 0)
+	else if (g_pid == 0)
 	{
+		tcsetattr(0, TCSANOW, &g_term->init);
 		if (cmd->pipes & PIPE_L) // piped with last process
 		{
 			dup2(cmd->fd[0], STDIN_FILENO);
@@ -41,13 +42,15 @@ int do_pipe(t_cmdlst *cmd)
 	}
 	else
 	{
-		wait(NULL);
+		catch_signals(0);
+		wait(NULL);	
 		if (cmd->pipes & PIPE_L)
 			close (cmd->fd[0]);
 		if (cmd->pipes & PIPE_R)
 			close (cmd->fd[1]);
+		g_term = init_term(g_term);
 	}
-	return (pid);
+	return (g_pid);
 }
 
 int redir_out(t_cmdlst *cmd)

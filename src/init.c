@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 14:23:11 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/13 12:58:07 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:42:30 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ t_term *init_term(t_term *term)
 		return (NULL);
 	if (tcgetattr(0, &term->cur) == -1)
 		return (NULL);
-	term->cur.c_lflag &= ~ICANON;
-	term->cur.c_lflag &= ~ECHO;
+	term->cur.c_lflag &= ~(ICANON | ECHO);
 	term->cur.c_cc[VMIN] = 1;
 	term->cur.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSANOW, &term->cur) == -1)
