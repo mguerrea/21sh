@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:28:17 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/04/13 14:37:30 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/07/01 12:24:46 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_parser.h"
+#include "minishell.h"
 
 t_token	*tkn_create(char *word)
 {
