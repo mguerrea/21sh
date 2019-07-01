@@ -6,13 +6,13 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:58:17 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/27 14:45:04 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/07/01 14:52:52 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	save_history(t_history **history, char **line)
+int	save_history(t_history **history, char **line)
 {
 	char *res;
 
@@ -22,6 +22,9 @@ void	save_history(t_history **history, char **line)
 	ft_strdel(line);
 	if ((res = tgetstr("ei", NULL)))
 		tputs(res, 1, ft_print);
+	if ((*history)->line[0] == 4)
+		return (0);
+	return (1);
 }
 
 void manage_history(char *buff, t_history **history, char *line, int *pos)

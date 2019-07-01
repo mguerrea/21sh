@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/06/24 17:51:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/07/01 14:52:30 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void manage_pos(int *pos, char *buff, char *line)
 			move_left(pos);
 }
 
-void get_line(t_history **history)
+int get_line(t_history **history)
 {
 	char buff[16];
 	int ret;
@@ -99,18 +99,16 @@ void get_line(t_history **history)
 		tputs(res, 1, ft_print);
 	print_prompt();
 	line = ft_strnew(ARG_MAX);
-//	signal(SIGINT, handle_parent);
-//	signal(SIGQUIT, handle_parent);
 	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
 		buff[ret] = 0;
 		manage_pos(&pos, buff, line);
 		manage_delete(&pos, buff, line);
 		manage_history(buff, history, line, &pos);
-		if (manage_endline(&pos, buff, line))
-			break ;
 		manage_char(&pos, buff, line);
+		if (manage_endline(&pos, buff, line) || buff[0] == 4)
+			break ;
 	}
-	save_history(history, &line);
 	ft_putchar('\n');
+	return(save_history(history, &line));
 }

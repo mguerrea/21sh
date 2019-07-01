@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 12:41:09 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/07/01 14:53:13 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*ft_strjointab(char **array, char c);
 ** HISTORY
 */
 
-void		save_history(t_history **history, char **line);
+int		save_history(t_history **history, char **line);
 void 		manage_history(char *buff, t_history **history, char *line, int *pos);
 t_history 	*add_to_history(t_history **history);
 void		free_history(t_history **history);
@@ -125,7 +125,7 @@ int		ft_print(int c);
 
 void ft_insert(char *line, char c, int pos);
 void ft_delete(char *line, int pos);
-void	get_line(t_history **history);
+int	get_line(t_history **history);
 
 /*
 ** I/O
