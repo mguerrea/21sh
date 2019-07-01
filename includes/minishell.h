@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 12:25:09 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/07/01 12:41:09 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,7 @@ void	error_fd(int fd);
 ** INIT
 */
 
-char	**init_shell(char **environ, t_built_in *builin_fct);
-void	fill_built(t_built_in *builtin_fct);
+char	**init_shell(char **environ);
 t_term		*init_term(t_term *term);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/06/27 18:18:27 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/07/01 12:41:17 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int do_pipe(t_cmdlst *cmd)
 			close (cmd->fd[0]);
 		if (cmd->pipes & PIPE_R)
 			close (cmd->fd[1]);
-		g_term = init_term(g_term);
+		tcsetattr(0, TCSANOW, &g_term->cur);
 	}
 	return (g_pid);
 }
