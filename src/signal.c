@@ -6,11 +6,14 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 17:22:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/06/24 18:05:54 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 11:51:57 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+char *g_line = NULL;
+int *g_pos;
 
 void handle_child(int sig)
 {
@@ -22,12 +25,13 @@ void handle_parent(int sig)
 {
 	if (sig == SIGINT)
 	{
+		ft_bzero(g_line, ARG_MAX);
 		ft_putchar('\n');
-		print_prompt();
+		print_prompt(g_pos);
 	}
 }
 
-void catch_signals(int parent)
+void catch_signals(int parent, char *str, int *pos)
 {
 	signal(SIGTERM, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -35,7 +39,11 @@ void catch_signals(int parent)
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	if (parent)
+	{
+		g_line = str;
+		g_pos = pos;
 		signal(SIGINT, handle_parent);
+	}
 	else
 		signal(SIGINT, handle_child);
 }

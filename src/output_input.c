@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 12:41:17 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 11:30:16 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int do_pipe(t_cmdlst *cmd)
 	}
 	else
 	{
-		catch_signals(0);
+		catch_signals(0, NULL, NULL);
 		wait(NULL);	
 		if (cmd->pipes & PIPE_L)
 			close (cmd->fd[0]);

@@ -6,33 +6,35 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 13:50:08 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/10 15:04:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 12:19:07 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_insert(char *line, char c, int pos)
+void ft_insert(t_line *line, char c)
 {
 	int i;
 
-	i = ft_strlen(line);
-	while (i > pos)
+	i = ft_strlen(line->str);
+	while (i > line->pos)
 	{
-		line[i] = line[i - 1];
+		line->str[i] = line->str[i - 1];
 		i--;
 	}
-	line[pos] = c;
+	CURSOR = c;
 }
 
-void ft_delete(char *line, int pos)
+void ft_delete(t_line *line)
 {
 	int len;
+	int pos;
 
-	len = ft_strlen(line);
+	pos = line->pos;
+	len = ft_strlen(line->str);
 	while (pos < len)
 	{
-		line[pos] = line[pos + 1];
+		line->str[pos] = line->str[pos + 1];
 		pos++;
 	}
 }

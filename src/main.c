@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 14:56:46 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 11:40:43 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	run(char ***env)
 	{
 		if (!(add_to_history(&history)))
 			return (-1);
-		catch_signals(1);
 		if (get_line(&history) == 0)
 			break ;
 		tknlst = tokenize_line(history->line);

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:58:17 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 14:52:52 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 12:23:00 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	save_history(t_history **history, char **line)
 	return (1);
 }
 
-void manage_history(char *buff, t_history **history, char *line, int *pos)
+void manage_history(char *buff, t_history **history, t_line *line)
 {
 	char *res;
 
@@ -39,18 +39,18 @@ void manage_history(char *buff, t_history **history, char *line, int *pos)
 		if (ft_strncmp(buff, "\033[A", 3) == 0) //up
 		{
 			if ((*history)->next == NULL)
-				ft_strcpy((*history)->line, line);
+				ft_strcpy((*history)->line, line->str);
 			*history = (*history)->prev;
 		}
 		else
 			*history = (*history)->next;
 		res = tgetstr("cr", NULL); // move at the start
 		tputs(res, 1, ft_print);
-		print_prompt();
+		print_prompt(&(line->pos));
 		ft_putstr((*history)->line);
-		ft_bzero(line, ARG_MAX + 1);
-		ft_strcpy(line, (*history)->line);
-		*pos = ft_strlen(line);
+		ft_bzero(line->str, ARG_MAX + 1);
+		ft_strcpy(line->str, (*history)->line);
+		line->pos = ft_strlen(line->str);
 	}
 }
 

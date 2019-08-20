@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 14:53:13 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 12:23:28 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <signal.h>
 
 # define NB_BUILTIN 6
+# define CURSOR (line->str)[line->pos]
 
 typedef struct		s_term
 {
@@ -42,6 +43,12 @@ typedef struct 		s_history
 	struct s_history	*prev;
 	struct s_history	*next;
 }					t_history;
+
+typedef struct		s_line
+{
+	char	*str;
+	int		pos;
+}					t_line;
 
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
@@ -62,7 +69,7 @@ int		launch_bin(t_cmdlst *cmd, char ***envriton);
 ** PROMPT
 */
 
-void	print_prompt(void);
+void	print_prompt(int *pos);
 int		wrong_quote(char *str);
 
 /*
@@ -89,7 +96,7 @@ char	*ft_strjointab(char **array, char c);
 */
 
 int		save_history(t_history **history, char **line);
-void 		manage_history(char *buff, t_history **history, char *line, int *pos);
+void 		manage_history(char *buff, t_history **history, t_line *line);
 t_history 	*add_to_history(t_history **history);
 void		free_history(t_history **history);
 
@@ -123,8 +130,8 @@ int		ft_print(int c);
 ** COMMAND LINE
 */
 
-void ft_insert(char *line, char c, int pos);
-void ft_delete(char *line, int pos);
+void ft_insert(t_line *line, char c);
+void ft_delete(t_line *line);
 int	get_line(t_history **history);
 
 /*
@@ -142,6 +149,6 @@ void	move_right(int *pos);
 void	move_left(int *pos);
 
 void handle_parent(int sig);
-void catch_signals(int parent);
+void catch_signals(int parent, char *line, int *pos);
 
 #endif
