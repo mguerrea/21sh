@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 12:23:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 17:08:42 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct		s_line
 {
 	char	*str;
 	int		pos;
+	char	copy[ARG_MAX];
 }					t_line;
 
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
@@ -130,9 +131,12 @@ int		ft_print(int c);
 ** COMMAND LINE
 */
 
-void ft_insert(t_line *line, char c);
+void ft_insert(char *line, char c, int pos);
 void ft_delete(t_line *line);
 int	get_line(t_history **history);
+void manage_copy(char *buff, t_line *line);
+void manage_delete(char *buff, t_line *line);
+void manage_char(char *buff, t_line *line);
 
 /*
 ** I/O
@@ -147,6 +151,7 @@ int		redirection(t_cmdlst *cmd);
 
 void	move_right(int *pos);
 void	move_left(int *pos);
+void 	manage_pos(char *buff, t_line *line);
 
 void handle_parent(int sig);
 void catch_signals(int parent, char *line, int *pos);

@@ -6,7 +6,7 @@
 #    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/06/24 17:27:49 by mguerrea         ###   ########.fr        #
+#    Updated: 2019/08/20 16:08:14 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors.c format.c free.c \
 	token_list.c lexer.c parser.c output_input.c init.c main.c prompt.c \
-	command_line.c buffer.c history.c array_functions.c cursor.c signal.c
+	command_line.c buffer.c history.c array_functions.c cursor.c signal.c \
+	copy.c
 
 INC_NAME = minishell.h sh_parser.h
 

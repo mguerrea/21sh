@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 14:48:11 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/08/20 17:45:27 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int manage_endline(char *buff, t_line *line)
 			else if (wrong_quote(line->str))
 			{
 				ft_putstr("\n> ");
-				ft_insert(line, '\n');
+				ft_insert(line->str, '\n', line->pos);
 				line->pos++;
 			}
 			else if (line->str[0] == 0)
@@ -56,40 +56,12 @@ int manage_endline(char *buff, t_line *line)
 void manage_char(char *buff, t_line *line)
 {
 	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n'
-			&& line->pos < ARG_MAX && buff[0] != '\t')
+			&& line->pos < ARG_MAX && buff[0] != '\t' && buff[0] != 2)
 		{
 			ft_putstr(buff);
-			ft_insert(line, buff[0]);
+			ft_insert(line->str, buff[0], line->pos);
 			line->pos++;
 		}
-}
-
-void manage_pos(char *buff, t_line *line)
-{
-	if (ft_strncmp(buff, "\033\033[C", 4) == 0) //opt right
-	{
-		while (CURSOR != ' ' && CURSOR)
-			move_right(&(line->pos));
-		while (CURSOR == ' ')
-			move_right(&(line->pos));
-	}
-	if (ft_strncmp(buff, "\033\033[D", 4) == 0) // opt left
-	{
-		while (line->pos > 0 && line->str[line->pos - 1] == ' ')
-			move_left(&(line->pos));
-		while (line->pos > 0 && line->str[line->pos - 1] != ' ')
-			move_left(&(line->pos));
-	}
-	if (ft_strncmp(buff, "\033[D", 3) == 0 && line->pos > 0)
-		move_left(&(line->pos));
-	else if (ft_strncmp(buff, "\033[C", 3) == 0 && CURSOR)
-		move_right(&(line->pos));
-	if (ft_strncmp(buff, "\033[F", 3) == 0) //end
-		while (CURSOR)
-			move_right(&(line->pos));
-	if (ft_strncmp(buff, "\033[H", 3) == 0) //home
-		while (line->pos > 0)
-			move_left(&(line->pos));
 }
 
 int get_line(t_history **history)
@@ -111,9 +83,35 @@ int get_line(t_history **history)
 		manage_delete(buff, line);
 		manage_history(buff, history, line);
 		manage_char(buff, line);
+		manage_copy(buff, line);
 		if (manage_endline(buff, line) || buff[0] == 4)
 			break ;
 	}
 	ft_putchar('\n');
 	return(save_history(history, &(line->str)));
+}
+
+char *get_heredoc() // TO DO : EOF (CTRL + D)
+{
+	char buff[16];
+	int ret;
+	char *res;
+	t_line line[1];
+
+	if ((res = tgetstr("im", NULL)))
+		tputs(res, 1, ft_print);
+	line->pos = 0;
+	line->str = ft_strnew(ARG_MAX);
+	ft_putstr("> ");
+		while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
+	{
+		buff[ret] = 0;
+		manage_pos(buff, line);
+		manage_delete(buff, line);
+		manage_char(buff, line);
+		if (manage_endline(buff, line) || buff[0] == 4)
+			break ;
+	}
+	ft_putchar('\n');
+	return(line->str);
 }
