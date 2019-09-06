@@ -112,6 +112,7 @@ char *get_heredoc() // TO DO : EOF (CTRL + D)
 		if (manage_endline(buff, line) || buff[0] == 4)
 			break ;
 	}
+	ft_strcat(line->str, "\n");
 	ft_putchar('\n');
 	return(line->str);
 }
