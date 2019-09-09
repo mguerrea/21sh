@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 15:57:38 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 18:00:11 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 13:25:32 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void manage_copy(char *buff, t_line *line)
 				tputs(tgetstr("le", NULL), 1, ft_print);
 			}
 		}
+		move_right((&line->pos));
 		tputs(tgetstr("me", NULL), 0, ft_print);
 	}
 	if (buff[0] == 5)
