@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/06 13:50:33 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/09 14:50:52 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ t_term		*init_term(t_term *term);
 
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
 int		ft_print(int c);
+void	ft_replace(char **str, char find, char replace);
 
 /*
 ** COMMAND LINE

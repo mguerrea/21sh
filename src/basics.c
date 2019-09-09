@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 13:09:56 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/04/19 13:10:45 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 15:03:23 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,17 @@ int ft_print(int c)
 {
 	ft_putchar(c);
 	return(1);
+}
+
+void ft_replace(char **str, char find, char replace)
+{
+	int i;
+
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == find)
+			(*str)[i] = replace;
+		i++;
+	}
 }

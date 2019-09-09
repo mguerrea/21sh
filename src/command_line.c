@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 12:45:13 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 15:04:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int manage_endline(char *buff, t_line *line)
 {
 	if (buff[0] == '\n')
 		{
-			if (line->str[line->pos - 1] == '\\')
+			if (line->str[line->pos - 1] == '\\' || line->str[line->pos - 1] == '|')
 			{
 				ft_putstr("\n> ");
 				ft_delete(line);
@@ -58,9 +58,17 @@ void manage_char(char *buff, t_line *line)
 	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n'
 			&& line->pos < ARG_MAX && buff[0] != '\t' && buff[0] != 2)
 		{
+			if (buff[1] == 0)
+			{
 			ft_putstr(buff);
 			ft_insert(line->str, buff[0], line->pos);
 			line->pos++;
+			}
+			else
+			{
+				ft_strcat(line->str, buff);
+				ft_replace(&(line->str), '\n', ';');
+			}	
 		}
 }
 

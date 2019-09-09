@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 13:05:44 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 14:33:39 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ int	run(char ***env)
 	{
 		if (!(add_to_history(&history)))
 			return (-1);
-		if (get_line(&history) == 0)
+		if (get_line(&history) == 0 || history->line[0] == 0)
 			break ;
+	//	dprintf(2, "%s\n", history->line);
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
 		while (cmd && run)
