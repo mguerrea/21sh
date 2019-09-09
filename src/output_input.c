@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 15:59:02 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 16:42:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ int redir_out(t_cmdlst *cmd)
 	int fildes;
 
 	fildes = 0;
-	if ((cmd->redir[1].file == NULL || cmd->redir[1].file[0] == '-') && cmd->redir[1].type == SPL)
+	if ((cmd->redir[1].file == NULL || cmd->redir[1].file[0] == '-')
+		&& cmd->redir[1].type == SPL)
 	{
-		if (!(isatty(fildes = cmd->redir[1].fd[1])))
-		{
-			error_fd(fildes);
-			return (-1);
-		}
+		if (!(isatty(fildes = cmd->redir[1].fd[1])) && !(cmd->redir[1].fd[1] == 1 && cmd->pipes == PIPE_R))
+			return (error_fd(fildes));
 	}
 	else if (cmd->redir[1].file[0] != '-' && cmd->redir[1].type == SPL)
 	{
@@ -83,7 +81,6 @@ int redir_out(t_cmdlst *cmd)
 		}
 	}
 	dup2(fildes, cmd->redir[1].fd[0]);
-	close(fildes);
 	if (cmd->redir[1].file && cmd->redir[1].file[0] == '-')
 		close(cmd->redir[1].fd[0]);
 	return (1);
@@ -108,10 +105,7 @@ int redir_in(t_cmdlst *cmd)
 	if ((cmd->redir[0].file == NULL || cmd->redir[0].file[0] == '-') && cmd->redir[0].type == SPL)
 	{
 		if (!(isatty(fildes = cmd->redir[0].fd[1])))
-		{
-			error_fd(fildes);
-			return (-1);
-		}
+			return(error_fd(fildes));
 	}
 	else if (cmd->redir[0].file && cmd->redir[0].type == SPL)
 	{

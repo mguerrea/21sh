@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 14:50:52 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 16:27:21 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	error_rights(char *cmd, char *str);
 void	error_cmd(char *str);
 int		error_args(char *cmd);
 int		throw_error(char *str);
-void	error_fd(int fd);
+int		error_fd(int fd);
 
 /*
 ** INIT
