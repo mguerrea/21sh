@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/09 12:44:08 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/09 14:57:56 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,24 @@ void	init_redir(t_cmdlst *cmd)
 	cmd->redir[1].fd[1] = STDOUT_FILENO;
 }
 
-t_cmdlst	*cmd_name(t_token **tkn)
+t_cmdlst	*cmd_name(void)
 {
 	t_cmdlst	*cmd;
 
 	cmd = NULL;
-	if ((*tkn)->type == WORD)
-	{
-		if (!(cmd = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
-			return (NULL);
-		init_redir(cmd);
-		cmd->pipes = 0;
-		cmd->argslst = tkn_create((*tkn)->word);
-		cmd->next = NULL;
-		cmd->prev = NULL;
-		*tkn = (*tkn)->next;
-	}
+	if (!(cmd = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
+		return (NULL);
+	init_redir(cmd);
+	cmd->pipes = 0;
+	cmd->argslst = NULL;
+	cmd->next = NULL;
+	cmd->prev = NULL;
 	return (cmd);
 }
 
 int			filename(t_token **tkn, t_redir *redir)
 {
-	if ((*tkn)->type == WORD)
+	if (*tkn && (*tkn)->type == WORD)
 	{
 		redir->file = (*tkn)->word;
 		*tkn = (*tkn)->next;
@@ -72,7 +68,7 @@ int			is_number(char *str)
 
 int			get_fd(t_token **tkn, t_redir *redir)
 {
-	if ((*tkn)->type == WORD && is_number((*tkn)->word))
+	if (*tkn && (*tkn)->type == WORD && is_number((*tkn)->word))
 	{
 		redir->fd[1] = ft_atoi((*tkn)->word);
 		*tkn = (*tkn)->next;
@@ -111,7 +107,7 @@ char	*get_heredoc_content(char *end_word, char *content)
 
 int		heredoc(t_token **tkn, t_redir *redir)
 {
-	if ((*tkn)->type == WORD)
+	if (*tkn && (*tkn)->type == WORD)
 	{
 		redir->file = get_heredoc_content((*tkn)->word, NULL);
 		*tkn = (*tkn)->next;
@@ -128,8 +124,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 		if (io_number)
 			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
-		filename(tkn, &cmd->redir[1]);
-		return (1);
+		return (filename(tkn, &cmd->redir[1]));
 	}
 	else if ((*tkn)->type == DGREAT)
 	{
@@ -137,8 +132,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 		if (io_number)
 			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
-		filename(tkn, &cmd->redir[1]);
-		return (1);
+		return (filename(tkn, &cmd->redir[1]));
 	}
 	else if ((*tkn)->type == GREATAND)
 	{
@@ -147,7 +141,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 			cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		if (!get_fd(tkn, &cmd->redir[1]))
-			filename(tkn, &cmd->redir[1]);
+			return (filename(tkn, &cmd->redir[1]));
 		return (1);
 	}
 	else if ((*tkn)->type == LESS)
@@ -156,8 +150,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 		if (io_number)
 			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
-		filename(tkn, &cmd->redir[0]);
-		return (1);
+		return (filename(tkn, &cmd->redir[0]));
 	}
 	else if ((*tkn)->type == DLESS)
 	{
@@ -165,8 +158,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 		if (io_number)
 			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
-		heredoc(tkn, &cmd->redir[0]);
-		return (1);
+		return (heredoc(tkn, &cmd->redir[0]));
 	}
 	else if ((*tkn)->type == LESSAND)
 	{
@@ -175,7 +167,7 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		if (!get_fd(tkn, &cmd->redir[0]))
-			filename(tkn, &cmd->redir[0]);
+			return (filename(tkn, &cmd->redir[0]));
 		return (1);
 	}
 	return (0);
@@ -194,7 +186,7 @@ int		io_redirect(t_token **tkn, t_cmdlst *cmd)
 	return (io_file(tkn, cmd, io_number));
 }
 
-void		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
+int		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
 {
 	if (*tkn)
 	{
@@ -202,13 +194,18 @@ void		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
 		{
 			tkn_lst_append(&cmd->argslst, tkn_create((*tkn)->word));
 			*tkn = (*tkn)->next;
-			cmd_suffix(tkn, cmd);
+			return (cmd_suffix(tkn, cmd));
 		}
 		else if (io_redirect(tkn, cmd))
 		{
-			cmd_suffix(tkn, cmd);
+			return (cmd_suffix(tkn, cmd));
+		}
+		else if (!(*tkn) || ((*tkn)->type != PIPE && (*tkn)->type != SEMI))
+		{
+			return (0);
 		}
 	}
+	return (1);
 }
 
 t_cmdlst	*simple_cmd(t_token **tkn)
@@ -216,13 +213,14 @@ t_cmdlst	*simple_cmd(t_token **tkn)
 	t_cmdlst	*cmd;
 
 	cmd = NULL;
-	if (*tkn && (cmd = cmd_name(tkn)))
+	if (*tkn && (cmd = cmd_name()))
 	{
 		while (*tkn)
 		{
 			if ((*tkn)->type == PIPE || (*tkn)->type == SEMI)
 				return (cmd);
-			cmd_suffix(tkn, cmd);
+			if (!cmd_suffix(tkn, cmd))
+				return (NULL);
 		}
 	}
 	return (cmd);
@@ -268,13 +266,13 @@ t_cmdlst	*cmd_lst_gotoend(t_cmdlst *lst)
 	return (lst);
 }
 
-void	pipe_sequence(t_token **tkn, t_cmdlst **cmdlst, t_pipemask pipe)
+int			pipe_sequence(t_token **tkn, t_cmdlst **cmdlst, t_pipemask pipe)
 {
 	t_cmdlst	*cmd;
 
 	cmd = simple_cmd(tkn);
 	if (!cmd)
-		return;
+		return (0);
 	cmd->pipes |= pipe;	
 	cmd_lst_append(cmdlst, cmd);
 	if (*tkn && (*tkn)->type == PIPE)
@@ -283,16 +281,21 @@ void	pipe_sequence(t_token **tkn, t_cmdlst **cmdlst, t_pipemask pipe)
 		*tkn = (*tkn)->next;
 		pipe_sequence(tkn, cmdlst, PIPE_L);
 	}
+	return (1);
 }
 
-void		list(t_token **tkn, t_cmdlst **cmdlst)
+int		list(t_token **tkn, t_cmdlst **cmdlst)
 {
-	pipe_sequence(tkn, cmdlst, 0);
+	if (!pipe_sequence(tkn, cmdlst, 0))
+		return (0);
 	if (*tkn && (*tkn)->type == SEMI)
 	{
 		*tkn = (*tkn)->next;
+		if (*tkn && ((*tkn)->type == SEMI || (*tkn)->type == PIPE))
+			return (0);
 		list(tkn, cmdlst);
 	}
+	return (1);
 }
 
 t_cmdlst	*parse(t_token *tknlst)
@@ -302,6 +305,10 @@ t_cmdlst	*parse(t_token *tknlst)
 	cmdlst = NULL;
 	if (!tknlst)
 		return (NULL);
-	list(&tknlst, &cmdlst);
+	if (!list(&tknlst, &cmdlst))
+	{
+		ft_putstr_fd("parse error\n" , 2);
+		return (NULL);
+	}
 	return (cmdlst);
 }
