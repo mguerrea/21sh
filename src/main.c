@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 11:40:43 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 13:05:44 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	run(char ***env)
 	int			run;
 	t_token		*tknlst;
 	t_cmdlst	*cmd;
-	int			saved;
+	int			saved[2];
 	t_history *history;
 
 	history = NULL;
@@ -70,11 +70,14 @@ int	run(char ***env)
 		cmd = parse(tknlst);
 		while (cmd && run)
 		{
-			saved = dup(cmd->redir[1].fd[0]);
+			saved[0] = dup(cmd->redir[1].fd[0]);
+			saved[1] = dup(cmd->redir[0].fd[0]);
 			format_args(cmd, *env);
 			run = execute(cmd, env);
-			dup2(saved, cmd->redir[1].fd[0]);
-			close(saved);
+			dup2(saved[0], cmd->redir[1].fd[0]);
+			dup2(saved[1], cmd->redir[0].fd[0]);
+			close(saved[0]);
+			close(saved[1]);
 			cmd = cmd->next;
 		}
 		// we have to free cmd and tknlst

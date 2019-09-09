@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 11:30:16 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 13:10:06 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,9 @@ int redir_in(t_cmdlst *cmd)
 	else if (cmd->redir[0].type == DBL)
 		fildes = here_doc(cmd);
 	dup2(fildes, cmd->redir[0].fd[0]);
+	close(fildes);
 	if (cmd->redir[0].file && cmd->redir[0].file[0] == '-')
-		close(fildes);
+		close(cmd->redir[0].fd[0]);
 	return (1);
 }
 
