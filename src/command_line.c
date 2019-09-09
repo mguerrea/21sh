@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 12:42:57 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 12:45:13 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int get_line(t_history **history)
 	return(save_history(history, &(line->str)));
 }
 
-char *get_heredoc() // TO DO : EOF (CTRL + D)
+char *get_heredoc()
 {
 	char buff[16];
 	int ret;
