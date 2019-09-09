@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 14:33:39 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 16:01:42 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	run(char ***env)
 	int			run;
 	t_token		*tknlst;
 	t_cmdlst	*cmd;
-	int			saved[2];
+	int			saved[4];
 	t_history *history;
 
 	history = NULL;
@@ -66,19 +66,24 @@ int	run(char ***env)
 			return (-1);
 		if (get_line(&history) == 0 || history->line[0] == 0)
 			break ;
-	//	dprintf(2, "%s\n", history->line);
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
 		while (cmd && run)
 		{
 			saved[0] = dup(cmd->redir[1].fd[0]);
 			saved[1] = dup(cmd->redir[0].fd[0]);
+			saved[2] = dup(cmd->redir[1].fd[1]);
+			saved[3] = dup(cmd->redir[0].fd[1]);
 			format_args(cmd, *env);
 			run = execute(cmd, env);
 			dup2(saved[0], cmd->redir[1].fd[0]);
 			dup2(saved[1], cmd->redir[0].fd[0]);
+			dup2(saved[2], cmd->redir[1].fd[1]);
+			dup2(saved[3], cmd->redir[0].fd[1]);
 			close(saved[0]);
 			close(saved[1]);
+			close(saved[2]);
+			close(saved[3]);
 			cmd = cmd->next;
 		}
 		// we have to free cmd and tknlst
