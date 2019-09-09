@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 15:04:18 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 16:14:13 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ int manage_endline(char *buff, t_line *line)
 {
 	if (buff[0] == '\n')
 		{
-			if (line->str[line->pos - 1] == '\\' || line->str[line->pos - 1] == '|')
+			if (line->str[line->pos - 1] == '\\')
 			{
 				ft_putstr("\n> ");
-				ft_delete(line);
 				line->pos--;
+				ft_delete(line);
+				
 			}
+			else if (line->str[line->pos - 1] == '|')
+				ft_putstr("\n> ");
 			else if (wrong_quote(line->str))
 			{
 				ft_putstr("\n> ");
