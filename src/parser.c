@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/05/24 14:15:34 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/09 12:44:08 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,45 @@ int			get_fd(t_token **tkn, t_redir *redir)
 	return (0);
 }
 
+char	*get_heredoc_content(char *end_word, char *content)
+{
+	char *line;
+	char *new_content;
+	size_t len;
+
+	new_content = NULL;
+	line = get_heredoc();
+	len = ft_strlen(line);
+	if ((!ft_strncmp(line, end_word, ft_strlen(end_word))
+		&& ft_strlen(end_word) + 1 == len)
+		|| line[len - 1] == 4)
+	{
+		return (content);
+	}
+	if (!content)
+	{
+		new_content = line;
+	}
+	else
+	{
+		new_content = ft_strjoin(content, line);
+		free(content);
+		free(line);
+	}
+	return (get_heredoc_content(end_word, new_content));
+}
+
+int		heredoc(t_token **tkn, t_redir *redir)
+{
+	if ((*tkn)->type == WORD)
+	{
+		redir->file = get_heredoc_content((*tkn)->word, NULL);
+		*tkn = (*tkn)->next;
+		return (1);
+	}
+	return (0);
+}
+
 int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 {
 	if ((*tkn)->type == GREAT)
@@ -118,6 +157,15 @@ int		io_file(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 		*tkn = (*tkn)->next;
 		filename(tkn, &cmd->redir[0]);
+		return (1);
+	}
+	else if ((*tkn)->type == DLESS)
+	{
+		cmd->redir[0].type = DBL;
+		if (io_number)
+			cmd->redir[0].fd[0] = ft_atoi(io_number->word);
+		*tkn = (*tkn)->next;
+		heredoc(tkn, &cmd->redir[0]);
 		return (1);
 	}
 	else if ((*tkn)->type == LESSAND)

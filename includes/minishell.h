@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 17:08:42 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/06 13:50:33 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	get_line(t_history **history);
 void manage_copy(char *buff, t_line *line);
 void manage_delete(char *buff, t_line *line);
 void manage_char(char *buff, t_line *line);
+char *get_heredoc();
 
 /*
 ** I/O
