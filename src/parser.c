@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/09 14:40:33 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/09 14:57:56 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,18 @@ void	init_redir(t_cmdlst *cmd)
 	cmd->redir[1].fd[1] = STDOUT_FILENO;
 }
 
-t_cmdlst	*cmd_name(t_token **tkn)
+t_cmdlst	*cmd_name(void)
 {
 	t_cmdlst	*cmd;
 
 	cmd = NULL;
-	if ((*tkn)->type == WORD)
-	{
-		if (!(cmd = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
-			return (NULL);
-		init_redir(cmd);
-		cmd->pipes = 0;
-		cmd->argslst = tkn_create((*tkn)->word);
-		cmd->next = NULL;
-		cmd->prev = NULL;
-		*tkn = (*tkn)->next;
-	}
+	if (!(cmd = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
+		return (NULL);
+	init_redir(cmd);
+	cmd->pipes = 0;
+	cmd->argslst = NULL;
+	cmd->next = NULL;
+	cmd->prev = NULL;
 	return (cmd);
 }
 
@@ -217,7 +213,7 @@ t_cmdlst	*simple_cmd(t_token **tkn)
 	t_cmdlst	*cmd;
 
 	cmd = NULL;
-	if (*tkn && (cmd = cmd_name(tkn)))
+	if (*tkn && (cmd = cmd_name()))
 	{
 		while (*tkn)
 		{
@@ -314,6 +310,5 @@ t_cmdlst	*parse(t_token *tknlst)
 		ft_putstr_fd("parse error\n" , 2);
 		return (NULL);
 	}
-	printf("%p\n", cmdlst);
 	return (cmdlst);
 }
