@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 12:36:32 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 12:42:57 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,11 @@ char *get_heredoc() // TO DO : EOF (CTRL + D)
 		manage_delete(buff, line);
 		manage_char(buff, line);
 		if (buff[0] == '\n' || buff[0] == 4)
+		{
+			ft_strcat(line->str, buff);
 			break ;
+		}
 	}
-	ft_strcat(line->str, "\n");
 	ft_putchar('\n');
 	return(line->str);
 }
