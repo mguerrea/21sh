@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 12:50:20 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 12:53:27 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	get_copy(char *src, char *dest, char current_quote)
 	char quote;
 
 	quote = 0;
-	// printf("%c; %c\n", *src, current_quote);
 	if (!(*src))
 		return ;
 	else if (*src == current_quote)

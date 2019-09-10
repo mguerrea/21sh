@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 11:45:30 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/09 17:24:59 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,19 @@ void	print_prompt(int *pos)
 int		wrong_quote(char *str)
 {
 	int i;
-	int count;
+	int simple;
+	int dbl;
 
 	i = 0;
-	count = 0;
+	simple = 0;
+	dbl = 0;
 	while (str[i])
 	{
 		i++;
+		if (str[i] == '\'')
+			simple++;
 		if (str[i] == '"')
-			count++;
+			dbl++;
 	}
-	return (count % 2);
+	return (simple % 2 + dbl % 2);
 }
