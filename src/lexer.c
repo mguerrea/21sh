@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:41:55 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 16:34:54 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:58:10 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	state_word(t_lexer *lxr, t_token **tknlst)
 	}
 	else if (*lxr->current == SGL_QUOTE || *lxr->current == DBL_QUOTE)
 		lxr->quoting = *lxr->current;
-	else
+	else if (ft_isspace(*lxr->current) || isoperator_start(*lxr->current))
 	{
 		if (!(tkn = cut_line(lxr->tkn_start, lxr->current - lxr->tkn_start)))
 			malloc_error();

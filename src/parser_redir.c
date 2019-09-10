@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:44:11 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:59:03 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@ static int	get_fd(t_token **tkn, t_redir *redir)
 
 static int	io_file_in(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 {
+	t_tkn_type	redir_type;
+
 	cmd->redir[0].type = (*tkn)->type == DLESS ? DBL : SPL;
+	redir_type = (*tkn)->type;
 	if (io_number)
 		cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 	*tkn = (*tkn)->next;
-	if ((*tkn)->type == DLESS)
+	if (redir_type == DLESS)
 		return (heredoc(tkn, &cmd->redir[0]));
-	else if ((*tkn)->type == LESSAND)
+	else if (redir_type == LESSAND)
 	{
 		if (!get_fd(tkn, &cmd->redir[0]))
 			return (filename(tkn, &cmd->redir[0]));
@@ -53,11 +56,14 @@ static int	io_file_in(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 
 static int	io_file_out(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 {
+	t_tkn_type	redir_type;
+
 	cmd->redir[1].type = (*tkn)->type == DGREAT ? DBL : SPL;
+	redir_type = (*tkn)->type;
 	if (io_number)
 		cmd->redir[1].fd[0] = ft_atoi(io_number->word);
 	*tkn = (*tkn)->next;
-	if ((*tkn)->type == GREATAND)
+	if (redir_type == GREATAND)
 	{
 		if (!get_fd(tkn, &cmd->redir[1]))
 			return (filename(tkn, &cmd->redir[1]));
