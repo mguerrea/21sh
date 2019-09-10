@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:09:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:47:27 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:12:14 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	free_cmd(t_cmdlst **cmd)
 		++i;
 	}
 	if ((*cmd)->args)
-		free((*cmd)->args);
+		free_tab((*cmd)->args);
 	if ((*cmd)->argslst)
 		tkn_lst_del(&((*cmd)->argslst));
 	free(*cmd);
