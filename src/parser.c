@@ -6,11 +6,46 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/09 14:57:56 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:24:14 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_cmd(t_cmdlst **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < 2)
+	{
+		if ((*cmd)->redir[i].file)
+			free((*cmd)->redir[i].file);
+		++i;
+	}
+	if((*cmd)->args)
+		free((*cmd)->args);
+	if ((*cmd)->argslst)
+		tkn_lst_del(&((*cmd)->argslst));
+	free(cmd);
+	cmd = NULL;
+}
+
+void free_cmdlst(t_cmdlst **lst)
+{
+	t_cmdlst	*tmp;
+	
+	if (lst)
+	{
+		while(*lst)
+		{
+			tmp = *lst;
+			*lst = (*lst)->next;
+			free_cmd(&tmp);
+		}
+		*lst = NULL;
+	}
+}
 
 void	init_redir(t_cmdlst *cmd)
 {
@@ -38,6 +73,7 @@ t_cmdlst	*cmd_name(void)
 		return (NULL);
 	init_redir(cmd);
 	cmd->pipes = 0;
+	cmd->args = NULL;
 	cmd->argslst = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
@@ -303,12 +339,11 @@ t_cmdlst	*parse(t_token *tknlst)
 	t_cmdlst	*cmdlst;
 
 	cmdlst = NULL;
-	if (!tknlst)
-		return (NULL);
-	if (!list(&tknlst, &cmdlst))
+	if (tknlst && !list(&tknlst, &cmdlst))
 	{
 		ft_putstr_fd("parse error\n" , 2);
-		return (NULL);
+		free_cmdlst(&cmdlst);
 	}
+	tkn_lst_del(&tknlst);
 	return (cmdlst);
 }
