@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_parser.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:49:53 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:59:27 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_token				*tkn_create(char *word);
 void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
-void 				tkn_lst_append(t_token **lst, t_token *tkn);
+void				tkn_lst_append(t_token **lst, t_token *tkn);
 void				tkn_lst_del(t_token **lst);
 int					io_redirect(t_token **tkn, t_cmdlst *cmd);
 int					heredoc(t_token **tkn, t_redir *redir);
@@ -103,6 +103,5 @@ int					heredoc(t_token **tkn, t_redir *redir);
 
 void				free_cmdlst(t_cmdlst **lst);
 t_cmdlst			*cmd_create(void);
-
 
 #endif
