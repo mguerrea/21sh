@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+         #
+#    By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/09/10 15:50:43 by gmichaud         ###   ########.fr        #
+#    Updated: 2019/09/10 16:24:38 by mguerrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = 21sh
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors_1.c format.c free.c \
 	token_list.c lexer.c parser.c output_input.c init.c main.c prompt.c \
