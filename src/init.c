@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 14:23:11 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/07/01 12:37:06 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:58:11 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ inside another minishell.\n\
 	return (env);
 }
 
-t_term *init_term(t_term *term)
+t_term	*init_term(t_term *term)
 {
-	int ret;
-	char *term_type;
+	int		ret;
+	char	*term_type;
 
 	if ((term_type = getenv("TERM")) == NULL)
 		return (NULL);

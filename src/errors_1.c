@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   errors_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:56:10 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 16:26:47 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:04:53 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_file(char *cmd, char *errors)
+int	error_file(char *cmd, char *errors)
 {
 	ft_putstr_fd("21sh: ", 2);
 	if (cmd)
@@ -22,6 +22,7 @@ void	error_file(char *cmd, char *errors)
 	}
 	ft_putstr_fd(errors, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	return (-1);
 }
 
 void	error_cmd(char *str)
@@ -49,18 +50,6 @@ void	error_rights(char *cmd, char *str)
 	}
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": Permission denied", 2);
-}
-
-int		throw_error(char *str)
-{
-	ft_putendl_fd(str, 2);
-	return (0);
-}
-
-void	malloc_error(void)
-{
-	ft_putendl_fd("malloc error, abort program", 2);
-	exit(EXIT_FAILURE);
 }
 
 int		error_args(char *cmd)

@@ -6,14 +6,14 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 12:41:47 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 12:58:34 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:56:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "sh_parser.h"
 
-int *save_fd(t_cmdlst *cmd)
+int		*save_fd(t_cmdlst *cmd)
 {
 	int *saved;
 
@@ -26,14 +26,14 @@ int *save_fd(t_cmdlst *cmd)
 	return (saved);
 }
 
-void restore_fd(t_cmdlst *cmd, int *saved)
+void	restore_fd(t_cmdlst *cmd, int *saved)
 {
 	dup2(saved[0], cmd->redir[1].fd[0]);
-			dup2(saved[1], cmd->redir[0].fd[0]);
-			dup2(saved[2], cmd->redir[1].fd[1]);
-			dup2(saved[3], cmd->redir[0].fd[1]);
-			close(saved[0]);
-			close(saved[1]);
-			close(saved[2]);
-			close(saved[3]);
+	dup2(saved[1], cmd->redir[0].fd[0]);
+	dup2(saved[2], cmd->redir[1].fd[1]);
+	dup2(saved[3], cmd->redir[0].fd[1]);
+	close(saved[0]);
+	close(saved[1]);
+	close(saved[2]);
+	close(saved[3]);
 }

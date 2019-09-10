@@ -6,81 +6,79 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 16:14:13 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:40:17 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void manage_delete(char *buff, t_line *line)
+void	manage_delete(char *buff, t_line *line)
 {
 	char *res;
 
 	if (buff[0] == 127 && line->pos > 0)
-		{
-			move_left((&line->pos));
-			res = tgetstr("dc", NULL); // delete
-			tputs(res, 1, ft_print);
-			ft_delete(line);
-		}
+	{
+		move_left((&line->pos));
+		res = tgetstr("dc", NULL);
+		tputs(res, 1, ft_print);
+		ft_delete(line);
+	}
 }
 
-int manage_endline(char *buff, t_line *line)
+int		manage_endline(char *buff, t_line *line)
 {
 	if (buff[0] == '\n')
+	{
+		if (line->str[line->pos - 1] == '\\')
 		{
-			if (line->str[line->pos - 1] == '\\')
-			{
-				ft_putstr("\n> ");
-				line->pos--;
-				ft_delete(line);
-				
-			}
-			else if (line->str[line->pos - 1] == '|')
-				ft_putstr("\n> ");
-			else if (wrong_quote(line->str))
-			{
-				ft_putstr("\n> ");
-				ft_insert(line->str, '\n', line->pos);
-				line->pos++;
-			}
-			else if (line->str[0] == 0)
-			{
-				ft_putchar('\n');
-				print_prompt(&(line->pos));
-			}
-			else
-				return (1);
-
+			ft_putstr("\n> ");
+			line->pos--;
+			ft_delete(line);
 		}
-		return (0);
+		else if (line->str[line->pos - 1] == '|')
+			ft_putstr("\n> ");
+		else if (wrong_quote(line->str))
+		{
+			ft_putstr("\n> ");
+			ft_insert(line->str, '\n', line->pos);
+			line->pos++;
+		}
+		else if (line->str[0] == 0)
+		{
+			ft_putchar('\n');
+			print_prompt(&(line->pos));
+		}
+		else
+			return (1);
+	}
+	return (0);
 }
 
-void manage_char(char *buff, t_line *line)
+void	manage_char(char *buff, t_line *line)
 {
 	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n'
-			&& line->pos < ARG_MAX && buff[0] != '\t' && buff[0] != 2)
+		&& line->pos < ARG_MAX && buff[0] != '\t' && buff[0] != 2)
+	{
+		if (buff[1] == 0)
 		{
-			if (buff[1] == 0)
-			{
 			ft_putstr(buff);
 			ft_insert(line->str, buff[0], line->pos);
 			line->pos++;
-			}
-			else
-			{
-				ft_strcat(line->str, buff);
-				ft_replace(&(line->str), '\n', ';');
-			}	
 		}
+		else
+		{
+			ft_strcat(line->str, buff);
+			ft_replace(&(line->str), '\n', ';');
+		}
+	}
 }
 
-int get_line(t_history **history)
+int		get_line(t_history **history)
 {
-	char buff[16];
-	int ret;
-	char *res;
-	t_line line[1];
+	char	buff[16];
+	int		ret;
+	char	*res;
+	t_line	line[1];
 
 	if ((res = tgetstr("im", NULL)))
 		tputs(res, 1, ft_print);
@@ -99,22 +97,22 @@ int get_line(t_history **history)
 			break ;
 	}
 	ft_putchar('\n');
-	return(save_history(history, &(line->str)));
+	return (save_history(history, &(line->str)));
 }
 
-char *get_heredoc()
+char	*get_heredoc(void)
 {
-	char buff[16];
-	int ret;
-	char *res;
-	t_line line[1];
+	char	buff[16];
+	int		ret;
+	char	*res;
+	t_line	line[1];
 
 	if ((res = tgetstr("im", NULL)))
 		tputs(res, 1, ft_print);
 	line->pos = 0;
 	line->str = ft_strnew(ARG_MAX);
 	ft_putstr("> ");
-		while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
+	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
 		buff[ret] = 0;
 		manage_pos(buff, line);
@@ -127,5 +125,5 @@ char *get_heredoc()
 		}
 	}
 	ft_putchar('\n');
-	return(line->str);
+	return (line->str);
 }

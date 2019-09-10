@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:32:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/08/20 15:17:21 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:53:56 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ void	move_left(int *pos)
 	(*pos)--;
 }
 
-void manage_pos(char *buff, t_line *line)
+void	manage_pos(char *buff, t_line *line)
 {
-	if (ft_strncmp(buff, "\033\033[C", 4) == 0) //opt right
+	if (ft_strncmp(buff, "\033\033[C", 4) == 0)
 	{
 		while (CURSOR != ' ' && CURSOR)
 			move_right(&(line->pos));
 		while (CURSOR == ' ')
 			move_right(&(line->pos));
 	}
-	if (ft_strncmp(buff, "\033\033[D", 4) == 0) // opt left
+	if (ft_strncmp(buff, "\033\033[D", 4) == 0)
 	{
 		while (line->pos > 0 && line->str[line->pos - 1] == ' ')
 			move_left(&(line->pos));
@@ -50,10 +50,10 @@ void manage_pos(char *buff, t_line *line)
 		move_left(&(line->pos));
 	else if (ft_strncmp(buff, "\033[C", 3) == 0 && CURSOR)
 		move_right(&(line->pos));
-	if (ft_strncmp(buff, "\033[F", 3) == 0) //end
+	if (ft_strncmp(buff, "\033[F", 3) == 0)
 		while (CURSOR)
 			move_right(&(line->pos));
-	if (ft_strncmp(buff, "\033[H", 3) == 0) //home
+	if (ft_strncmp(buff, "\033[H", 3) == 0)
 		while (line->pos > 0)
 			move_left(&(line->pos));
 }
