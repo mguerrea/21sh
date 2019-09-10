@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 16:37:48 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 18:13:05 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int				redirection(t_cmdlst *cmd);
 void			create_files(t_cmdlst *cmd);
 int				*save_fd(t_cmdlst *cmd);
 void			restore_fd(t_cmdlst *cmd, int *saved);
+int				aggregate(t_cmdlst *cmd);
 
 /*
 ** CURSOR

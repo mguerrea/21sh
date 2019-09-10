@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 16:15:39 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 18:12:31 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	create_files(t_cmdlst *cmd)
 		cmd = cmd->next;
 		while (cmd && (cmd->pipes & PIPE_L))
 		{
-			if (cmd->redir[1].type && cmd->redir[1].file)
+			if (cmd->redir[1].type && cmd->redir[1].file
+				&& cmd->redir[1].file[0] != '-')
 			{
 				if ((fildes = open(cmd->redir[1].file, O_CREAT, 0666)) != -1)
 					close(fildes);
@@ -29,7 +30,8 @@ void	create_files(t_cmdlst *cmd)
 			cmd = cmd->next;
 		}
 	}
-	else if (cmd->redir[1].type && cmd->redir[1].file)
+	else if (cmd->redir[1].type && cmd->redir[1].file
+		&& cmd->redir[1].file[0] != '-')
 		if ((fildes = open(cmd->redir[1].file, O_CREAT, 0666)) != -1)
 			close(fildes);
 }
@@ -38,14 +40,10 @@ int		redir_out(t_cmdlst *cmd)
 {
 	int fildes;
 
-	fildes = 0;
+	fildes = 1;
 	if ((cmd->redir[1].file == NULL || cmd->redir[1].file[0] == '-')
 		&& cmd->redir[1].type == SPL)
-	{
-		if (!(isatty(fildes = cmd->redir[1].fd[1]))
-			&& !(cmd->redir[1].fd[1] == 1 && cmd->pipes == PIPE_R))
-			return (error_fd(fildes));
-	}
+		return (aggregate(cmd));
 	else if (cmd->redir[1].file[0] != '-' && cmd->redir[1].type == SPL)
 	{
 		if ((fildes = open(cmd->redir[1].file, O_RDWR | O_TRUNC, 0666)) == -1)
@@ -57,9 +55,8 @@ int		redir_out(t_cmdlst *cmd)
 			return (error_file(NULL, cmd->redir[1].file));
 	}
 	dup2(fildes, cmd->redir[1].fd[0]);
+	dprintf(2, "fildes = %d\n", fildes);
 	close(fildes);
-	if (cmd->redir[1].file && cmd->redir[1].file[0] == '-')
-		close(cmd->redir[1].fd[0]);
 	return (1);
 }
 

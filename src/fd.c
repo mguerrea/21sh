@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 12:41:47 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 16:18:24 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 18:12:25 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,17 @@ void	restore_fd(t_cmdlst *cmd, int *saved)
 	close(saved[2]);
 	close(saved[3]);
 	free(saved);
+}
+
+int		aggregate(t_cmdlst *cmd)
+{
+	int fildes;
+
+	if (!(isatty(fildes = cmd->redir[1].fd[1]))
+			&& !(cmd->redir[1].fd[1] == 1 && cmd->pipes == PIPE_R))
+		return (error_fd(fildes));
+	dup2(fildes, cmd->redir[1].fd[0]);
+	if (cmd->redir[1].file && cmd->redir[1].file[0] == '-')
+		close(cmd->redir[1].fd[0]);
+	return (1);
 }
