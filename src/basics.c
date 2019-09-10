@@ -6,13 +6,13 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 13:09:56 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 15:49:59 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:58:12 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			is_number(char *str)
+int		is_number(char *str)
 {
 	while (*str)
 	{

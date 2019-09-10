@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 15:50:10 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:35:18 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int		run(char ***env)
 		tkn_lst_del(&tknlst);
 		run = iter_cmd(cmd, run, env);
 		free_cmdlst(&cmd);
-		// we have to free cmd and tknlst
 	}
 	free_history(&history);
 	return (0);

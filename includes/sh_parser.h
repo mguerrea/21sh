@@ -6,12 +6,14 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:49:53 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:33:32 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_PARSER_H
 # define SH_PARSER_H
+
+# include <unistd.h>
 
 # define TKN_END 1
 # define SGL_QUOTE 39
@@ -98,11 +100,25 @@ int					io_redirect(t_token **tkn, t_cmdlst *cmd);
 int					heredoc(t_token **tkn, t_redir *redir);
 
 /*
+** Lexer
+*/
+
+int					isoperator(const char *beg, const char *end);
+int					isoperator_start(char c);
+void				set_operator_type(t_token *tkn);
+void				state_operator(t_lexer *lxr, t_token **tknlst);
+void				state_ionumber(t_lexer *lxr, t_token **tknlst);
+t_token				*cut_line(const char *s, size_t len);
+
+/*
 ** Command list
 */
 
 void				free_cmdlst(t_cmdlst **lst);
 t_cmdlst			*cmd_create(void);
+void				cmd_lst_push(t_cmdlst **lst, t_cmdlst *cmd);
+void				cmd_lst_append(t_cmdlst **lst, t_cmdlst *cmd);
+t_cmdlst			*cmd_lst_gotoend(t_cmdlst *lst);
 
 
 #endif

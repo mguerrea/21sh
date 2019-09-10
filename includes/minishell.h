@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 15:49:40 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:31:51 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "sh_parser.h"
-# include <stdio.h>
 # include <term.h>
 # include <termios.h>
 # include <curses.h>
@@ -162,5 +161,11 @@ void			manage_pos(char *buff, t_line *line);
 
 void			handle_parent(int sig);
 void			catch_signals(int parent, char *line, int *pos);
+
+/*
+** FORMAT
+*/
+
+char			*ft_trimquotes(char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 13:06:16 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:36:01 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,5 @@ int		wrong_quote_rec(char *str, char current_quote)
 
 int		wrong_quote(char *str)
 {
-	return wrong_quote_rec(str, 0);
-	// int i;
-	// int simple;
-	// int dbl;
-
-	// i = 0;
-	// simple = 0;
-	// dbl = 0;
-	// while (str[i])
-	// {
-	// 	i++;
-	// 	if (str[i] == '\'')
-	// 		simple++;
-	// 	if (str[i] == '"')
-	// 		dbl++;
-	// }
-	// return (simple % 2 + dbl % 2);
+	return (wrong_quote_rec(str, 0));
 }
