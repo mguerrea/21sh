@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:28:17 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 14:14:54 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:54:50 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*tkn_create(char *word)
 
 	if (!(token = (t_token*)malloc(sizeof(t_token))))
 		return NULL;
-	token->word = word;
+	token->word = ft_strdup(word);
 	token->type = TOKEN;
 	token->next = NULL;
 	return (token);

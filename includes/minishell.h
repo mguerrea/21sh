@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:33:00 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:12:54 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ t_term		*init_term(t_term *term);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
 int		ft_print(int c);
 void	ft_replace(char **str, char find, char replace);
+int		is_number(char *str);
 
 /*
 ** COMMAND LINE

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:14:30 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:59:21 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int		run(char ***env)
 	t_cmdlst	*cmd;
 	t_history	*history;
 
+	tknlst = NULL;
+	cmd = NULL;
 	history = NULL;
 	run = 1;
 	while (run)
@@ -81,7 +83,9 @@ int		run(char ***env)
 			break ;
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
+		tkn_lst_del(&tknlst);
 		run = iter_cmd(cmd, run, env);
+		free_cmdlst(&cmd);
 		// we have to free cmd and tknlst
 	}
 	free_history(&history);

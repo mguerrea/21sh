@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:41:55 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/05/24 14:41:56 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:58:50 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	state_operator(t_lexer *lxr, t_token **tknlst)
 	tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
 	// tkn_lst_push(tknlst, tkn_create(tkn_txt));
 	tkn = tkn_create(tkn_txt);
+	free(tkn_txt);
 	set_operator_type(tkn);
 	tkn_lst_append(tknlst, tkn);
 	if (ft_isspace(*lxr->current))
@@ -91,6 +92,7 @@ void	state_ionumber(t_lexer *lxr, t_token **tknlst)
 	{
 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
 		tkn = tkn_create(tkn_txt);
+		free(tkn_txt);
 		tkn->type = IO_NUMBER;
 		tkn_lst_append(tknlst, tkn);
 		lxr->state = STATE_OPERATOR;
@@ -139,6 +141,7 @@ void	state_word(t_lexer *lxr, t_token **tknlst)
 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
 		// tkn_lst_push(tknlst, tkn_create(tkn_txt));
 		tkn = tkn_create(tkn_txt);
+		free(tkn_txt);
 		tkn->type = WORD;
 		tkn_lst_append(tknlst, tkn);
 		lxr->state = STATE_STD;
@@ -148,6 +151,7 @@ void	state_word(t_lexer *lxr, t_token **tknlst)
 		tkn_txt = ft_strsub(lxr->tkn_start, 0, lxr->current - lxr->tkn_start);
 		// tkn_lst_push(tknlst, tkn_create(tkn_txt));
 		tkn = tkn_create(tkn_txt);
+		free(tkn_txt);
 		tkn->type = WORD;
 		tkn_lst_append(tknlst, tkn);
 		lxr->state = STATE_OPERATOR;
@@ -162,6 +166,7 @@ t_token	*tokenize_line(const char *line)
 	t_lexer		lxr;
 	t_token		*tknlst;
 	t_token		*tkn;
+	char		*tkn_txt;
 
 	lxr.quoting = 0;
 	lxr.state = STATE_STD;
@@ -182,7 +187,9 @@ t_token	*tokenize_line(const char *line)
 	}
 	if (lxr.state != STATE_STD)
 	{
-		tkn = tkn_create(ft_strsub(lxr.tkn_start, 0, lxr.current - lxr.tkn_start));
+		tkn_txt = ft_strsub(lxr.tkn_start, 0, lxr.current - lxr.tkn_start);
+		tkn = tkn_create(tkn_txt);
+		free(tkn_txt);
 		if (lxr.state == STATE_WORD || lxr.state == STATE_IO_NUMBER)
 			tkn->type = WORD;
 		else if (lxr.state == STATE_OPERATOR)

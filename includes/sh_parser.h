@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 14:15:21 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:41:36 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@ void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
 void 				tkn_lst_append(t_token **lst, t_token *tkn);
 void				tkn_lst_del(t_token **lst);
+int					io_redirect(t_token **tkn, t_cmdlst *cmd);
+int					heredoc(t_token **tkn, t_redir *redir);
+
+/*
+** Command list
+*/
+
+void				free_cmdlst(t_cmdlst **lst);
+t_cmdlst			*cmd_create(void);
+
 
 /*
 WORD
