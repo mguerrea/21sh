@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:29:11 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:31:23 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_token				*tkn_create(char *word);
 void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
-void				tkn_lst_append(t_token **lst, t_token *tkn);
+void 				tkn_lst_append(t_token **lst, t_token *tkn);
+void				tkn_lst_del(t_token **lst);
 
 #endif

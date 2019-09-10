@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:28:17 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/07/01 12:24:46 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:14:54 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,26 @@ void	tkn_lst_delfirst(t_token **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
+		if (tmp->word)
+			free(tmp->word);
 		free(tmp);
+	}
+}
+
+void	tkn_lst_del(t_token **lst)
+{
+	t_token	*tmp;
+	
+	if (lst)
+	{
+		while(*lst)
+		{
+			tmp = *lst;
+			*lst = (*lst)->next;
+			if (tmp->word)
+				free(tmp->word);
+			free(tmp);
+		}
+		*lst = NULL;
 	}
 }
