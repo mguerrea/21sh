@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 16:27:21 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 12:58:44 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,9 @@ char *get_heredoc();
 
 int		do_pipe(t_cmdlst *cmd);
 int		redirection(t_cmdlst *cmd);
+void	create_files(t_cmdlst *cmd);
+int *save_fd(t_cmdlst *cmd);
+void restore_fd(t_cmdlst *cmd, int *saved);
 
 /*
 ** CURSOR
