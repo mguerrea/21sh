@@ -1,40 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buffer.c                                           :+:      :+:    :+:   */
+/*   errors_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/10 13:50:08 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:16:30 by mguerrea         ###   ########.fr       */
+/*   Created: 2019/09/10 14:55:25 by mguerrea          #+#    #+#             */
+/*   Updated: 2019/09/10 14:56:03 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_insert(char *line, char c, int pos)
+int		throw_error(char *str)
 {
-	int i;
-
-	i = ft_strlen(line);
-	while (i > pos)
-	{
-		line[i] = line[i - 1];
-		i--;
-	}
-	line[pos] = c;
+	ft_putendl_fd(str, 2);
+	return (0);
 }
 
-void	ft_delete(t_line *line)
+void	malloc_error(void)
 {
-	int len;
-	int pos;
-
-	pos = line->pos;
-	len = ft_strlen(line->str);
-	while (pos < len)
-	{
-		line->str[pos] = line->str[pos + 1];
-		pos++;
-	}
+	ft_putendl_fd("malloc error, abort program", 2);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 15:54:28 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 13:07:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:34:50 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,22 @@ int	ft_env(t_cmdlst *cmd, char ***environ)
 	if (redirection(cmd) == -1)
 		return (1);
 	if (cmd->args[1] == NULL)
-	{
 		while ((*environ)[i])
 			ft_putendl((*environ)[i++]);
-	}
 	else
 	{
 		ft_delentry(&(cmd->args), 0);
 		if (ft_strcmp(cmd->args[0], "-i") == 0)
 		{
 			if (!(tmp = (char **)malloc(sizeof(char *))))
-				return(throw_error("malloc error"));
+				return (throw_error("malloc error"));
 			tmp[0] = NULL;
-			ft_delentry(&(cmd->args), 1);
-			launch_bin(cmd, &tmp);
+			ft_delentry(&(cmd->args), 0);
+			execute(cmd, &tmp);
 			free(tmp);
 		}
 		else
-			launch_bin(cmd, environ);
+			execute(cmd, environ);
 	}
 	return (1);
 }

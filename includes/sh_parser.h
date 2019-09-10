@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:41:36 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:49:53 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ typedef enum		e_tkn_type
 	IO_NUMBER
 }					t_tkn_type;
 
-typedef struct		e_token
+typedef struct		s_token
 {
 	char			*word;
 	t_tkn_type		type;
-	struct e_token	*next;
+	struct s_token	*next;
 }					t_token;
 
-typedef struct		e_lexer
+typedef struct		s_lexer
 {
 	const char		*tkn_start;
 	const char		*current;
@@ -59,7 +59,7 @@ typedef enum		e_pipemask
 {
 	PIPE_R = 1 << 0,
 	PIPE_L = 1 << 1
-}				t_pipemask;
+}					t_pipemask;
 
 typedef enum		e_redirtype
 {
@@ -74,7 +74,6 @@ typedef struct		s_redir
 	int				fd[2];
 	t_redirtype		type;
 }					t_redir;
-
 
 typedef struct		s_cmdlst
 {
@@ -105,13 +104,5 @@ int					heredoc(t_token **tkn, t_redir *redir);
 void				free_cmdlst(t_cmdlst **lst);
 t_cmdlst			*cmd_create(void);
 
-
-/*
-WORD
-ASSIGNMENT_WORD
-NAME
-NEWLINE
-IO_NUMBER n[> < >> <<]
-*/
 
 #endif
