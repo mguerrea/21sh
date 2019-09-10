@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:35:46 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:37:35 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		main(int argc, char **argv, char **environ)
 	(void)argv;
 	g_term = NULL;
 	if (!(g_term = init_term(g_term)))
-		return(throw_error("seems like you did not send us a proper env"));
+		return (throw_error("seems like you did not send us a proper env"));
 	if (!(env = init_shell(environ)))
 		return (throw_error("malloc error"));
 	run(&env);

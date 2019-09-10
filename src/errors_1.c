@@ -6,13 +6,13 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:56:10 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 15:04:53 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 15:36:50 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	error_file(char *cmd, char *errors)
+int		error_file(char *cmd, char *errors)
 {
 	ft_putstr_fd("21sh: ", 2);
 	if (cmd)
