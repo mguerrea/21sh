@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 12:41:47 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:56:38 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:18:24 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ void	restore_fd(t_cmdlst *cmd, int *saved)
 	close(saved[1]);
 	close(saved[2]);
 	close(saved[3]);
+	free(saved);
 }

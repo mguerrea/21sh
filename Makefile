@@ -6,11 +6,11 @@
 #    By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/19 14:03:15 by jgourdin          #+#    #+#              #
-#    Updated: 2019/09/10 16:29:18 by gmichaud         ###   ########.fr        #
+#    Updated: 2019/09/10 16:37:44 by gmichaud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = 21sh
 
 SRC_NAME = basics.c bin.c builtin.c cd.c environ.c errors_1.c format.c free.c \
 	token_list.c lexer.c parser.c output_input.c init.c main.c prompt.c \

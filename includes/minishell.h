@@ -6,14 +6,13 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 16:31:51 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:37:48 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>
 # include <sys/param.h>
 # include <sys/stat.h>
 # include <sys/types.h>

@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 16:33:32 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:37:45 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_token				*tkn_create(char *word);
 void				tkn_lst_push(t_token **lst, t_token *tkn);
 void				tkn_lst_delfirst(t_token **lst);
 t_token				*tokenize_line(const char *line);
-void 				tkn_lst_append(t_token **lst, t_token *tkn);
+void				tkn_lst_append(t_token **lst, t_token *tkn);
 void				tkn_lst_del(t_token **lst);
 int					io_redirect(t_token **tkn, t_cmdlst *cmd);
 int					heredoc(t_token **tkn, t_redir *redir);
@@ -119,6 +119,5 @@ t_cmdlst			*cmd_create(void);
 void				cmd_lst_push(t_cmdlst **lst, t_cmdlst *cmd);
 void				cmd_lst_append(t_cmdlst **lst, t_cmdlst *cmd);
 t_cmdlst			*cmd_lst_gotoend(t_cmdlst *lst);
-
 
 #endif
