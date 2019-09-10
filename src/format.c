@@ -3,35 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   format.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/09 17:23:06 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/10 12:53:27 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// char	*ft_trimquotes(char *s)
+// {
+// 	char	*str;
+// 	size_t	i;
+// 	size_t	j;
+// 	size_t	k;
+
+// 	if (!s)
+// 		return (NULL);
+// 	i = 0;
+// 	while (s[i] == '"')
+// 		i++;
+// 	j = ft_strlen((char *)s) - 1;
+// 	while ((s[j] == '"') && j > i)
+// 		j--;
+// 	if (!(str = ft_strnew(j - i + 1)))
+// 		return (NULL);
+// 	k = -1;
+// 	while (++k < j - i + 1)
+// 		str[k] = s[i + k];
+// 	return (str);
+// }
+
+size_t	get_new_len(char *s, char current_quote)
+{
+	char quote;
+
+	quote = 0;
+	if (!(*s))
+		return (0);
+	if (*s == current_quote)
+		return (get_new_len(++s, 0));
+	if (!current_quote && (*s == '"' || *s == '\''))
+	{
+		quote = *s;
+		return (get_new_len(++s, quote));
+	}
+	return (get_new_len(++s, current_quote) + 1);
+}
+
+void	get_copy(char *src, char *dest, char current_quote)
+{
+	char quote;
+
+	quote = 0;
+	if (!(*src))
+		return ;
+	else if (*src == current_quote)
+		get_copy(++src, dest, 0);
+	else if (!current_quote && (*src == '"' || *src == '\''))
+	{
+		quote = *src;
+		get_copy(++src, dest, quote);
+	}
+	else
+	{
+		*dest = *src;
+		get_copy(++src, ++dest, current_quote);
+	}
+}
+
 char	*ft_trimquotes(char *s)
 {
-	char	*str;
-	size_t	i;
-	size_t	j;
-	size_t	k;
+	size_t	new_len;
+	char *str;
 
 	if (!s)
 		return (NULL);
-	i = 0;
-	while (s[i] == '"')
-		i++;
-	j = ft_strlen((char *)s) - 1;
-	while ((s[j] == '"') && j > i)
-		j--;
-	if (!(str = ft_strnew(j - i + 1)))
+	new_len = get_new_len(s, 0);
+	str = NULL;
+	if (!(str = ft_strnew(new_len)))
 		return (NULL);
-	k = -1;
-	while (++k < j - i + 1)
-		str[k] = s[i + k];
+	get_copy(s, str, 0);
 	return (str);
 }
 
