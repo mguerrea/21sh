@@ -6,45 +6,29 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 16:00:11 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/11 19:13:45 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		format_var(char **var, char **environ)
+static void		format_tilde(char **word)
 {
-	char **value;
+	char	*temp;
+	char	*home;
 
-	if (!(value = ft_getenv(environ, *(var) + 1)))
-		return (-1);
-	ft_strdel(var);
-	if (!(*var = ft_strjointab(value, ':')))
-		return (-1);
-	free_tab(value);
-	return (1);
-}
-
-int		format_tilde(char **args, char **environ)
-{
-	char **var;
-	char *temp;
-	char *home;
-
-	if (!(var = ft_getenv(environ, "HOME")))
+	if (!(home = getenv("HOME")))
 		home = getpwuid(getuid())->pw_dir;
-	else
-		home = var[0];
-	temp = ft_strjoin(home, (*args) + 1);
-	free(*args);
-	*args = temp;
-	free_tab(var);
-	return (1);
+	
+	if (!(temp = ft_strjoin(home, (*word) + 1)))
+		malloc_error();
+	free(*word);
+	*word = temp;
 }
 
-size_t	count_args(t_token *words)
+static size_t	count_args(t_token *words)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (words)
@@ -55,7 +39,7 @@ size_t	count_args(t_token *words)
 	return (len);
 }
 
-void	format_args(t_cmdlst *cmd, char **environ)
+void			format_args(t_cmdlst *cmd, char **environ)
 {
 	size_t	i;
 	size_t	len;
@@ -68,6 +52,9 @@ void	format_args(t_cmdlst *cmd, char **environ)
 	cmd->args = (char**)malloc(sizeof(char*) * (len + 1));
 	while (words)
 	{
+		if (words->word && words->word[0] == '~')
+			format_tilde(&(words->word));
+		format_var(&(words->word));
 		cmd->args[i] = ft_trimquotes(words->word);
 		++i;
 		words = words->next;
