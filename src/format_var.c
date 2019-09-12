@@ -6,13 +6,14 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 19:11:59 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/11 19:13:01 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/12 11:07:01 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char		*get_formated_string(char *s, char *var, char *varname, size_t index)
+static char		*get_formated_string(char *s, char *var, char *varname,
+	size_t index)
 {
 	char	*tmp;
 	char	*ret;
@@ -51,17 +52,19 @@ static size_t	get_var(char **s, size_t index)
 	if (!(var = getenv(varname)))
 	{
 		ret = get_formated_string(*s, "", varname, index);
+		free(varname);
 		free(*s);
 		*s = ret;
 		return (index - 1);
 	}
 	ret = get_formated_string(*s, var, varname, index);
+	free(varname);
 	free(*s);
 	*s = ret;
 	return (index + ft_strlen(var) - 1);
 }
 
-void		format_var(char **s)
+void			format_var(char **s)
 {
 	char	quote;
 	size_t	i;

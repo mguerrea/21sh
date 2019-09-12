@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/11 19:13:45 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/12 11:06:03 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void		format_tilde(char **word)
 
 	if (!(home = getenv("HOME")))
 		home = getpwuid(getuid())->pw_dir;
-	
 	if (!(temp = ft_strjoin(home, (*word) + 1)))
 		malloc_error();
 	free(*word);
