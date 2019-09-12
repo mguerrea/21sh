@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:41:11 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 15:44:56 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/12 11:25:28 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ static char	*get_heredoc_content(char *end_word, char *content)
 		&& ft_strlen(end_word) + 1 == len)
 		|| line[len - 1] == 4)
 	{
+		free(line);
 		return (content);
 	}
 	if (!content)
-	{
 		new_content = line;
-	}
 	else
 	{
 		new_content = ft_strjoin(content, line);
