@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_parser.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 16:37:45 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/13 21:54:00 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct		s_cmdlst
 	int				fd[2];
 	t_pipemask		pipes;
 	t_redir			redir[2];
+	int				exec;
 	struct s_cmdlst	*prev;
 	struct s_cmdlst	*next;
 }					t_cmdlst;
