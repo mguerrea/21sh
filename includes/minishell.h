@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/14 14:19:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/14 14:45:43 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ int				error_fd(int fd);
 */
 
 char			**init_shell(char **environ);
-t_term			*init_term(t_term *term);
+//t_term			*init_term(t_term *term);
+int				init_term(void);
 
 /*
 ** BASICS

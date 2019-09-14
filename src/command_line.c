@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 14:40:17 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/14 14:53:13 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int		get_line(t_history **history)
 
 	if ((res = tgetstr("im", NULL)))
 		tputs(res, 1, ft_print);
-	print_prompt(&(line->pos));
+	if (g_term)
+		print_prompt(&(line->pos));
 	line->str = ft_strnew(ARG_MAX);
 	catch_signals(1, line->str, &(line->pos));
 	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)

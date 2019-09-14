@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/14 14:36:32 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/14 14:54:52 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,20 @@ int		run(char ***env)
 int		main(int argc, char **argv, char **environ)
 {
 	char		**env;
+	int			ret;
 
 	(void)argc;
 	(void)argv;
 	g_term = NULL;
 	g_pid[0] = -2;
-	if (!(g_term = init_term(g_term)))
+	if ((ret = init_term()) == -1)
 		return (throw_error("seems like you did not send us a proper env"));
+	else if (ret == 0)
+	{
+		ft_putendl("Non interactive mode");
+		free(g_term);
+		g_term = NULL;
+	}
 	if (!(env = init_shell(environ)))
 		return (throw_error("malloc error"));
 	run(&env);
