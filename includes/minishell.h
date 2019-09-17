@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/12 15:09:33 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/17 19:33:13 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct	s_line
 typedef int	(*t_built_in)(t_cmdlst *, char ***);
 
 t_term			*g_term;
-pid_t			g_pid;
+pid_t			g_pid[MAX_FD / 2];
 
 /*
 ** RUN
@@ -64,6 +64,7 @@ int				ft_env(t_cmdlst *cmd, char ***environ);
 int				ft_cd(t_cmdlst *cmd, char ***environ);
 int				launch_bin(t_cmdlst *cmd, char ***envriton);
 int				execute(t_cmdlst *cmd, char ***environ);
+int				iter_cmd(t_cmdlst *cmd, int run, char ***env);
 
 /*
 ** PROMPT
@@ -117,7 +118,8 @@ int				error_fd(int fd);
 */
 
 char			**init_shell(char **environ);
-t_term			*init_term(t_term *term);
+//t_term			*init_term(t_term *term);
+int				init_term(void);
 
 /*
 ** BASICS
@@ -144,7 +146,7 @@ char			*get_heredoc(void);
 ** I/O
 */
 
-int				do_pipe(t_cmdlst *cmd);
+int				do_pipe(t_cmdlst *cmd, char ***env);
 int				redirection(t_cmdlst *cmd);
 void			create_files(t_cmdlst *cmd);
 int				*save_fd(t_cmdlst *cmd);

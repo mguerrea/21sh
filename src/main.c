@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 17:46:30 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/14 14:54:52 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ int		execute(t_cmdlst *cmd, char ***environ)
 {
 	int i;
 	int ret;
+	pid_t pid;
 
 	i = 0;
 	ret = 1;
+	cmd->exec = 1;
 	while (i < NB_BUILTIN)
 	{
 		if (ft_strcmp(cmd->args[0], g_builtin_lst[i]) == 0)
@@ -33,9 +35,9 @@ int		execute(t_cmdlst *cmd, char ***environ)
 	}
 	if (((cmd->pipes & PIPE_R) && i < NB_BUILTIN) || i == NB_BUILTIN)
 	{
-		if ((g_pid = do_pipe(cmd)) == -1)
+		if ((pid = do_pipe(cmd, environ)) == -1)
 			throw_error("fork error");
-		if (g_pid == 0)
+		if (pid == 0)
 		{
 			ret = (i < NB_BUILTIN) ? g_builtin_fct[i](cmd, environ) :
 				launch_bin(cmd, environ);
@@ -53,12 +55,16 @@ int		iter_cmd(t_cmdlst *cmd, int run, char ***env)
 
 	while (cmd && run)
 	{
+		if (cmd->exec == 0)
+		{
 		if (!(saved = save_fd(cmd)))
 			malloc_error();
 		format_args(cmd, *env);
 		create_files(cmd);
-		run = execute(cmd, env);
+		if (cmd->exec == 0)
+			run = execute(cmd, env);
 		restore_fd(cmd, saved);
+		}
 		cmd = cmd->next;
 	}
 	return (run);
@@ -83,6 +89,14 @@ int		run(char ***env)
 			break ;
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
+		while (cmd->next)
+		{
+			cmd->exec = 0;
+			cmd = cmd->next;
+		}
+		cmd->exec = 0;
+		while (cmd->prev)
+			cmd = cmd->prev;
 		tkn_lst_del(&tknlst);
 		run = iter_cmd(cmd, run, env);
 		free_cmdlst(&cmd);
@@ -94,12 +108,20 @@ int		run(char ***env)
 int		main(int argc, char **argv, char **environ)
 {
 	char		**env;
+	int			ret;
 
 	(void)argc;
 	(void)argv;
 	g_term = NULL;
-	if (!(g_term = init_term(g_term)))
+	g_pid[0] = -2;
+	if ((ret = init_term()) == -1)
 		return (throw_error("seems like you did not send us a proper env"));
+	else if (ret == 0)
+	{
+		ft_putendl("Non interactive mode");
+		free(g_term);
+		g_term = NULL;
+	}
 	if (!(env = init_shell(environ)))
 		return (throw_error("malloc error"));
 	run(&env);
