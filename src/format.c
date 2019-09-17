@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/12 11:06:03 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/12 15:02:32 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void			format_args(t_cmdlst *cmd, char **environ)
 	words = cmd->argslst;
 	len = count_args(cmd->argslst);
 	i = 0;
-	cmd->args = (char**)malloc(sizeof(char*) * (len + 1));
+	if (!(cmd->args = (char**)malloc(sizeof(char*) * (len + 1))))
+		malloc_error();
 	while (words)
 	{
 		if (words->word && words->word[0] == '~')
