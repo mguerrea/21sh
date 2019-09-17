@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/17 19:29:32 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/17 19:41:25 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int	filename(t_token **tkn, t_redir *redir)
 {
 	if (*tkn && (*tkn)->type == WORD)
 	{
+		if (redir->file != NULL)
+			ft_strdel(&(redir->file));
 		redir->file = ft_strdup((*tkn)->word);
 		*tkn = (*tkn)->next;
 		return (1);
