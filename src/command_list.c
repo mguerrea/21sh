@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:09:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/17 19:40:10 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:35:34 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_cmdlst	*cmd_create(void)
 		return (NULL);
 	init_redir(cmd);
 	cmd->pipes = 0;
+	cmd->exec = 0;
 	cmd->args = NULL;
 	cmd->argslst = NULL;
 	cmd->next = NULL;

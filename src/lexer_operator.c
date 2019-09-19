@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 16:01:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/10 16:34:29 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:48:39 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,15 @@ void		state_ionumber(t_lexer *lxr, t_token **tknlst)
 		lxr->state = STATE_OPERATOR;
 		lxr->tkn_start = lxr->current;
 	}
-	else
+	else if (*lxr->current == ' ')
 	{
-		lxr->state = STATE_WORD;
+		if (!(tkn = cut_line(lxr->tkn_start, lxr->current - lxr->tkn_start)))
+			malloc_error();
+		tkn->type = WORD;
+		tkn_lst_append(tknlst, tkn);
+		lxr->state = STATE_STD;
+		lxr->tkn_start = lxr->current;
 	}
+	else
+		lxr->state = STATE_WORD;
 }
