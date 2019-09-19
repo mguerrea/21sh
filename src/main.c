@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/19 15:43:00 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/19 16:02:01 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ int		iter_cmd(t_cmdlst *cmd, int run, char ***env)
 			malloc_error();
 		format_args(cmd, *env);
 		create_files(cmd);
-		if (cmd->exec == 0)
-			run = execute(cmd, env);
+		run = execute(cmd, env);
 		restore_fd(cmd, saved);
 		}
 		cmd = cmd->next;

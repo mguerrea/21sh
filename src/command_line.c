@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/14 14:53:13 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/19 16:34:32 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	manage_char(char *buff, t_line *line)
 	if (buff[0] != 27 && buff[0] != 127 && buff[0] != '\n'
 		&& line->pos < ARG_MAX && buff[0] != '\t' && buff[0] != 2)
 	{
+		if (buff[0] == 4 && line->pos > 0)
+			return ;
 		if (buff[1] == 0)
 		{
 			ft_putstr(buff);
@@ -94,7 +96,7 @@ int		get_line(t_history **history)
 		manage_history(buff, history, line);
 		manage_char(buff, line);
 		manage_copy(buff, line);
-		if (manage_endline(buff, line) || buff[0] == 4)
+		if (manage_endline(buff, line) || line->str[0] == 4)
 			break ;
 	}
 	ft_putchar('\n');
