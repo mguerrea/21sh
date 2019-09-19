@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/17 19:41:25 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:13:59 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ static int	io_file_in(t_token **tkn, t_cmdlst *cmd, t_token *io_number)
 {
 	t_tkn_type	redir_type;
 
-	cmd->redir[0].type = (*tkn)->type == DLESS ? DBL : SPL;
 	redir_type = (*tkn)->type;
+	if (redir_type == DLESS && cmd->redir[0].type != DBL
+		&& cmd->redir[0].type != NONE)
+		ft_strdel(&(cmd->redir[0].file));
+	cmd->redir[0].type = redir_type == DLESS ? DBL : SPL;
 	if (io_number)
 		cmd->redir[0].fd[0] = ft_atoi(io_number->word);
 	*tkn = (*tkn)->next;
