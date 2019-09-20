@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 17:56:22 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 20:09:28 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		redir_in(t_cmdlst *cmd)
 
 	fildes = 0;
 	if (cmd->redir[0].file == NULL && cmd->redir[0].type == SPL)
-		aggregate(cmd);
+		return(aggregate(cmd));
 	else if (cmd->redir[0].file && cmd->redir[0].type == SPL)
 	{
 		if ((fildes = open(cmd->redir[0].file, O_RDONLY)) == -1)
