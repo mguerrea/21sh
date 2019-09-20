@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/17 19:38:48 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:44:06 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ static int		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
 			*tkn = (*tkn)->next;
 			return (cmd_suffix(tkn, cmd));
 		}
+		else if (((*tkn)->type == PIPE && (*tkn)->type == SEMI))
+		{
+			return (1);
+		}
 		else if (io_redirect(tkn, cmd))
 		{
 			return (cmd_suffix(tkn, cmd));
 		}
-		else if (!(*tkn) || ((*tkn)->type != PIPE && (*tkn)->type != SEMI))
+		else
 		{
 			return (0);
 		}
@@ -46,7 +50,10 @@ static t_cmdlst	*simple_cmd(t_token **tkn)
 			if ((*tkn)->type == PIPE || (*tkn)->type == SEMI)
 				return (cmd);
 			if (!cmd_suffix(tkn, cmd))
+			{
+				free_cmd(&cmd);
 				return (NULL);
+			}
 		}
 	}
 	return (cmd);

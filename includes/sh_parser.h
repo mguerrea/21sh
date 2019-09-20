@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_parser.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/13 21:54:00 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:43:46 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ t_cmdlst			*cmd_create(void);
 void				cmd_lst_push(t_cmdlst **lst, t_cmdlst *cmd);
 void				cmd_lst_append(t_cmdlst **lst, t_cmdlst *cmd);
 t_cmdlst			*cmd_lst_gotoend(t_cmdlst *lst);
+void				free_cmd(t_cmdlst **cmd);
 
 #endif

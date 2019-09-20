@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:09:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/19 15:35:34 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:43:21 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_cmdlst	*cmd_create(void)
 	return (cmd);
 }
 
-static void	free_cmd(t_cmdlst **cmd)
+void		free_cmd(t_cmdlst **cmd)
 {
 	int	i;
 
