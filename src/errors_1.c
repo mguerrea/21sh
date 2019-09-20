@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:56:10 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/10 15:36:50 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:11:49 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 int		error_file(char *cmd, char *errors)
 {
-	ft_putstr_fd("21sh: ", 2);
-	if (cmd)
+	if (access(errors, X_OK) != 0)
+		error_rights(NULL, errors);
+	else
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
+		ft_putstr_fd("21sh: ", 2);
+		if (cmd)
+		{
+			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd(": ", 2);
+		}
+		ft_putstr_fd(errors, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
-	ft_putstr_fd(errors, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
 	return (-1);
 }
 

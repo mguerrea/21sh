@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/19 16:34:32 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 14:58:16 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ int		manage_endline(char *buff, t_line *line)
 	{
 		if (line->str[line->pos - 1] == '\\')
 		{
-			ft_putstr("\n> ");
+			ft_putstr_fd("\n> ", 0);
 			line->pos--;
 			ft_delete(line);
 		}
 		else if (line->str[line->pos - 1] == '|')
-			ft_putstr("\n> ");
+			ft_putstr_fd("\n> ", 0);
 		else if (wrong_quote(line->str))
 		{
-			ft_putstr("\n> ");
+			ft_putstr_fd("\n> ", 0);
 			ft_insert(line->str, '\n', line->pos);
 			line->pos++;
 		}
 		else if (line->str[0] == 0)
 		{
-			ft_putchar('\n');
+			ft_putchar_fd('\n', 0);
 			print_prompt(&(line->pos));
 		}
 		else
@@ -63,7 +63,7 @@ void	manage_char(char *buff, t_line *line)
 			return ;
 		if (buff[1] == 0)
 		{
-			ft_putstr(buff);
+			ft_putstr_fd(buff, 0);
 			ft_insert(line->str, buff[0], line->pos);
 			line->pos++;
 		}
@@ -99,7 +99,7 @@ int		get_line(t_history **history)
 		if (manage_endline(buff, line) || line->str[0] == 4)
 			break ;
 	}
-	ft_putchar('\n');
+	ft_putchar_fd('\n', 0);
 	return (save_history(history, &(line->str)));
 }
 
@@ -114,7 +114,7 @@ char	*get_heredoc(void)
 		tputs(res, 1, ft_print);
 	line->pos = 0;
 	line->str = ft_strnew(ARG_MAX);
-	ft_putstr("> ");
+	ft_putstr_fd("> ", 2);
 	while ((ret = read(STDIN_FILENO, buff, 15)) > 0)
 	{
 		buff[ret] = 0;
@@ -127,6 +127,6 @@ char	*get_heredoc(void)
 			break ;
 		}
 	}
-	ft_putchar('\n');
+	ft_putchar_fd('\n', 0);
 	return (line->str);
 }

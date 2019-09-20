@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:58:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/14 14:28:43 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:05:23 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	manage_child(t_cmdlst *cmd)
 {
-	tcsetattr(0, TCSANOW, &g_term->init);
 	if (cmd->pipes & PIPE_L)
 	{
 		dup2(cmd->fd[0], STDIN_FILENO);
@@ -27,6 +26,22 @@ void	manage_child(t_cmdlst *cmd)
 		close(cmd->next->fd[0]);
 	}
 
+}
+
+void	manage_parent(t_cmdlst *cmd, char ***env, int i)
+{
+	catch_signals(0, NULL, NULL);
+	if (cmd->pipes & PIPE_L)
+		close(cmd->fd[0]);
+	if (cmd->pipes & PIPE_R)
+	{
+		close(cmd->fd[1]);
+		iter_cmd(cmd->next, 1, env);
+	}
+	waitpid(g_pid[i], NULL, WUNTRACED);
+	g_pid[i] = -2;
+	if (i == 0)
+		tcsetattr(0, TCSANOW, &g_term->cur);
 }
 
 int		do_pipe(t_cmdlst *cmd, char ***env)
@@ -50,18 +65,19 @@ int		do_pipe(t_cmdlst *cmd, char ***env)
 		manage_child(cmd);
 	else
 	{
-		catch_signals(0, NULL, NULL);
-		if (cmd->pipes & PIPE_L)
-			close(cmd->fd[0]);
-		if (cmd->pipes & PIPE_R)
-		{
-			close(cmd->fd[1]);
-			iter_cmd(cmd->next, 1, env);
-		}
-		waitpid(g_pid[i], NULL, WUNTRACED);
-		g_pid[i] = -2;
-		if (i == 0)
-			tcsetattr(0, TCSANOW, &g_term->cur);
+		manage_parent(cmd, env, i);
+		// catch_signals(0, NULL, NULL);
+		// if (cmd->pipes & PIPE_L)
+		// 	close(cmd->fd[0]);
+		// if (cmd->pipes & PIPE_R)
+		// {
+		// 	close(cmd->fd[1]);
+		// 	iter_cmd(cmd->next, 1, env);
+		// }
+		// waitpid(g_pid[i], NULL, WUNTRACED);
+		// g_pid[i] = -2;
+		// if (i == 0)
+		// 	tcsetattr(0, TCSANOW, &g_term->cur);
 	}
 	return (g_pid[i]);
 }
