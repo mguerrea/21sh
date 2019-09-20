@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 17:07:18 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 17:25:04 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	get_fd(t_token **tkn, t_redir *redir)
 		else if (!ft_strcmp((*tkn)->word, "-"))
 		{
 			redir->close = 1;
+			*tkn = (*tkn)->next;
 			return (1);
 		}
 	}
