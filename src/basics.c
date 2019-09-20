@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basics.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 13:09:56 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/11 18:16:38 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 14:46:38 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 
 int		ft_print(int c)
 {
-	ft_putchar(c);
+	ft_putchar_fd(c, 0);
 	return (1);
 }
 
