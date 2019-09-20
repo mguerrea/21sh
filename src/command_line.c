@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 13:37:29 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 14:58:16 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:08:33 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		manage_endline(char *buff, t_line *line)
 			line->pos--;
 			ft_delete(line);
 		}
-		else if (line->str[line->pos - 1] == '|')
+		else if (line->str[ft_strlen(line->str) - 1] == '|')
 			ft_putstr_fd("\n> ", 0);
 		else if (wrong_quote(line->str))
 		{

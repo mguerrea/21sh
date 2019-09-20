@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 18:24:23 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 18:30:07 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int		run(char ***env)
 			break ;
 		tknlst = tokenize_line(history->line);
 		cmd = parse(tknlst);
-//		dprintf(2, "seg 1\n");
 		tkn_lst_del(&tknlst);
 		run = iter_cmd(cmd, run, env);
 		free_cmdlst(&cmd);
