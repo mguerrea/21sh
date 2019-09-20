@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:58:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 15:05:23 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 18:21:24 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,6 @@ int		do_pipe(t_cmdlst *cmd, char ***env)
 	else if (g_pid[i] == 0)
 		manage_child(cmd);
 	else
-	{
 		manage_parent(cmd, env, i);
-		// catch_signals(0, NULL, NULL);
-		// if (cmd->pipes & PIPE_L)
-		// 	close(cmd->fd[0]);
-		// if (cmd->pipes & PIPE_R)
-		// {
-		// 	close(cmd->fd[1]);
-		// 	iter_cmd(cmd->next, 1, env);
-		// }
-		// waitpid(g_pid[i], NULL, WUNTRACED);
-		// g_pid[i] = -2;
-		// if (i == 0)
-		// 	tcsetattr(0, TCSANOW, &g_term->cur);
-	}
 	return (g_pid[i]);
 }

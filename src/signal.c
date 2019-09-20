@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 17:22:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/13 21:35:59 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 17:22:26 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	handle_child(int sig)
 	while (g_pid[i] != -2)
 		i++;
 	if (sig == 2)
+	{
 		kill(g_pid[i - 1], 2);
+		ft_putchar_fd('\n', 0);
+	}
 }
 
 void	handle_parent(int sig)
