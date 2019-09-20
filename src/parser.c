@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 15:44:06 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:53:06 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int		cmd_suffix(t_token **tkn, t_cmdlst *cmd)
 			*tkn = (*tkn)->next;
 			return (cmd_suffix(tkn, cmd));
 		}
-		else if (((*tkn)->type == PIPE && (*tkn)->type == SEMI))
+		else if (((*tkn)->type == PIPE || (*tkn)->type == SEMI))
 		{
 			return (1);
 		}
@@ -100,7 +100,16 @@ t_cmdlst		*parse(t_token *tknlst)
 	cmdlst = NULL;
 	if (tknlst && !list(&tknlst, &cmdlst))
 	{
-		ft_putstr_fd("parse error\n", 2);
+		if (tknlst)
+		{
+			ft_putstr_fd("parse error near '", 2);
+			ft_putstr_fd(tknlst->word, 2);
+			ft_putstr_fd("'\n", 2);
+		}
+		else
+		{
+			ft_putstr_fd("parse error near '\\n'\n", 2);
+		}
 		free_cmdlst(&cmdlst);
 	}
 	return (cmdlst);
