@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 17:25:04 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 18:34:14 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static int	filename(t_token **tkn, t_redir *redir)
 	{
 		if (redir->file != NULL)
 			ft_strdel(&(redir->file));
-		redir->file = ft_strdup((*tkn)->word);
+		if ((*tkn)->word[0] == '~')
+			format_tilde(&((*tkn)->word));
+		redir->file = ft_trimquotes((*tkn)->word);
 		*tkn = (*tkn)->next;
 		return (1);
 	}
@@ -27,16 +29,22 @@ static int	filename(t_token **tkn, t_redir *redir)
 
 static int	get_fd(t_token **tkn, t_redir *redir)
 {
+	char	*unquoted;
+	
+	unquoted = NULL;
 	if (*tkn && (*tkn)->type == WORD)
 	{
-		if (is_number((*tkn)->word))
+		unquoted = ft_trimquotes((*tkn)->word);
+		if (is_number(unquoted))
 		{
-			redir->fd[1] = ft_atoi((*tkn)->word);
+			redir->fd[1] = ft_atoi(unquoted);
+			free(unquoted);
 			*tkn = (*tkn)->next;
 			return (1);
 		}
-		else if (!ft_strcmp((*tkn)->word, "-"))
+		else if (!ft_strcmp(unquoted, "-"))
 		{
+			free(unquoted);
 			redir->close = 1;
 			*tkn = (*tkn)->next;
 			return (1);

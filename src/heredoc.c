@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:41:11 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/17 19:54:30 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 18:34:28 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,14 @@ static char	*get_heredoc_content(char *end_word, char *content)
 
 int			heredoc(t_token **tkn, t_redir *redir)
 {
-	// char *content;
-	// char *final;
-
-	// content = NULL;
-	// final = NULL;
+	char	*unquoted;
+	
+	unquoted = NULL;
 	if (*tkn && (*tkn)->type == WORD)
 	{
-		redir->file = get_heredoc_content((*tkn)->word, redir->file);
-		// if (!redir->file)
-		// 	redir->file = content;
-		// else
-		// {
-		// 	if (!(final = ft_strjoin(redir->file, content)))
-		// 		malloc_error();
-		// 	ft_strdel(&(redir->file));
-		// 	ft_strdel(&content);
-		// 	redir->file = final;
-		// }
+		unquoted = ft_trimquotes((*tkn)->word);
+		redir->file = get_heredoc_content(unquoted, redir->file);
+		free(unquoted);
 		*tkn = (*tkn)->next;
 		return (1);
 	}

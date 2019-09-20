@@ -6,13 +6,13 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/12 15:02:32 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 17:57:54 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		format_tilde(char **word)
+void			format_tilde(char **word)
 {
 	char	*temp;
 	char	*home;
