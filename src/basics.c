@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 13:09:56 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 14:46:38 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:13:10 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,18 @@ void	ft_replace(char **str, char find, char replace)
 			(*str)[i] = replace;
 		i++;
 	}
+}
+
+char	last_char(char *str)
+{
+	int i;
+
+	i = ft_strlen(str) - 1;
+	while (i >= 0)
+	{
+		if(str[i] != ' ')
+			return (str[i]);
+		i--;
+	}
+	return(0);
 }
