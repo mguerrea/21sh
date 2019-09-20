@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:09:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 15:43:21 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:35:00 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	init_redir(t_cmdlst *cmd)
 	{
 		cmd->redir[i].type = NONE;
 		cmd->redir[i].file = NULL;
+		cmd->redir[i].close = 0;
 		++i;
 	}
 	cmd->redir[0].fd[0] = STDIN_FILENO;

@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/19 15:13:59 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:43:21 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,18 @@ static int	filename(t_token **tkn, t_redir *redir)
 
 static int	get_fd(t_token **tkn, t_redir *redir)
 {
-	if (*tkn && (*tkn)->type == WORD && is_number((*tkn)->word))
+	if (*tkn && (*tkn)->type == WORD)
 	{
-		redir->fd[1] = ft_atoi((*tkn)->word);
-		*tkn = (*tkn)->next;
-		return (1);
+		if (is_number((*tkn)->word))
+		{
+			redir->fd[1] = ft_atoi((*tkn)->word);
+			*tkn = (*tkn)->next;
+			return (1);
+		}
+		else if (!ft_strcmp((*tkn)->word, "-"))
+		{
+			redir->close = 1;
+		}
 	}
 	return (0);
 }

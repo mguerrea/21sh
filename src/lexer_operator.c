@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 16:01:44 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/19 15:48:39 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:39:44 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void		set_operator_type(t_token *tkn)
 {
-	if (!strcmp(tkn->word, ">"))
+	if (!ft_strcmp(tkn->word, ">"))
 		tkn->type = GREAT;
-	else if (!strcmp(tkn->word, ">>"))
+	else if (!ft_strcmp(tkn->word, ">>"))
 		tkn->type = DGREAT;
-	else if (!strcmp(tkn->word, "<"))
+	else if (!ft_strcmp(tkn->word, "<"))
 		tkn->type = LESS;
-	else if (!strcmp(tkn->word, "<<"))
+	else if (!ft_strcmp(tkn->word, "<<"))
 		tkn->type = DLESS;
-	else if (!strcmp(tkn->word, ">&"))
+	else if (!ft_strcmp(tkn->word, ">&"))
 		tkn->type = GREATAND;
-	else if (!strcmp(tkn->word, "<&"))
+	else if (!ft_strcmp(tkn->word, "<&"))
 		tkn->type = LESSAND;
-	else if (!strcmp(tkn->word, "|"))
+	else if (!ft_strcmp(tkn->word, "|"))
 		tkn->type = PIPE;
-	else if (!strcmp(tkn->word, ";"))
+	else if (!ft_strcmp(tkn->word, ";"))
 		tkn->type = SEMI;
 }
 
@@ -47,7 +47,7 @@ int			isoperator(const char *beg, const char *end)
 	i = 0;
 	while (i < 4)
 	{
-		if (!strncmp(beg, comp_operators[i], end - beg + 1))
+		if (!ft_strncmp(beg, comp_operators[i], end - beg + 1))
 			return (1);
 		++i;
 	}

@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:21:38 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 15:43:46 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:28:54 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct		s_redir
 	char			*file;
 	int				fd[2];
 	t_redirtype		type;
+	int				close;
 }					t_redir;
 
 typedef struct		s_cmdlst
