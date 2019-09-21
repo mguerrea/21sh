@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:58:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 18:21:24 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:53:04 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	manage_child(t_cmdlst *cmd)
 		close(cmd->fd[1]);
 		close(cmd->next->fd[0]);
 	}
-
 }
 
 void	manage_parent(t_cmdlst *cmd, char ***env, int i)
@@ -47,6 +46,7 @@ void	manage_parent(t_cmdlst *cmd, char ***env, int i)
 int		do_pipe(t_cmdlst *cmd, char ***env)
 {
 	int mypipe[2];
+	int i;
 
 	if (cmd->pipes & PIPE_R)
 	{
@@ -55,7 +55,7 @@ int		do_pipe(t_cmdlst *cmd, char ***env)
 		cmd->fd[1] = mypipe[1];
 		cmd->next->fd[0] = mypipe[0];
 	}
-	int i = 0;
+	i = 0;
 	while (g_pid[i] != -2)
 		i++;
 	g_pid[i + 1] = -2;

@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 19:45:57 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:51:47 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@ const t_built_in g_builtin_fct[] = {ft_cd, ft_exit, ft_echo, ft_env,
 
 int		execute(t_cmdlst *cmd, char ***environ)
 {
-	int i;
-	int ret;
-	pid_t pid;
+	int		i;
+	int		ret;
+	pid_t	pid;
 
 	i = 0;
 	ret = 1;
 	cmd->exec = 1;
-	while (i < NB_BUILTIN)
-	{
-		if (ft_strcmp(cmd->args[0], g_builtin_lst[i]) == 0)
-			break ;
+	while (i < NB_BUILTIN && ft_strcmp(cmd->args[0], g_builtin_lst[i]) != 0)
 		i++;
-	}
 	if (((cmd->pipes & PIPE_R) && i < NB_BUILTIN) || i == NB_BUILTIN)
 	{
 		if ((pid = do_pipe(cmd, environ)) == -1)
@@ -57,12 +53,12 @@ int		iter_cmd(t_cmdlst *cmd, int run, char ***env)
 	{
 		if (cmd->exec == 0 && cmd->argslst)
 		{
-		if (!(saved = save_fd(cmd)))
-			malloc_error();
-		format_args(cmd, *env);
-		create_files(cmd);
-		run = execute(cmd, env);
-		restore_fd(cmd, saved);
+			if (!(saved = save_fd(cmd)))
+				malloc_error();
+			format_args(cmd, *env);
+			create_files(cmd);
+			run = execute(cmd, env);
+			restore_fd(cmd, saved);
 		}
 		cmd = cmd->next;
 	}

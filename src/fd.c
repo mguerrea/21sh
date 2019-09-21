@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 12:41:47 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 20:11:59 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:44:21 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int		aggregate(t_cmdlst *cmd)
 
 	if (cmd->redir[1].file == NULL && cmd->redir[1].type == SPL)
 	{
-		if (!(isatty(fildes = cmd->redir[1].fd[1])) && !(cmd->redir[1].fd[1] == 1 && cmd->pipes == PIPE_R))
+		if (!(isatty(fildes = cmd->redir[1].fd[1]))
+			&& !(cmd->redir[1].fd[1] == 1 && cmd->pipes == PIPE_R))
 			return (error_fd(fildes));
 		dup2(fildes, cmd->redir[1].fd[0]);
 		if (cmd->redir[1].close == 1)
@@ -54,7 +55,8 @@ int		aggregate(t_cmdlst *cmd)
 	}
 	if (cmd->redir[0].file == NULL && cmd->redir[0].type == SPL)
 	{
-		if (!(isatty(fildes = cmd->redir[0].fd[1])) && !(cmd->redir[0].fd[1] == 1 && cmd->pipes == PIPE_R))
+		if (!(isatty(fildes = cmd->redir[0].fd[1]))
+			&& !(cmd->redir[0].fd[1] == 1 && cmd->pipes == PIPE_R))
 			return (error_fd(fildes));
 		dup2(fildes, cmd->redir[0].fd[0]);
 		if (cmd->redir[0].close == 1)

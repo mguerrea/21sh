@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 13:09:56 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 19:13:10 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:42:23 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ char	last_char(char *str)
 	i = ft_strlen(str) - 1;
 	while (i >= 0)
 	{
-		if(str[i] != ' ')
+		if (str[i] != ' ')
 			return (str[i]);
 		i--;
 	}
-	return(0);
+	return (0);
 }
