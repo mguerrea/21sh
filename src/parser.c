@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 16:09:03 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 16:53:06 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:18:56 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int		pipe_sequence(t_token **tkn, t_cmdlst **cmdlst, t_pipemask pipe)
 		*tkn = (*tkn)->next;
 		if (*tkn && ((*tkn)->type == SEMI || (*tkn)->type == PIPE))
 			return (0);
-		pipe_sequence(tkn, cmdlst, PIPE_L);
+		return (pipe_sequence(tkn, cmdlst, PIPE_L));
 	}
 	return (1);
 }
