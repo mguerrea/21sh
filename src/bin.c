@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 19:18:45 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 15:02:22 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 15:39:33 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int		launch_bin(t_cmdlst *cmd, char ***environ)
 	i = 0;
 	if (redirection(cmd) == -1)
 		exit(1);
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_term->init);
+	if (g_term)
+		tcsetattr(STDIN_FILENO, TCSANOW, &g_term->init);
 	if (ft_strchr(cmd->args[0], '/'))
 	{
 		if (execve(cmd->args[0], cmd->args, *environ) < 0)

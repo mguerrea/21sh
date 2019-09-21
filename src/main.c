@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 11:51:47 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 15:39:55 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int		main(int argc, char **argv, char **environ)
 		return (throw_error("malloc error"));
 	run(&env);
 	free_tab(env);
-	tcsetattr(0, TCSANOW, &g_term->init);
+	if (g_term)
+		tcsetattr(0, TCSANOW, &g_term->init);
 	return (0);
 }

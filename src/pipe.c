@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:58:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 11:53:04 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 15:40:07 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	manage_parent(t_cmdlst *cmd, char ***env, int i)
 	}
 	waitpid(g_pid[i], NULL, WUNTRACED);
 	g_pid[i] = -2;
-	if (i == 0)
+	if (i == 0 && g_term)
 		tcsetattr(0, TCSANOW, &g_term->cur);
 }
 
