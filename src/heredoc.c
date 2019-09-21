@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:41:11 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 19:03:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:55:34 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*get_heredoc_content(char *end_word, char *content)
 int			heredoc(t_token **tkn, t_redir *redir)
 {
 	char	*unquoted;
-	
+
 	unquoted = NULL;
 	if (*tkn && (*tkn)->type == WORD)
 	{
