@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 11:52:55 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/21 16:04:07 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void			format_args(t_cmdlst *cmd, char **environ)
 	size_t	len;
 	t_token	*words;
 
-	(void)**environ;
 	words = cmd->argslst;
 	len = count_args(cmd->argslst);
 	i = 0;
@@ -59,7 +58,7 @@ void			format_args(t_cmdlst *cmd, char **environ)
 	{
 		if (words->word && words->word[0] == '~')
 			format_tilde(&(words->word));
-		format_var(&(words->word));
+		format_var(environ, &(words->word));
 		cmd->args[i] = ft_trimquotes(words->word);
 		++i;
 		words = words->next;

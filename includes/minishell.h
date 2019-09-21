@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 11:46:35 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/21 16:03:44 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void			catch_signals(int parent, char *line, int *pos);
 */
 
 char			*ft_trimquotes(char *s);
-void			format_var(char **s);
+void			format_var(char **environ, char **s);
 void			format_tilde(char **word);
 
 #endif
