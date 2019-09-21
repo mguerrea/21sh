@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 15:13:39 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/20 18:34:14 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:43:48 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	filename(t_token **tkn, t_redir *redir)
 static int	get_fd(t_token **tkn, t_redir *redir)
 {
 	char	*unquoted;
-	
+
 	unquoted = NULL;
 	if (*tkn && (*tkn)->type == WORD)
 	{
