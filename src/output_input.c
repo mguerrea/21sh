@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 20:09:28 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:40:46 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ int		here_doc(t_cmdlst *cmd)
 
 	if (pipe(fildes) == -1)
 		return (-1);
-	write(fildes[1], cmd->redir[0].file, ft_strlen(cmd->redir[0].file));
+	if (cmd->redir[0].file)
+		write(fildes[1], cmd->redir[0].file, ft_strlen(cmd->redir[0].file));
+	else
+		write(fildes[1], "\0", 1);
 	close(fildes[1]);
 	return (fildes[0]);
 }
