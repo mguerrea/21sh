@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 22:07:24 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/20 17:57:54 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/21 11:52:55 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 void			format_tilde(char **word)
 {
-	char	*temp;
-	char	*home;
+	struct passwd	*entry;
+	char			*temp;
+	char			*home;
 
 	if (!(home = getenv("HOME")))
-		home = getpwuid(getuid())->pw_dir;
+	{
+		if (!(entry = getpwuid(getuid())))
+			return ;
+		home = entry->pw_dir;
+	}
 	if (!(temp = ft_strjoin(home, (*word) + 1)))
 		malloc_error();
 	free(*word);
