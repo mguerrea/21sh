@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/11 16:46:32 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/24 15:23:38 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,30 @@ int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 	return (1);
 }
 
-char	**ft_getenv(char **environ, char *var)
+char *ft_getenv_unsplit(char **environ, char *var)
 {
 	int		i;
-	char	**lst;
 	int		len;
 
 	i = 0;
-	lst = NULL;
 	len = ft_strlen(var);
 	while (environ[i] && (ft_strncmp(environ[i], var, len)
 		|| environ[i][len] != '='))
 		i++;
 	if (environ[i])
-		lst = ft_strsplit(ft_strchr(environ[i], '=') + 1, ':');
+		return (ft_strchr(environ[i], '=') + 1);
+	else
+		return (NULL);
+}
+
+char	**ft_getenv(char **environ, char *var)
+{
+	char	*content;
+	char	**lst;
+
+	lst = NULL;
+	content = ft_getenv_unsplit(environ, var);
+	if (content)
+		lst = ft_strsplit(content, ':');
 	return (lst);
 }

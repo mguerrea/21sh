@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 19:11:59 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/21 16:04:52 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/24 15:18:44 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,40 +41,40 @@ static char		*get_varname(char *s)
 	return (ret);
 }
 
-static char		*get_formated_var(char **var, size_t *len)
-{
-	char	*dest;
-	size_t	i;
+// static char		*get_formated_var(char **var, size_t *len)
+// {
+// 	char	*dest;
+// 	size_t	i;
 
-	*len = 0;
-	i = 0;
-	while (var[i++])
-	{
-		*len += ft_strlen(var[i]) + 1;
-	}
-	if (!(dest = (char*)malloc(sizeof(char) * *len)))
-		malloc_error();
-	i = 0;
-	while (var[i++])
-	{
-		ft_strcat(dest, var[i]);
-		dest[ft_strlen(dest) - 1] = ':';
-	}
-	dest[*len] = '\0';
-	return (dest);
-}
+// 	*len = 0;
+// 	i = 0;
+// 	while (var[i])
+// 	{
+// 		*len += ft_strlen(var[i]) + 1;
+// 		++i;
+// 	}
+// 	if (!(dest = (char*)malloc(sizeof(char) * *len)))
+// 		malloc_error();
+// 	i = 0;
+// 	while (var[i])
+// 	{
+// 		ft_strcat(dest, var[i]);
+// 		dest[ft_strlen(dest) - 1] = ':';
+// 		++i;
+// 	}
+// 	dest[*len] = '\0';
+// 	return (dest);
+// }
 
 static size_t	get_var(char **environ, char **s, size_t index)
 {
 	char	*varname;
-	char	**var_env;
 	char	*var;
 	char	*ret;
-	size_t	len;
 
 	if (!(varname = get_varname(*s + index)))
 		return (index);
-	if (!(var_env = ft_getenv(environ, varname)))
+	if (!(var = ft_getenv_unsplit(environ, varname)))
 	{
 		ret = get_formated_string(*s, "", varname, index);
 		free(varname);
@@ -82,13 +82,11 @@ static size_t	get_var(char **environ, char **s, size_t index)
 		*s = ret;
 		return (index - 1);
 	}
-	var = get_formated_var(var_env, &len);
-	free_tab(var_env);
 	ret = get_formated_string(*s, var, varname, index);
 	free(varname);
 	free(*s);
 	*s = ret;
-	return (index + len - 1);
+	return (index + ft_strlen(var) - 1);
 }
 
 void			format_var(char **environ, char **s)

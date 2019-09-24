@@ -6,7 +6,7 @@
 /*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:46:04 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 16:03:44 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/09/24 15:16:32 by gmichaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int				wrong_quote(char *str);
 
 void			ft_setvar(char ***environ, char *var, char *value);
 int				ft_setenv(t_cmdlst *cmd, char ***environ);
+char			*ft_getenv_unsplit(char **environ, char *var);
 char			**ft_getenv(char **environ, char *var);
 int				ft_unsetenv(t_cmdlst *cmd, char ***environ);
 
