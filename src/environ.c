@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 16:45:44 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/24 15:23:38 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/10/04 16:32:21 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		ft_unsetenv(t_cmdlst *cmd, char ***environ)
 	return (1);
 }
 
-char *ft_getenv_unsplit(char **environ, char *var)
+char	*ft_getenv_unsplit(char **environ, char *var)
 {
 	int		i;
 	int		len;

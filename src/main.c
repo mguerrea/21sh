@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/03 14:37:54 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 15:39:55 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/10/04 16:24:18 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int		iter_cmd(t_cmdlst *cmd, int run, char ***env)
 
 	while (cmd && run)
 	{
+		create_files(cmd);
 		if (cmd->exec == 0 && cmd->argslst)
 		{
 			if (!(saved = save_fd(cmd)))
 				malloc_error();
 			format_args(cmd, *env);
-			create_files(cmd);
 			run = execute(cmd, env);
 			restore_fd(cmd, saved);
 		}

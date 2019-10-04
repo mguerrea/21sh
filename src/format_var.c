@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmichaud <gmichaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 19:11:59 by gmichaud          #+#    #+#             */
-/*   Updated: 2019/09/24 15:18:44 by gmichaud         ###   ########.fr       */
+/*   Updated: 2019/10/04 16:32:44 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,6 @@ static char		*get_varname(char *s)
 		malloc_error();
 	return (ret);
 }
-
-// static char		*get_formated_var(char **var, size_t *len)
-// {
-// 	char	*dest;
-// 	size_t	i;
-
-// 	*len = 0;
-// 	i = 0;
-// 	while (var[i])
-// 	{
-// 		*len += ft_strlen(var[i]) + 1;
-// 		++i;
-// 	}
-// 	if (!(dest = (char*)malloc(sizeof(char) * *len)))
-// 		malloc_error();
-// 	i = 0;
-// 	while (var[i])
-// 	{
-// 		ft_strcat(dest, var[i]);
-// 		dest[ft_strlen(dest) - 1] = ':';
-// 		++i;
-// 	}
-// 	dest[*len] = '\0';
-// 	return (dest);
-// }
 
 static size_t	get_var(char **environ, char **s, size_t index)
 {

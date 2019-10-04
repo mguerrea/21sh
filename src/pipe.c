@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:58:57 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 15:40:07 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/10/04 16:27:55 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	manage_child(t_cmdlst *cmd)
 {
-	if (cmd->pipes & PIPE_L)
+	if ((cmd->pipes & PIPE_L) && (cmd->prev->argslst))
 	{
 		dup2(cmd->fd[0], STDIN_FILENO);
 		close(cmd->fd[0]);
@@ -30,7 +30,7 @@ void	manage_child(t_cmdlst *cmd)
 void	manage_parent(t_cmdlst *cmd, char ***env, int i)
 {
 	catch_signals(0, NULL, NULL);
-	if (cmd->pipes & PIPE_L)
+	if ((cmd->pipes & PIPE_L) && (cmd->prev->argslst))
 		close(cmd->fd[0]);
 	if (cmd->pipes & PIPE_R)
 	{

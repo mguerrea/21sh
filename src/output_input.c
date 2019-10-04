@@ -6,7 +6,7 @@
 /*   By: mguerrea <mguerrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 12:45:41 by mguerrea          #+#    #+#             */
-/*   Updated: 2019/09/21 11:52:07 by mguerrea         ###   ########.fr       */
+/*   Updated: 2019/10/04 15:45:00 by mguerrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	create_files(t_cmdlst *cmd)
 
 	if (cmd->pipes & PIPE_R)
 	{
-		if ((fildes = open(cmd->redir[1].file, O_CREAT, 0666)) != -1)
+		if (cmd->redir[1].file
+			&& (fildes = open(cmd->redir[1].file, O_CREAT, 0666)) != -1)
 			close(fildes);
 		cmd = cmd->next;
 		while (cmd && (cmd->pipes & PIPE_L))
